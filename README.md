@@ -64,7 +64,7 @@ Classical differential geometry, in the style of do Carmo. Concrete, computation
 | # | Notebook | Idea |
 |---|----------|------|
 | 01 | [curves-arclength-and-curvature](notebooks/03-curves-and-surfaces/01-curves-arclength-and-curvature.macnb) | Regular curves; reparametrisation by arc length; curvature as the rate of turning of the unit tangent |
-| 02 | frenet-serret-and-torsion | The moving frame $(T, N, B)$; torsion; the fundamental theorem of curves — curvature and torsion determine a curve up to rigid motion |
+| 02 | [frenet-serret-and-torsion](notebooks/03-curves-and-surfaces/02-frenet-serret-and-torsion.macnb) | The moving frame $(T, N, B)$; torsion; the fundamental theorem of curves — curvature and torsion determine a curve up to rigid motion |
 | 03 | surfaces-and-the-first-fundamental-form | Parametrised surfaces and tangent planes; the first fundamental form as the induced metric; lengths, angles and areas *on* the surface |
 | 04 | the-gauss-map-and-second-fundamental-form | The Gauss map and its differential; the shape operator; normal curvature; principal curvatures and directions as an eigenvalue problem |
 | 05 | gaussian-and-mean-curvature | $K = \kappa_1\kappa_2$ and $H = (\kappa_1+\kappa_2)/2$; elliptic, hyperbolic and parabolic points; surfaces of revolution computed in full |
