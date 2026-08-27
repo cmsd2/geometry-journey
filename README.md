@@ -55,7 +55,7 @@ Keep the space, change the group, and you get a different geometry. Parallel lin
 | 04 | [conics-projectively](notebooks/02-projective-and-non-euclidean/04-conics-projectively.macnb) | All non-degenerate conics are projectively equivalent; Pascal's and Brianchon's theorems; poles and polars |
 | 05 | [inversive-geometry-and-mobius-maps](notebooks/02-projective-and-non-euclidean/05-inversive-geometry-and-mobius-maps.macnb) | Inversion in a circle; circles-to-circles; $PSL(2,\mathbb C)$ acting on the Riemann sphere; stereographic projection |
 | 06 | [hyperbolic-geometry](notebooks/02-projective-and-non-euclidean/06-hyperbolic-geometry.macnb) | Upper half-plane and Poincaré disc models; hyperbolic distance and area; triangles with angle *deficit*; tilings and $PSL(2,\mathbb R)$ |
-| 07 | spherical-and-elliptic-geometry | Spherical trigonometry; area = angular excess; the three constant-curvature geometries side by side, distinguished only by their group |
+| 07 | [spherical-and-elliptic-geometry](notebooks/02-projective-and-non-euclidean/07-spherical-and-elliptic-geometry.macnb) | Spherical trigonometry; area = angular excess; the three constant-curvature geometries side by side, distinguished only by their group |
 
 ### Stage 3 — Curves and Surfaces in $\mathbb R^3$
 
