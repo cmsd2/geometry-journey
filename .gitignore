@@ -1,0 +1,5 @@
+.DS_Store
+*.swp
+*.bak
+.aximar/
+.ipynb_checkpoints/

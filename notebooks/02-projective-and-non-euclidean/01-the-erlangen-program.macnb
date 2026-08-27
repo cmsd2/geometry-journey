@@ -1,0 +1,99 @@
+{
+ "nbformat": 4,
+ "nbformat_minor": 5,
+ "metadata": {
+  "kernelspec": {
+   "name": "maxima",
+   "display_name": "Maxima",
+   "language": "maxima"
+  },
+  "aximar": {}
+ },
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "source": "# 2.01 — The Erlangen Program\n\nIn 1872, at the age of 23, Felix Klein took up a chair at Erlangen and set out a programme for what geometry *is*. Stage 1 arrived at his answer by accident, one notebook at a time; here we state it deliberately.\n\n> **Klein's thesis.** A geometry is a set $X$ together with a group $G$ acting on it. The propositions of that geometry are exactly the statements invariant under $G$.\n\nThree consequences follow immediately, and they are what make the idea more than a slogan.\n\n**Geometry becomes plural.** There is no such thing as *the* geometry of the plane. Choose $E(2)$ and you get Euclidean geometry; choose $\\mathrm{Aff}(2)$ and lengths cease to exist but ratios survive; choose $PGL(3)$ and even parallelism dies. Same set, different geometries, because different groups.\n\n**\"Congruent\" is defined by the group.** Two figures are the same iff some $g \\in G$ carries one to the other — that is, iff they lie in the same $G$-orbit. All triangles are congruent affinely; only some are congruent Euclideanly. The word \"same\" has no meaning until the group is named.\n\n**Geometries are ordered by inclusion.** If $H \\le G$ then $H$-geometry is *finer* than $G$-geometry: fewer motions, so fewer figures identified, so more invariants and more theorems. The lattice of subgroups of $PGL(3)$ is a lattice of geometries.\n\nThis notebook sets up the vocabulary — action, orbit, stabiliser, invariant, homogeneous space — and then does the one computation that makes the framework concrete: identifying each geometry with a quotient $G/H$.",
+   "metadata": {}
+  },
+  {
+   "cell_type": "markdown",
+   "source": "## 1. The vocabulary\n\nLet a group $G$ act on a set $X$, meaning each $g \\in G$ gives a bijection $x \\mapsto g\\cdot x$ with $e\\cdot x = x$ and $(gh)\\cdot x = g\\cdot(h\\cdot x)$.\n\n| Term | Definition | Geometric reading |\n|---|---|---|\n| **Orbit** $Gx$ | $\\{g \\cdot x : g \\in G\\}$ | everything congruent to $x$ |\n| **Stabiliser** $G_x$ | $\\{g : g\\cdot x = x\\}$ | the symmetries fixing $x$ |\n| **Transitive** | one orbit only | the space looks the same everywhere |\n| **Invariant** | $f(g\\cdot x) = f(x)$ | a legitimate geometric quantity |\n| **Homogeneous space** | $X$ with $G$ transitive | a geometry in Klein's sense |\n\nTwo facts do most of the work.\n\n**Orbit–stabiliser.** The map $gG_x \\mapsto g\\cdot x$ is a bijection $G/G_x \\to Gx$. When the action is transitive this says\n\n$$X \\;\\cong\\; G/G_x,$$\n\nso **a homogeneous space is a quotient of its own symmetry group**. Choosing a base point turns the geometry into group theory. (We already used the finite version of this in 1.04, where $|O_i| = N/n_i$ counted pole orbits.)\n\n**Invariants separate orbits.** A function is $G$-invariant precisely when it is constant on orbits, so invariants are exactly the functions on the orbit space $X/G$. \"Find the invariants\" and \"classify the figures up to congruence\" are the same problem, and 1.07 solved it for $E(n)$: the orbit space of $k$-point configurations is coordinatised by the pairwise distances.\n\nThe pattern to hold on to: **transitive on points, and then the stabiliser is what remains.** For $E(n)$ acting on $\\mathbb R^n$, translations make it transitive and the stabiliser of the origin is $O(n)$, so\n\n$$\\mathbb R^n \\cong E(n)/O(n).$$",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "source": "load(\"numerics\")$\nload(\"ax-plots\")$\nload(\"linearalgebra\")$\nratprint : false$\n\ncvec(v) := transpose(matrix(v))$\npt(M)   := args(transpose(M))[1]$\ntsimp(e) := if matrixp(e) then matrixmap(lambda([z], trigrat(z)), e)\n            else if listp(e) then map(lambda([z], trigrat(z)), e)\n            else trigrat(e)$\n\n/* --- Orbits and stabilisers, computed for a finite group action --- */\n/* D4 acting on the plane: the orbit structure IS the geometry.\n   (Note: the helper is named orb, not orbit — orbit is a Maxima builtin.) */\nRot(θ) := matrix([cos(θ), -sin(θ)], [sin(θ), cos(θ)])$\nRef(α) := matrix([cos(2*α), sin(2*α)], [sin(2*α), -cos(2*α)])$\n\nclose_group(gens, maxsize) := block([G, frontier, newones, g, h, p],\n  G : [ident(2)], frontier : G,\n  while length(frontier) > 0 and length(G) <= maxsize do (\n    newones : [],\n    for g in frontier do for h in gens do (\n      p : tsimp(g . h),\n      if not member(p, G) and not member(p, newones) then newones : cons(p, newones)),\n    G : append(G, newones), frontier : newones),\n  G )$\n\nD4 : close_group([Rot(π/2), Ref(0)], 50)$\nprint(\"|D4| = \", length(D4))$\n\norb(G, v)       := unique( map(lambda([M], tsimp(pt(M . cvec(v)))), G) )$\nstabiliser(G, v):= sublist( G, lambda([M], tsimp(pt(M . cvec(v))) = v) )$\n\nprint(\"\")$\nprint(\"  point        |orbit|   |stabiliser|   product\")$\nfor v in [ [1,1], [1,0], [0,0], [2,1] ] do block([O, S],\n  O : orb(D4, v), S : stabiliser(D4, v),\n  print(\"  \", v, \"        \", length(O), \"          \", length(S),\n        \"           \", length(O)*length(S)) )$\nprint(\"\")$\nprint(\"orbit–stabiliser: |orbit| · |stabiliser| = |G| = \", length(D4), \" every time.\")$\nprint(\"The origin is fixed by everything (orbit 1); a generic point has\")$\nprint(\"trivial stabiliser and a free orbit of size |G|.\")$",
+   "metadata": {},
+   "execution_count": 2,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "|D4| =  8\n  point        |orbit|   |stabiliser|   product\n   [1,1]          4            2             8\n   [1,0]          4            2             8\n   [0,0]          1            8             8\n   [2,1]          8            1             8\norbit–stabiliser: |orbit| · |stabiliser| = |G| =  8  every time.\nThe origin is fixed by everything (orbit 1); a generic point has\ntrivial stabiliser and a free orbit of size |G|."
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "source": "## 2. Geometries as quotients $G/H$\n\nThe orbit–stabiliser bijection above is not merely a counting device. It says that a homogeneous space *is* a coset space, and that gives a uniform description of every geometry in this journey.\n\nPick a base point $o \\in X$ and let $H = G_o$ be its stabiliser. Then $X \\cong G/H$, and the pair $(G, H)$ contains all the information. Here is the dictionary:\n\n| Space $X$ | Group $G$ | Stabiliser $H$ | $\\dim G - \\dim H$ |\n|---|---|---|---|\n| $\\mathbb R^n$ (Euclidean) | $E(n)$ | $O(n)$ | $\\binom{n+1}{2} - \\binom n2 = n$ |\n| $\\mathbb R^n$ (affine) | $\\mathrm{Aff}(n)$ | $GL_n(\\mathbb R)$ | $n^2 + n - n^2 = n$ |\n| $S^n$ (spherical) | $O(n+1)$ | $O(n)$ | $n$ |\n| $\\mathbb{RP}^n$ (projective) | $PGL_{n+1}(\\mathbb R)$ | stabiliser of a point | $n$ |\n| $\\mathbb H^n$ (hyperbolic) | $O^+(n,1)$ | $O(n)$ | $n$ |\n\nRead the sphere row carefully, because it is the template for Stage 2 and for all of Stage 5:\n\n$$S^n \\cong O(n+1)/O(n).$$\n\nA point of the sphere is a coset — the set of rotations carrying the north pole to that point. They differ by a rotation *about* the pole, and that ambiguity is exactly $O(n)$. Nothing is lost: the sphere has been rebuilt out of its own symmetry group.\n\nThe last column is the check that these are genuinely $n$-dimensional. It also exposes something: for a fixed $X$, a *larger* $G$ forces a larger $H$. Euclidean and affine geometry describe the same $\\mathbb R^n$; the affine group is much bigger, but so is the stabiliser of a point, and the quotient comes out the same size. **More symmetry does not mean more room — it means less structure.**\n\nLet us verify the dimension count, and then build $S^2 \\cong SO(3)/SO(2)$ explicitly.",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "source": "/* Dimensions of the classical groups */\ndim_O(n)   := n*(n-1)/2$        /* antisymmetric matrices */\ndim_E(n)   := dim_O(n) + n$     /* rotation part + translation */\ndim_GL(n)  := n^2$\ndim_Aff(n) := n^2 + n$\ndim_PGL(n) := n^2 - 1$          /* (n×n) matrices modulo scalars */\n\nprint(\"  n    dim E(n)  dim O(n)   difference\")$\nfor n : 1 thru 4 do\n  print(\"  \", n, \"      \", dim_E(n), \"        \", dim_O(n), \"         \", dim_E(n) - dim_O(n))$\nprint(\"→ E(n)/O(n) has dimension n, as ℝⁿ must\")$\n\nprint(\"\")$\nprint(\"  n    dim Aff(n)  dim GL(n)   difference\")$\nfor n : 1 thru 4 do\n  print(\"  \", n, \"      \", dim_Aff(n), \"         \", dim_GL(n), \"          \", dim_Aff(n) - dim_GL(n))$\nprint(\"→ same quotient dimension, from a much larger group\")$\n\nprint(\"\")$\nprint(\"  n    dim O(n+1)  dim O(n)   difference     (Sⁿ)\")$\nfor n : 1 thru 4 do\n  print(\"  \", n, \"      \", dim_O(n+1), \"         \", dim_O(n), \"          \", dim_O(n+1) - dim_O(n))$\n\nprint(\"\")$\nprint(\"  n    dim PGL(n+1)  minus n =  dim of point stabiliser in ℝPⁿ\")$\nfor n : 1 thru 4 do\n  print(\"  \", n, \"      \", dim_PGL(n+1), \"            \", dim_PGL(n+1) - n)$",
+   "metadata": {},
+   "execution_count": 3,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "  n    dim E(n)  dim O(n)   difference\n   1        1          0           1\n   2        3          1           2\n   3        6          3           3\n   4        10          6           4\n→ E(n)/O(n) has dimension n, as ℝⁿ must\n  n    dim Aff(n)  dim GL(n)   difference\n   1        2           1            1\n   2        6           4            2\n   3        12           9            3\n   4        20           16            4\n→ same quotient dimension, from a much larger group\n  n    dim O(n+1)  dim O(n)   difference     (Sⁿ)\n   1        1           0            1\n   2        3           1            2\n   3        6           3            3\n   4        10           6            4\n  n    dim PGL(n+1)  minus n =  dim of point stabiliser in ℝPⁿ\n   1        3              2\n   2        8              6\n   3        15              12\n   4        24              20"
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "code",
+   "source": "/* --- S² as SO(3)/SO(2), explicitly --- */\nRz3(θ) := matrix([cos(θ), -sin(θ), 0], [sin(θ), cos(θ), 0], [0, 0, 1])$\nRy3(θ) := matrix([cos(θ), 0, sin(θ)], [0, 1, 0], [-sin(θ), 0, cos(θ)])$\n\nnpole : cvec([0, 0, 1])$\n\n/* Here we want products left as products, so ratsimp — not trigrat, which\n   would expand cos φ sin θ into a sum of angles and obscure the answer. */\nmsimp(e) := matrixmap(ratsimp, e)$\n\n/* A coset representative: swing the north pole to colatitude θ, longitude φ */\ng(θ, φ) := Rz3(φ) . Ry3(θ)$\nprint(\"g(θ,φ) · north pole = \", transpose(msimp( g(θ, φ) . npole )))$\nprint(\"  — spherical coordinates fall straight out of the group action\")$\n\n/* The stabiliser of the north pole is exactly the rotations about the z-axis */\nprint(\"\")$\nprint(\"Rz(ψ) · pole − pole = \", msimp( Rz3(ψ) . npole - npole ),\n      \"   (fixed for every ψ)\")$\n\n/* Two group elements give the same point iff they differ by such a rotation */\nprint(\"g(θ,φ)Rz(ψ) · pole − g(θ,φ) · pole = \",\n      msimp( g(θ, φ) . Rz3(ψ) . npole - g(θ, φ) . npole ))$\nprint(\"  — so points of S² are cosets g·SO(2):  S² = SO(3)/SO(2)\")$\n\n/* The image always lands on the unit sphere */\nprint(\"\")$\nu : msimp( g(θ, φ) . npole )$\nprint(\"|g(θ,φ)·pole|² = \", trigsimp( u[1][1]^2 + u[2][1]^2 + u[3][1]^2 ))$\nprint(\"and (θ,φ) over [0,π]×[0,2π) covers the whole sphere, so the action\")$\nprint(\"is transitive — which is what makes S² a homogeneous space at all.\")$",
+   "metadata": {},
+   "execution_count": 6,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "g(θ,φ) · north pole =\n                      matrix([cos(phi)*sin(theta),sin(phi)*sin(theta),\n                              cos(theta)])\n  — spherical coordinates fall straight out of the group action\nRz(ψ) · pole − pole =  matrix([0],[0],[0])    (fixed for every ψ)\ng(θ,φ)Rz(ψ) · pole − g(θ,φ) · pole =  matrix([0],[0],[0])\n  — so points of S² are cosets g·SO(2):  S² = SO(3)/SO(2)\n|g(θ,φ)·pole|² =  1\nand (θ,φ) over [0,π]×[0,2π) covers the whole sphere, so the action\nis transitive — which is what makes S² a homogeneous space at all."
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "source": "## 3. Watching invariants die\n\nThe clearest way to feel the Erlangen hierarchy is to take one configuration and push it through progressively larger groups, checking after each what still holds.\n\nTake four points on a line, at parameters $x_1, x_2, x_3, x_4$, and three candidate quantities:\n\n$$\\text{distance } |x_i - x_j|, \\qquad \\text{ratio } \\frac{x_3 - x_1}{x_3 - x_2}, \\qquad \\text{cross-ratio } (x_1,x_2;x_3,x_4) = \\frac{(x_3-x_1)(x_4-x_2)}{(x_3-x_2)(x_4-x_1)}.$$\n\nNow apply, in turn:\n\n| Map | Form on the line | Survives |\n|---|---|---|\n| isometry | $x \\mapsto \\pm x + b$ | distance, ratio, cross-ratio |\n| similarity | $x \\mapsto \\lambda x + b$ | ratio, cross-ratio |\n| affine | $x \\mapsto ax + b$, $a \\ne 0$ | ratio, cross-ratio |\n| projective | $x \\mapsto \\dfrac{ax+b}{cx+d}$, $ad - bc \\ne 0$ | **cross-ratio only** |\n\nEach row is a bigger group and a shorter list. The last row is the punchline of Stage 2: even after surrendering distance, angle, parallelism *and* ratio, one number of four points survives. That the list does not become empty is what makes projective geometry a geometry rather than mere set theory.\n\nNote also that affine maps of the line are exactly the projective maps with $c = 0$ — those fixing the point at infinity. Affine geometry is projective geometry that remembers which point is at infinity, which is the one-dimensional shadow of the statement made in 1.05.",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "source": "/* Four points on a line */\nxs : [x1, x2, x3, x4]$\n\ndist12(v)     := v[2] - v[1]$\nratio(v)      := (v[3] - v[1]) / (v[3] - v[2])$\ncrossratio(v) := ((v[3]-v[1])*(v[4]-v[2])) / ((v[3]-v[2])*(v[4]-v[1]))$\n\n/* The four kinds of map, as functions applied pointwise */\niso(v)  := map(lambda([t], t + b), v)$\nsimil(v):= map(lambda([t], λ*t + b), v)$\naff(v)  := map(lambda([t], a*t + b), v)$\nproj(v) := map(lambda([t], (a*t + b)/(c*t + d)), v)$\n\ncheck(name, f) := block([w],\n  w : f(xs),\n  print(name, \":\"),\n  print(\"    distance     \", if ratsimp(dist12(w)     - dist12(xs))     = 0\n                             then \"preserved\" else \"CHANGED\"),\n  print(\"    ratio        \", if ratsimp(ratio(w)      - ratio(xs))      = 0\n                             then \"preserved\" else \"CHANGED\"),\n  print(\"    cross-ratio  \", if ratsimp(crossratio(w) - crossratio(xs)) = 0\n                             then \"preserved\" else \"CHANGED\") )$\n\ncheck(\"isometry     x ↦ x + b\",           iso)$\ncheck(\"similarity   x ↦ λx + b\",          simil)$\ncheck(\"affine       x ↦ ax + b\",          aff)$\ncheck(\"projective   x ↦ (ax+b)/(cx+d)\",   proj)$",
+   "metadata": {},
+   "execution_count": 7,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "isometry     x ↦ x + b :\n    distance      preserved\n    ratio         preserved\n    cross-ratio   preserved\nsimilarity   x ↦ λx + b :\n    distance      CHANGED\n    ratio         preserved\n    cross-ratio   preserved\naffine       x ↦ ax + b :\n    distance      CHANGED\n    ratio         preserved\n    cross-ratio   preserved\nprojective   x ↦ (ax+b)/(cx+d) :\n    distance      CHANGED\n    ratio         CHANGED\n    cross-ratio   preserved"
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "source": "## Summary\n\nKlein's programme, in three statements:\n\n1. **A geometry is a pair $(X, G)$** — a set and a group acting on it. \"Congruent\" means \"in the same $G$-orbit\"; a \"geometric quantity\" means a $G$-invariant function.\n2. **A homogeneous space is a quotient $G/H$**, where $H$ is the stabiliser of a base point. Choosing a base point converts geometry into group theory, and $S^2 = SO(3)/SO(2)$ is the model case.\n3. **Bigger group, fewer invariants.** The subgroup lattice of $PGL(n{+}1)$ is a lattice of geometries, ordered by how much structure each remembers.\n\nThe final computation is the programme in miniature: as the group grew from isometries to projectivities, distance died, then ratio died, and the cross-ratio survived everything.\n\n## What to watch for in the rest of Stage 2\n\nEach remaining notebook is one row of the ladder, taken seriously:\n\n| Notebook | Group | The point |\n|---|---|---|\n| 2.02 | $PGL(3)$ on $\\mathbb{RP}^2$ | points and lines become interchangeable — duality |\n| 2.03 | $PGL(3)$ | the cross-ratio, and why it is *the* projective invariant |\n| 2.04 | $PGL(3)$ | all non-degenerate conics become one conic |\n| 2.05 | $PSL(2,\\mathbb C)$ on $\\hat{\\mathbb C}$ | circles and lines stop being different things |\n| 2.06 | $PSL(2,\\mathbb R)$ on $\\mathbb H^2$ | the parallel postulate fails, and area becomes angle deficit |\n| 2.07 | $O(3)$ on $S^2$ | the same story with the opposite sign of curvature |\n\nAnd a caution worth carrying: the Erlangen picture only describes spaces with enough symmetry to be homogeneous. The three constant-curvature geometries of 2.06–2.07 are the last ones for which it works perfectly. From Stage 3 onwards, surfaces have no symmetry group to speak of, and geometry has to be rebuilt locally — which is Riemann's programme, not Klein's. Stage 5 shows the two were the same idea all along.\n\n## Next\n\n**2.02 — The Projective Plane** builds $\\mathbb{RP}^2$ from homogeneous coordinates, adds the line at infinity to $\\mathbb R^2$, and proves that any two distinct lines meet in exactly one point — no exceptions, no parallel case.\n\n## References\n\n- ★ Lee, N.-H. (2020) *Geometry: from Isometries to Special Relativity*. Undergraduate Texts in Mathematics. Cham: Springer. doi:10.1007/978-3-030-42101-4. Organised around exactly this group-theoretic view.\n- ★ Stillwell, J. (2005) *The Four Pillars of Geometry*. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/0-387-29052-4. The fourth pillar is transformation groups; Chapters 7–8 are the Erlangen view at this level.\n- Klein, F. (1893) 'A comparative review of recent researches in geometry', trans. M.W. Haskell, *Bulletin of the New York Mathematical Society*, 2(10), pp. 215–249. The English translation of the 1872 *Erlangen Programm* itself, and still readable.\n- Sharpe, R.W. (1997) *Differential Geometry: Cartan's Generalization of Klein's Erlangen Program*. Graduate Texts in Mathematics 166. New York: Springer. The book that carries the caution at the end of this notebook to its conclusion — how Klein's homogeneous picture and Riemann's local one are reconciled. Relevant again at Stage 5.\n- ★ Lee, J.M. (2013) *Introduction to Smooth Manifolds*. 2nd edn. New York: Springer. Chapter 21 for homogeneous spaces $G/H$ as smooth manifolds.\n\n---\n*Marked ★ = in the local indexed library (`maths` collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result; the prose is written from knowledge and checked against these sources where they cover the material.*",
+   "metadata": {}
+  }
+ ]
+}
