@@ -71,7 +71,7 @@ Classical differential geometry, in the style of do Carmo. Concrete, computation
 | 06 | [theorema-egregium](notebooks/03-curves-and-surfaces/06-theorema-egregium.macnb) | Christoffel symbols in two dimensions; the Gauss and Codazzi–Mainardi equations; Gauss's remarkable theorem — $K$ depends only on the first fundamental form |
 | 07 | [geodesics-on-surfaces](notebooks/03-curves-and-surfaces/07-geodesics-on-surfaces.macnb) | Geodesic curvature; the geodesic equations as a nonlinear ODE system, integrated numerically; the exponential map and normal coordinates |
 | 08 | [gauss-bonnet](notebooks/03-curves-and-surfaces/08-gauss-bonnet.macnb) | The local theorem, then the global one: $\int_M K \, dA + \int_{\partial M} \kappa_g \, ds = 2\pi\chi(M)$ — curvature is constrained by topology |
-| 09 | minimal-surfaces | $H = 0$; soap films; the catenoid, helicoid and Enneper surface; Plateau's problem as a signpost |
+| 09 | [minimal-surfaces](notebooks/03-curves-and-surfaces/09-minimal-surfaces.macnb) | $H = 0$; soap films; the catenoid, helicoid and Enneper surface; Plateau's problem as a signpost |
 
 ### Stage 4 — Riemannian Geometry
 
