@@ -69,7 +69,7 @@ Classical differential geometry, in the style of do Carmo. Concrete, computation
 | 04 | [the-gauss-map-and-second-fundamental-form](notebooks/03-curves-and-surfaces/04-the-gauss-map-and-second-fundamental-form.macnb) | The Gauss map and its differential; the shape operator; normal curvature; principal curvatures and directions as an eigenvalue problem |
 | 05 | [gaussian-and-mean-curvature](notebooks/03-curves-and-surfaces/05-gaussian-and-mean-curvature.macnb) | $K = \kappa_1\kappa_2$ and $H = (\kappa_1+\kappa_2)/2$; elliptic, hyperbolic and parabolic points; surfaces of revolution computed in full |
 | 06 | [theorema-egregium](notebooks/03-curves-and-surfaces/06-theorema-egregium.macnb) | Christoffel symbols in two dimensions; the Gauss and Codazzi–Mainardi equations; Gauss's remarkable theorem — $K$ depends only on the first fundamental form |
-| 07 | geodesics-on-surfaces | Geodesic curvature; the geodesic equations as a nonlinear ODE system, integrated numerically; the exponential map and normal coordinates |
+| 07 | [geodesics-on-surfaces](notebooks/03-curves-and-surfaces/07-geodesics-on-surfaces.macnb) | Geodesic curvature; the geodesic equations as a nonlinear ODE system, integrated numerically; the exponential map and normal coordinates |
 | 08 | gauss-bonnet | The local theorem, then the global one: $\int_M K \, dA + \int_{\partial M} \kappa_g \, ds = 2\pi\chi(M)$ — curvature is constrained by topology |
 | 09 | minimal-surfaces | $H = 0$; soap films; the catenoid, helicoid and Enneper surface; Plateau's problem as a signpost |
 
