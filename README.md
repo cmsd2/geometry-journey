@@ -1,5 +1,7 @@
 # Geometry — A Journey
 
+[![Docs](https://img.shields.io/badge/docs-online-blue)](https://cmsd2.github.io/geometry-journey/)
+
 A self-contained tour of geometry, built as a sequence of Maxima notebooks. The spine is **Klein's Erlangen program**: a geometry is a space, a group of transformations, and the quantities those transformations leave alone. The arc runs from **Euclidean and affine geometry** (first-year material — vectors, isometries, conics), through **projective and non-Euclidean geometry** (the same space, different groups), into the **classical differential geometry of curves and surfaces**, then **Riemannian geometry**, and finally **Lie groups, bundles, and curvature as a physical field**.
 
 Each notebook pairs **definitions and proofs** with **explicit computation** — symmetry groups enumerated, conics diagonalised, curvature tensors derived symbolically, geodesics integrated numerically, surfaces plotted. The emphasis throughout is that curvature and symmetry are computable things, not just formal ones.
