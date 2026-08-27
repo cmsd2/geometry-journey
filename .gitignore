@@ -1,5 +1,8 @@
 .DS_Store
 *.swp
 *.bak
+*.ERR
+__pycache__/
+.venv/
 .aximar/
 .ipynb_checkpoints/
