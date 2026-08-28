@@ -163,7 +163,7 @@ Per-notebook references appear at the foot of each notebook.
 
 Every code cell in every notebook has been executed, and the output shown is the real result — the symbolic identities, classifications and counts are checked by Maxima rather than asserted. Where a claim can be turned into a computation, it has been.
 
-The prose is written from knowledge and cross-checked against the references listed at the foot of each notebook. Texts marked ★ there are ones held locally; the rest are standard works cited as further reading rather than consulted line by line. Historical dates and attributions are given only where they are unambiguous — where sources disagree (Euler's rotation memoir, presented 1775 and published 1776, is the case in Stage 1) the notebook says so instead of picking one.
+The prose is written from knowledge and cross-checked against the references listed at the foot of each notebook. Texts marked ★ there were consulted directly; the rest are standard works cited as further reading rather than checked line by line. Historical dates and attributions are given only where they are unambiguous — where sources disagree (Euler's rotation memoir, presented 1775 and published 1776, is the case in Stage 1) the notebook says so instead of picking one.
 
 ## Scope
 
