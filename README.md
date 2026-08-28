@@ -87,8 +87,8 @@ Curvature without an ambient space. Everything in Stage 3 was measured from outs
 | 03 | [geodesics-and-the-exponential-map](notebooks/04-riemannian-geometry/03-geodesics-and-the-exponential-map.macnb) | Geodesics as straightest and as shortest; the exponential map; normal coordinates; geodesic completeness and Hopf–Rinow |
 | 04 | [the-curvature-tensor](notebooks/04-riemannian-geometry/04-the-curvature-tensor.macnb) | Curvature as the failure of covariant derivatives to commute; the Riemann tensor via `ctensor`; its symmetries and the Bianchi identities |
 | 05 | [sectional-ricci-and-scalar-curvature](notebooks/04-riemannian-geometry/05-sectional-ricci-and-scalar-curvature.macnb) | Contractions of Riemann and what each one measures; sectional curvature and its relation to Stage 3's $K$; Ricci as volume distortion |
-| 06 | jacobi-fields-and-comparison | Variations through geodesics; conjugate points; Bonnet–Myers and Cartan–Hadamard — curvature bounds forcing global topology |
-| 07 | space-forms-and-constant-curvature | Classification of constant-curvature spaces; the sphere, Euclidean space and hyperbolic space as the only simply connected models; back to Stage 2 |
+| 06 | [jacobi-fields-and-comparison](notebooks/04-riemannian-geometry/06-jacobi-fields-and-comparison.macnb) | Variations through geodesics; conjugate points; Bonnet–Myers and Cartan–Hadamard — curvature bounds forcing global topology |
+| 07 | [space-forms-and-constant-curvature](notebooks/04-riemannian-geometry/07-space-forms-and-constant-curvature.macnb) | Classification of constant-curvature spaces; the sphere, Euclidean space and hyperbolic space as the only simply connected models; back to Stage 2 |
 
 ### Stage 5 — Lie Groups, Bundles and Curvature as a Field
 

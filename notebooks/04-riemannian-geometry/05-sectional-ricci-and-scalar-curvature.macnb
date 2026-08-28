@@ -11,11 +11,6 @@
   },
   "cells": [
     {
-      "cell_type": "code",
-      "source": "",
-      "metadata": {}
-    },
-    {
       "cell_type": "markdown",
       "source": "# 4.05 — Sectional, Ricci and Scalar Curvature\n\n4.04 produced a tensor with $\\tfrac{1}{12}n^2(n^2-1)$ independent components — 20 in dimension 4. That is too much information to hold at once, so one takes **traces**, each throwing away structure in exchange for legibility.\n\n**Sectional curvature** loses nothing. For a 2-plane $\\sigma = \\mathrm{span}(X,Y) \\subset T_pM$,\n\n$$K(\\sigma) = \\frac{Rm(X,Y,Y,X)}{|X|^2|Y|^2 - \\langle X,Y\\rangle^2}.$$\n\nThis is the Gaussian curvature of the surface swept out by geodesics through $p$ tangent to $\\sigma$ — so it is Stage 3's $K$, recovered one plane at a time. Knowing $K(\\sigma)$ for *every* plane determines $Rm$ completely; it is a repackaging, not a reduction.\n\n**Ricci curvature** averages over planes. Contracting the first and last indices,\n\n$$\\mathrm{Ric}_{ij} = R^k_{\\;kij},$$\n\ngives a symmetric 2-tensor with $\\tfrac12 n(n+1)$ components — 10 in dimension 4. Geometrically $\\mathrm{Ric}(v,v)$ is $(n-1)$ times the average of $K(\\sigma)$ over planes containing $v$, and it controls how the **volume** of a small geodesic ball deviates from the Euclidean value. This is the curvature Einstein's field equations are written in.\n\n**Scalar curvature** traces once more:\n\n$$S = g^{ij}\\mathrm{Ric}_{ij},$$\n\na single function. For constant sectional curvature $K$,\n\n$$\\mathrm{Ric} = (n-1)K\\,g, \\qquad S = n(n-1)K.$$\n\nEach trace discards something. In dimension 2 nothing is lost — one component means $K$, $\\mathrm{Ric}$ and $S$ are equivalent. In dimension 3, $\\mathrm{Ric}$ has 6 components and so does $Rm$: still no loss. From **dimension 4** the counts diverge, $20 > 10$, and the difference is the **Weyl tensor** — the part of curvature invisible to $\\mathrm{Ric}$. That gap is why gravitational waves can travel through empty space.",
       "metadata": {}

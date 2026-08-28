@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>06-hyperbolic-geometry</title>
+<title>07-space-forms-and-constant-curvature</title>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7771,584 +7771,416 @@ a.anchor-link {
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9daa3bd9">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fa0f346f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.06-%E2%80%94-Hyperbolic-Geometry">2.06 — Hyperbolic Geometry<a class="anchor-link" href="#2.06-%E2%80%94-Hyperbolic-Geometry">¶</a></h1><p>For two thousand years, Euclid's fifth postulate looked like a theorem in disguise. Through a point not on a line there passes exactly one parallel — surely that follows from the other four? Generations tried to prove it, and the ones who got furthest did so by assuming its negation and hunting for a contradiction.</p>
-<p>The contradiction never came. What Lobachevsky, Bolyai and Gauss found instead, in the 1820s and 30s, was a <strong>consistent geometry</strong> in which infinitely many parallels pass through the point. The fifth postulate is independent of the others.</p>
-<p>This notebook builds that geometry explicitly, using the machinery of 2.05. The recipe is the Cayley–Klein pattern promised at the end of 2.04:</p>
-<blockquote>
-<p>Take $\hat{\mathbb C}$, nominate one circle, and keep only the Möbius maps preserving it and one of its sides.</p>
-</blockquote>
-<p>Nominating $\mathbb R \cup \{\infty\}$ and the upper half-plane gives the subgroup of Möbius maps with <strong>real</strong> coefficients,</p>
-<p>$$PSL_2(\mathbb R) = \left\{ z \mapsto \frac{az+b}{cz+d} \;:\; a,b,c,d \in \mathbb R,\ ad-bc = 1 \right\},$$</p>
-<p>and the claim is that this acts on $\mathbb H = \{z : \operatorname{Im} z &gt; 0\}$ exactly as an isometry group acts on a geometry — with</p>
-<p>$$ds = \frac{|dz|}{\operatorname{Im} z}.$$</p>
-<p>What comes out is strange and completely consistent: infinitely many parallels, triangles whose angles sum to less than $\pi$, a <em>maximum</em> possible triangle area, and — the result that makes it geometry rather than curiosity — <strong>area equal to angle deficit</strong>. That last identity is Gauss–Bonnet in disguise, and 3.08 will prove the general version.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=58563973">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-The-upper-half-plane-and-its-metric">1. The upper half-plane and its metric<a class="anchor-link" href="#1.-The-upper-half-plane-and-its-metric">¶</a></h2><p><strong>The space.</strong> $\mathbb H = \{z \in \mathbb C : \operatorname{Im} z &gt; 0\}$.</p>
-<p><strong>The group.</strong> $PSL_2(\mathbb R)$, acting by $z \mapsto \dfrac{az+b}{cz+d}$ with real $a,b,c,d$ and $ad - bc = 1$.</p>
-<p>That this group preserves $\mathbb H$ is a one-line computation, and it is the computation that makes everything else work:</p>
-<p>$$\operatorname{Im}\left(\frac{az+b}{cz+d}\right) = \frac{(ad-bc)\operatorname{Im} z}{|cz+d|^2} = \frac{\operatorname{Im} z}{|cz+d|^2}.$$</p>
-<p>Since $|cz+d|^2 &gt; 0$, the sign of the imaginary part is preserved: upper half-plane to upper half-plane.</p>
-<p><strong>The metric.</strong> Define the length of a path by</p>
-<p>$$\mathrm{length}(\gamma) = \int_\gamma \frac{|dz|}{\operatorname{Im} z}.$$</p>
-<p>This is the Euclidean length, but <em>weighted</em>: distances near the real axis count for far more than distances high up. The boundary $\mathbb R \cup \{\infty\}$ is therefore infinitely far away — it is not part of the space, and it is called the <strong>circle at infinity</strong> or the <strong>ideal boundary</strong>.</p>
-<p><strong>Why this metric and not another.</strong> Because it is the one $PSL_2(\mathbb R)$ preserves, and it is essentially the only one. The displayed identity above says $\operatorname{Im}$ transforms by the factor $|cz+d|^{-2}$; a short computation shows $|dz|$ transforms by $|cz+d|^{-2}$ as well, so the ratio is invariant. The group determines the geometry — Klein's thesis, doing real work rather than being restated.</p>
-<p>Let us verify all of this.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bcf77250">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"numerics"</span><span class="p">)$</span>
-<span class="nf">load</span><span class="p">(</span><span class="s">"ax-plots"</span><span class="p">)$</span>
-<span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
-<span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
-
-<span class="nf">declare</span><span class="p">([</span><span class="nv">a</span><span class="p">,</span><span class="nv">b</span><span class="p">,</span><span class="nv">c</span><span class="p">,</span><span class="nv">d</span><span class="p">,</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">,</span><span class="nv">t</span><span class="p">],</span><span class="w"> </span><span class="nv">real</span><span class="p">)$</span>
-<span class="nf">assume</span><span class="p">(</span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
-
-<span class="nv">zxy</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">y</span><span class="p">$</span><span class="w">                       </span><span class="cm">/* z written in real coordinates */</span>
-<span class="nv">w</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nv">a</span><span class="o">*</span><span class="nv">zxy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nv">c</span><span class="o">*</span><span class="nv">zxy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">d</span><span class="p">)$</span>
-
-<span class="cm">/* Im(w) = (ad − bc) Im(z) / |cz+d|²   — the key identity */</span>
-<span class="nv">Imw</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">imagpart</span><span class="p">(</span><span class="nf">rectform</span><span class="p">(</span><span class="nv">w</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
-<span class="nv">claim</span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nv">a</span><span class="o">*</span><span class="nv">d</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="nv">c</span><span class="p">)</span><span class="o">*</span><span class="nv">y</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">((</span><span class="nv">c</span><span class="o">*</span><span class="nv">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">d</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nv">c</span><span class="o">*</span><span class="nv">y</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Im(w) computed    = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Imw</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"(ad−bc)·y/|cz+d|² = "</span><span class="p">,</span><span class="w"> </span><span class="nv">claim</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"difference        = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Imw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">claim</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"so with ad − bc = 1 the imaginary part stays positive:"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   Im(w) = Im(z)/|cz+d|²  &gt; 0  whenever Im(z) &gt; 0  ∎"</span><span class="p">)$</span>
-
-<span class="cm">/* |dw/dz| = |ad−bc|/|cz+d|².  Differentiate in a FREE variable, not in</span>
-<span class="cm">   zxy, which is already bound to x + iy. */</span>
-<span class="nv">dwdz</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">((</span><span class="nv">a</span><span class="o">*</span><span class="nv">zf</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nv">c</span><span class="o">*</span><span class="nv">zf</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">d</span><span class="p">),</span><span class="w"> </span><span class="nv">zf</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"dw/dz = "</span><span class="p">,</span><span class="w"> </span><span class="nv">dwdz</span><span class="p">,</span><span class="w"> </span><span class="s">"     (= (ad−bc)/(cz+d)²)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"so |dw| = |dz|/|cz+d|²  when ad − bc = 1"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"hence   |dw|/Im(w) = (|dz|/|cz+d|²)·(|cz+d|²/Im z) = |dz|/Im z"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the hyperbolic line element is invariant — PSL(2,R) acts by isometries ∎"</span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Im(w) computed    =  ((a*d-b*c)*y)/(c^2*y^2+c^2*x^2+2*c*d*x+d^2)
-(ad−bc)·y/|cz+d|² =  ((a*d-b*c)*y)/(c^2*y^2+c^2*x^2+2*c*d*x+d^2)
-difference        =  0
-so with ad − bc = 1 the imaginary part stays positive:
-   Im(w) = Im(z)/|cz+d|²  &gt; 0  whenever Im(z) &gt; 0  ∎
-dw/dz =  (a*d-b*c)/(c^2*zf^2+2*c*d*zf+d^2)      (= (ad−bc)/(cz+d)²)
-so |dw| = |dz|/|cz+d|²  when ad − bc = 1
-hence   |dw|/Im(w) = (|dz|/|cz+d|²)·(|cz+d|²/Im z) = |dz|/Im z
-the hyperbolic line element is invariant — PSL(2,R) acts by isometries ∎</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d2d9c0ab">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Geodesics-and-distance">2. Geodesics and distance<a class="anchor-link" href="#2.-Geodesics-and-distance">¶</a></h2><p><strong>The geodesics are vertical half-lines and semicircles meeting $\mathbb R$ at right angles.</strong></p>
-<p>Start with the imaginary axis. A path from $ai$ to $bi$ ($0 &lt; a &lt; b$) along it has length</p>
-<p>$$\int_a^b \frac{dy}{y} = \ln\frac{b}{a},$$</p>
-<p>and <em>any</em> path between those two points has length at least this, because</p>
-<p>$$\int \frac{|dz|}{\operatorname{Im} z} = \int \frac{\sqrt{dx^2+dy^2}}{y} \;\ge\; \int \frac{|dy|}{y} \;\ge\; \left|\int_a^b \frac{dy}{y}\right| = \ln\frac ba,$$</p>
-<p>with equality only when $dx \equiv 0$ — the vertical path. So the imaginary axis is a geodesic and $d(ai, bi) = \ln(b/a)$.</p>
-<p>Everything else follows by symmetry. $PSL_2(\mathbb R)$ acts by isometries and maps circles-and-lines to circles-and-lines while preserving angles (2.05); the imaginary axis is a line perpendicular to $\mathbb R$; so its images are exactly the circles and lines perpendicular to $\mathbb R$. And the group is transitive enough to reach all of them.</p>
-<p><strong>Two consequences worth noting immediately.</strong></p>
-<p>Distance grows logarithmically as you approach the boundary: $d(i, \varepsilon i) = \ln(1/\varepsilon) \to \infty$. The boundary is infinitely far away, so $\mathbb H$ is complete — you cannot fall off the edge.</p>
-<p>The general distance formula is</p>
-<p>$$\cosh d(z,w) = 1 + \frac{|z-w|^2}{2\operatorname{Im}z \operatorname{Im}w},$$</p>
-<p>which we verify below against the axis computation, and which is manifestly symmetric.</p>
-<p><strong>Distance as a cross-ratio.</strong> The geodesic through $z$ and $w$ meets the ideal boundary at two points $p, q$. Then</p>
-<p>$$d(z,w) = \bigl|\ln (z, w; p, q)\bigr| ,$$</p>
-<p>the logarithm of a cross-ratio. This is the Cayley–Klein construction in its final form: the metric, destroyed in 2.02–2.04, is rebuilt out of the one projective invariant that survived, measured against the nominated conic.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6d9b3e6a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Length along the imaginary axis --- */</span>
-<span class="cm">/* Bind the result so the assumption list is not echoed. */</span>
-<span class="nv">facts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">assume</span><span class="p">(</span><span class="nv">aa</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">bb</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">aa</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"length of the vertical path from ai to bi:"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   ∫ dy/y from a to b = "</span><span class="p">,</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nv">yy</span><span class="p">,</span><span class="w"> </span><span class="nv">yy</span><span class="p">,</span><span class="w"> </span><span class="nv">aa</span><span class="p">,</span><span class="w"> </span><span class="nv">bb</span><span class="p">),</span><span class="w"> </span><span class="s">"  = ln(b/a)"</span><span class="p">)$</span>
-
-<span class="cm">/* --- The general distance formula --- */</span>
-<span class="nf">hdist</span><span class="p">(</span><span class="nv">z1</span><span class="p">,</span><span class="w"> </span><span class="nv">z2</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">num</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">num</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="nv">z1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">z2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nf">imagpart</span><span class="p">(</span><span class="nv">z1</span><span class="p">)</span><span class="o">*</span><span class="nf">imagpart</span><span class="p">(</span><span class="nv">z2</span><span class="p">))</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nf">acosh</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">num</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="cm">/* On the imaginary axis it must reduce to ln(b/a) */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"d(i, 4i) via the formula = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="no">%i</span><span class="p">)),</span>
-<span class="w">      </span><span class="s">"  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="no">%i</span><span class="p">)))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"ln(4)                    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="mi">4</span><span class="p">)))$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"d(i, 100i)  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="o">*</span><span class="no">%i</span><span class="p">)),</span><span class="w"> </span><span class="s">"     ln(100) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="mi">100</span><span class="p">)))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"d(i, i/100) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="no">%i</span><span class="o">/</span><span class="mi">100</span><span class="p">)),</span><span class="w"> </span><span class="s">"     the boundary is infinitely far"</span><span class="p">)$</span>
-
-<span class="cm">/* Isometry check: apply a PSL(2,R) element and the distance is unchanged */</span>
-<span class="nf">g</span><span class="p">(</span><span class="nv">z</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nv">z</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="nv">z</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span><span class="w">      </span><span class="cm">/* det = 9 − 8 = 1 */</span>
-<span class="nv">p1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">%i</span><span class="p">$</span><span class="w">  </span><span class="nv">p2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="no">%i</span><span class="p">$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"d(p1, p2)            = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="nv">p1</span><span class="p">,</span><span class="w"> </span><span class="nv">p2</span><span class="p">)))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"d(g(p1), g(p2))      = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="nf">g</span><span class="p">(</span><span class="nv">p1</span><span class="p">),</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="nv">p2</span><span class="p">))))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   images: "</span><span class="p">,</span><span class="w"> </span><span class="nf">rectform</span><span class="p">(</span><span class="nf">g</span><span class="p">(</span><span class="nv">p1</span><span class="p">)),</span><span class="w"> </span><span class="s">" and "</span><span class="p">,</span><span class="w"> </span><span class="nf">rectform</span><span class="p">(</span><span class="nf">g</span><span class="p">(</span><span class="nv">p2</span><span class="p">)))$</span>
-
-<span class="cm">/* --- Distance as a logarithm of a cross-ratio --- */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"geodesic = imaginary axis, ideal endpoints 0 and ∞"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   (ai, bi; 0, ∞) degenerates to a/b, so |ln| = ln(b/a)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   for a = 1, b = 4:  |ln(1/4)| = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">abs</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">))),</span>
-<span class="w">      </span><span class="s">"     d(i, 4i) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">hdist</span><span class="p">(</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="no">%i</span><span class="p">)))$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>length of the vertical path from ai to bi:
-   ∫ dy/y from a to b =  log(bb)-log(aa)   = ln(b/a)
-d(i, 4i) via the formula =  acosh(17/8)   =  1.3862943611198906
-ln(4)                    =  1.3862943611198906
-d(i, 100i)  =  4.605170185988092      ln(100) =  4.605170185988092
-d(i, i/100) =  4.605170185988092      the boundary is infinitely far
-d(p1, p2)            =  1.4909963089948084
-d(g(p1), g(p2))      =  1.4909963089948084
-   images:  %i/25+18/25  and  (3*%i)/265+196/265
-geodesic = imaginary axis, ideal endpoints 0 and ∞
-   (ai, bi; 0, ∞) degenerates to a/b, so |ln| = ln(b/a)
-   for a = 1, b = 4:  |ln(1/4)| =  1.3862943611198906      d(i, 4i) =
-                                  1.3862943611198906</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2ff20f7b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-Parallels,-and-the-failure-of-the-fifth-postulate">3. Parallels, and the failure of the fifth postulate<a class="anchor-link" href="#3.-Parallels,-and-the-failure-of-the-fifth-postulate">¶</a></h2><p>Take the geodesic $L$ = the imaginary axis, and the point $P = 2i + 1$ off it. How many geodesics through $P$ miss $L$ entirely?</p>
-<p>In Euclidean geometry: exactly one. Here: <strong>infinitely many</strong>. The geodesics through $P$ are semicircles centred on $\mathbb R$ (and one vertical line), and a whole open interval of them fails to meet the imaginary axis. Two of them are special — the ones meeting $L$ <em>at the ideal boundary</em>, at $0$ and at $\infty$. These are called the <strong>asymptotic parallels</strong>, and they bound the family. Everything strictly between them is a "hyper-parallel", diverging from $L$ in both directions.</p>
-<p>So the fifth postulate fails, and fails by a lot. There is not one parallel but a continuum of them, and the honest conclusion — resisted for two millennia — is that the postulate was never a consequence of the others.</p>
-<h2 id="4.-Area-equals-angle-deficit">4. Area equals angle deficit<a class="anchor-link" href="#4.-Area-equals-angle-deficit">¶</a></h2><p>The area element that goes with $ds = |dz|/\operatorname{Im} z$ is</p>
-<p>$$dA = \frac{dx\,dy}{y^2}.$$</p>
-<p>Now the central theorem of the subject:</p>
-<blockquote>
-<p><strong>For a hyperbolic triangle with angles $\alpha, \beta, \gamma$,</strong>
-$$\text{Area} = \pi - (\alpha + \beta + \gamma).$$</p>
-</blockquote>
-<p>Three consequences, each strange from a Euclidean standpoint:</p>
-<ul>
-<li><strong>Angles always sum to less than $\pi$</strong>, since area is positive. The deficit <em>is</em> the area.</li>
-<li><strong>There is a largest possible triangle.</strong> Area is at most $\pi$, attained when all three angles are zero — an <strong>ideal triangle</strong>, with all vertices on the boundary. No triangle, however "big", exceeds area $\pi$.</li>
-<li><strong>Similar triangles are congruent.</strong> Angles determine area, so you cannot scale a triangle up while keeping its shape. Hyperbolic geometry has an absolute unit of length, built in.</li>
-</ul>
-<p>The proof below computes the area directly for a triangle with one ideal vertex, and checks the identity against the angles computed from the geometry.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b7ebc4a2">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The ideal triangle with vertices −1, 1, ∞ --- */</span>
-<span class="cm">/* Bounded by the verticals x = ±1 and the unit semicircle. */</span>
-<span class="nv">inner</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">yv</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">yv</span><span class="p">,</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">xv</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="no">inf</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"inner integral ∫ dy/y² from √(1−x²) to ∞ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">inner</span><span class="p">)$</span>
-<span class="nv">area_ideal</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nv">inner</span><span class="p">,</span><span class="w"> </span><span class="nv">xv</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"area of the ideal triangle = "</span><span class="p">,</span><span class="w"> </span><span class="nv">area_ideal</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"π − (0 + 0 + 0) = "</span><span class="p">,</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="s">"   ✓ all three angles are zero"</span><span class="p">)$</span>
-
-<span class="cm">/* --- A triangle with ONE ideal vertex, at ∞ --- */</span>
-<span class="cm">/* Verticals at x = a0 and x = b0, closed below by the unit semicircle. */</span>
-<span class="nf">tri_area</span><span class="p">(</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="nv">b0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nv">yv</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">yv</span><span class="p">,</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nv">xv</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="no">inf</span><span class="p">),</span>
-<span class="w">                                        </span><span class="nv">xv</span><span class="p">,</span><span class="w"> </span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="nv">b0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="cm">/* The two finite vertices sit at (a0, √(1−a0²)) and (b0, √(1−b0²)).</span>
-<span class="cm">   Interior angle there = angle between the upward vertical and the circle. */</span>
-<span class="nf">ang_at_b</span><span class="p">(</span><span class="nv">b0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">acos</span><span class="p">(</span><span class="nv">b0</span><span class="p">)$</span><span class="w">        </span><span class="cm">/* derived below */</span>
-<span class="nf">ang_at_a</span><span class="p">(</span><span class="nv">a0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">acos</span><span class="p">(</span><span class="o">-</span><span class="nv">a0</span><span class="p">)$</span>
-
-<span class="k">for</span><span class="w"> </span><span class="nv">pr</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="mi">5</span><span class="p">]]</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="nv">b0</span><span class="p">,</span><span class="w"> </span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">al</span><span class="p">,</span><span class="w"> </span><span class="nv">be</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">a0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">pr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">b0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">pr</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">A</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">tri_area</span><span class="p">(</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="nv">b0</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">al</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ang_at_b</span><span class="p">(</span><span class="nv">b0</span><span class="p">),</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ang_at_a</span><span class="p">(</span><span class="nv">a0</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"verticals at x = "</span><span class="p">,</span><span class="w"> </span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="s">" and "</span><span class="p">,</span><span class="w"> </span><span class="nv">b0</span><span class="p">,</span><span class="w"> </span><span class="s">":"</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   area              = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">A</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   angles            = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">al</span><span class="p">),</span><span class="w"> </span><span class="s">", "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">be</span><span class="p">),</span><span class="w"> </span><span class="s">", 0 (at ∞)"</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   π − (α+β+γ)       = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="no">%pi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">al</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">be</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   area − deficit    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="no">%pi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">al</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">be</span><span class="p">)))</span><span class="w"> </span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>inner integral ∫ dy/y² from √(1−x²) to ∞ =  -(sqrt(1-xv^2)/(xv^2-1))
-area of the ideal triangle =  %pi
-π − (0 + 0 + 0) =  %pi    ✓ all three angles are zero
-verticals at x =  -(1/2)  and  1/2 :
-   area              =  1.0471975511965976
-   angles            =  1.0471975511965976 ,  1.0471975511965976 , 0 (at ∞)
-   π − (α+β+γ)       =  1.0471975511965976
-   area − deficit    =  0.0
-verticals at x =  -(4/5)  and  3/5 :
-   area              =  1.5707963267948966
-   angles            =  0.9272952180016123 ,  0.6435011087932843 , 0 (at ∞)
-   π − (α+β+γ)       =  1.5707963267948966
-   area − deficit    =  0.0
-verticals at x =  0  and  4/5 :
-   area              =  0.9272952180016123
-   angles            =  0.6435011087932843 ,  1.5707963267948966 , 0 (at ∞)
-   π − (α+β+γ)       =  0.9272952180016123
-   area − deficit    =  0.0</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6132c001">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* Where acos(b) came from.</span>
-<span class="cm">   The metric ds = |dz|/Im z is a POSITIVE SCALAR multiple of the Euclidean</span>
-<span class="cm">   one at each point, so hyperbolic angles equal Euclidean angles — the</span>
-<span class="cm">   model is conformal.  We may therefore measure with ordinary vectors. */</span>
-
-<span class="cm">/* At the vertex (b, √(1−b²)) the two sides are:</span>
-<span class="cm">     - the vertical geodesic, heading up to ∞ :  direction (0, 1)</span>
-<span class="cm">     - the unit semicircle, heading toward the other vertex (decreasing x):</span>
-<span class="cm">       d/dθ (cos θ, sin θ) = (−sin θ, cos θ) = (−√(1−b²), b)            */</span>
-<span class="nv">bsym</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bq</span><span class="p">$</span>
-<span class="nv">dir_up</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]$</span>
-<span class="nv">dir_circ</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">bsym</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="nv">bsym</span><span class="p">]$</span>
-<span class="nv">cosang</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nv">dir_up</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_circ</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">dir_up</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_up</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">dir_circ</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_circ</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"cos(angle at the right-hand vertex) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">cosang</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   so the angle is acos(b) — as used above"</span><span class="p">)$</span>
-
-<span class="cm">/* Same at the left-hand vertex, where the circle heads the other way */</span>
-<span class="nv">asym</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">aq</span><span class="p">$</span>
-<span class="nv">dir_circ2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">asym</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="nv">asym</span><span class="p">]$</span>
-<span class="nv">cosang2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nv">dir_up</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_circ2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
-<span class="w">                   </span><span class="p">(</span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">dir_up</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_up</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">dir_circ2</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">dir_circ2</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"cos(angle at the left-hand vertex)  = "</span><span class="p">,</span><span class="w"> </span><span class="nv">cosang2</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   so the angle is acos(−a)"</span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"hence α + β = acos(b) + acos(−a) = π − (arcsin b − arcsin a) = π − Area,"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"which is the theorem for a triangle with one ideal vertex."</span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>cos(angle at the right-hand vertex) =  bq
-   so the angle is acos(b) — as used above
-cos(angle at the left-hand vertex)  =  -aq
-   so the angle is acos(−a)
-hence α + β = acos(b) + acos(−a) = π − (arcsin b − arcsin a) = π − Area,
-which is the theorem for a triangle with one ideal vertex.</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e416129f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="5.-The-Poincar%C3%A9-disc">5. The Poincaré disc<a class="anchor-link" href="#5.-The-Poincar%C3%A9-disc">¶</a></h2><p>The half-plane is convenient for computation but lopsided to look at — one ideal point ($\infty$) is drawn differently from all the others. The <strong>Cayley transform</strong></p>
-<p>$$w = \frac{z - i}{z + i}$$</p>
-<p>is a Möbius map carrying $\mathbb H$ onto the unit disc $\mathbb D$, and $\mathbb R \cup \{\infty\}$ onto the unit circle. In the disc the ideal boundary is drawn as an actual circle, and every ideal point is treated alike.</p>
-<p>Being a Möbius map it carries geodesics to geodesics and preserves angles, so in the disc:</p>
-<ul>
-<li><strong>geodesics</strong> are circular arcs meeting the boundary circle at right angles, plus the diameters;</li>
-<li><strong>the metric</strong> becomes $\displaystyle ds = \frac{2|dw|}{1 - |w|^2}$;</li>
-<li>the boundary circle is again infinitely far away.</li>
-</ul>
-<p>This is the model Escher used for the <em>Circle Limit</em> prints. The fish do not shrink; the metric does.</p>
-<p>Both models are conformal — angles are drawn correctly, distances are not — which is a genuine constraint rather than a design choice: no map of the hyperbolic plane into the Euclidean plane can preserve both, for exactly the reason no flat map of the Earth can.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8510d56a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* The Cayley transform H → D */</span>
-<span class="nf">cayley</span><span class="p">(</span><span class="nv">zz</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nv">zz</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="no">%i</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nv">zz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">%i</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"the Cayley transform sends:"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">zz</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="no">%i</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">inf</span><span class="p">]</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">zz</span><span class="p">,</span><span class="w"> </span><span class="s">" ↦ "</span><span class="p">,</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">zz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">inf</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="nf">rectform</span><span class="p">(</span><span class="nf">cayley</span><span class="p">(</span><span class="nv">zz</span><span class="p">)),</span>
-<span class="w">        </span><span class="s">"     |w| = "</span><span class="p">,</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">zz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">inf</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">abs</span><span class="p">(</span><span class="nf">cayley</span><span class="p">(</span><span class="nv">zz</span><span class="p">))))$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"i (the 'centre') ↦ 0, and the boundary R ∪ {∞} ↦ the unit circle."</span><span class="p">)$</span>
-
-<span class="cm">/* Points of H land strictly inside the disc: |w|² &lt; 1 */</span>
-<span class="nv">zg</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nv">xg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">yg</span><span class="p">$</span>
-<span class="nv">wg</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nv">zg</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="no">%i</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nv">zg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">%i</span><span class="p">)$</span>
-<span class="nv">m2</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">expand</span><span class="p">(</span><span class="w"> </span><span class="nf">realpart</span><span class="p">(</span><span class="nf">rectform</span><span class="p">(</span><span class="nv">wg</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">imagpart</span><span class="p">(</span><span class="nf">rectform</span><span class="p">(</span><span class="nv">wg</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"|w|² for z = x + iy: "</span><span class="p">,</span><span class="w"> </span><span class="nv">m2</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"1 − |w|²           = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">m2</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   positive exactly when y &gt; 0 — so H maps into the open disc ∎"</span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>the Cayley transform sends:
-    %i  ↦  0      |w| =  0.0
-    2*%i  ↦  1/3      |w| =  0.3333333333333333
-    %i/2  ↦  -(1/3)      |w| =  0.3333333333333333
-    %i+1  ↦  1/5-(2*%i)/5      |w| =  0.4472135954999579
-    0  ↦  -1      |w| =  1.0
-    inf  ↦  1      |w| =  1
-i (the 'centre') ↦ 0, and the boundary R ∪ {∞} ↦ the unit circle.
-|w|² for z = x + iy:  (yg^2-2*yg+xg^2+1)/(yg^2+2*yg+xg^2+1)
-1 − |w|²           =  (4*yg)/(yg^2+2*yg+xg^2+1)
-   positive exactly when y &gt; 0 — so H maps into the open disc ∎</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=109551a4">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* Geodesics through P = 1 + 2i, against the geodesic L = the imaginary axis.</span>
-<span class="cm">   A semicircle geodesic centred at (c,0) through P has radius r = √((1−c)²+4);</span>
-<span class="cm">   its ideal endpoints are c ± r.  It misses L exactly when both are positive. */</span>
-<span class="nf">rad</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">((</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">c0</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">)$</span>
-<span class="nf">arcpts</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">r</span><span class="p">,</span><span class="w"> </span><span class="nv">ts</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">r</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">rad</span><span class="p">(</span><span class="nv">c0</span><span class="p">)),</span>
-<span class="w">  </span><span class="nv">ts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="no">%pi</span><span class="o">*</span><span class="nv">k</span><span class="o">/</span><span class="mi">240</span><span class="p">,</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">239</span><span class="p">),</span>
-<span class="w">  </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">th</span><span class="p">],</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">r</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">th</span><span class="p">)),</span><span class="w"> </span><span class="nv">ts</span><span class="p">),</span>
-<span class="w">             </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">th</span><span class="p">],</span><span class="w"> </span><span class="nv">r</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">th</span><span class="p">)),</span><span class="w"> </span><span class="nv">ts</span><span class="p">)]</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"   centre   radius   ideal endpoints        meets L?"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">c0</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">r</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">r</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">rad</span><span class="p">(</span><span class="nv">c0</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">),</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">r</span><span class="p">,</span><span class="w"> </span><span class="s">"    "</span><span class="p">,</span>
-<span class="w">        </span><span class="p">[</span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">r</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">r</span><span class="p">],</span><span class="w"> </span><span class="s">"   "</span><span class="p">,</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">"crosses"</span>
-<span class="w">        </span><span class="k">elseif</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="nv">c0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1e-12</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">"ASYMPTOTIC (meets at 0)"</span>
-<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="s">"misses — a parallel"</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">vert</span><span class="p">(</span><span class="nv">x0</span><span class="p">,</span><span class="w"> </span><span class="nv">ymax</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nf">float</span><span class="p">(</span><span class="nv">x0</span><span class="p">),</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">x0</span><span class="p">)],</span><span class="w"> </span><span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="nv">ymax</span><span class="p">]]$</span>
-
-<span class="nf">plot2d</span><span class="p">([</span><span class="w"> </span><span class="nf">vert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">),</span><span class="w">                       </span><span class="cm">/* L, the imaginary axis        */</span>
-<span class="w">         </span><span class="nf">arcpts</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nf">arcpts</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w">             </span><span class="cm">/* two geodesics that cross L   */</span>
-<span class="w">         </span><span class="nf">arcpts</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w">                      </span><span class="cm">/* asymptotic parallel (via 0)  */</span>
-<span class="w">         </span><span class="nf">vert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">),</span><span class="w">                       </span><span class="cm">/* asymptotic parallel (via ∞)  */</span>
-<span class="w">         </span><span class="nf">arcpts</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="nf">arcpts</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w">             </span><span class="cm">/* hyper-parallels              */</span>
-<span class="w">         </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">2.0</span><span class="p">]]</span><span class="w"> </span><span class="p">],</span><span class="w">       </span><span class="cm">/* the point P                  */</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">style</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
-<span class="w">               </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-<span class="w">               </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
-<span class="w">               </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-<span class="w">               </span><span class="p">[</span><span class="nv">points</span><span class="p">,</span><span class="mi">4</span><span class="p">]],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">legend</span><span class="p">,</span><span class="w"> </span><span class="no">false</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">same_xy</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">title</span><span class="p">,</span><span class="w"> </span><span class="s">"through P: infinitely many geodesics missing the imaginary axis"</span><span class="p">])$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>   centre   radius   ideal endpoints        meets L?
-    0.0       2.23606797749979      [-2.23606797749979,2.23606797749979]
-   crosses
-    1.0       2.0      [-1.0,3.0]     crosses
-    2.5       2.5      [0.0,5.0]     ASYMPTOTIC (meets at 0)
-    3.0       2.8284271247461907      [0.17157287525380926,5.828427124746191]
-       misses — a parallel
-    4.0       3.605551275463989      [0.3944487245360109,7.60555127546399]
-    misses — a parallel</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedSVG jp-OutputArea-output" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiICBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIAogd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiCiB2aWV3Qm94PSIwIDAgNjAwIDQ4MCIKIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgo+Cgo8dGl0bGU+R251cGxvdDwvdGl0bGU+CjxkZXNjPlByb2R1Y2VkIGJ5IEdOVVBMT1QgNi4wIHBhdGNobGV2ZWwgNCA8L2Rlc2M+Cgo8ZyBpZD0iZ251cGxvdF9jYW52YXMiPgoKPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiIGZpbGw9Im5vbmUiLz4KPGRlZnM+CgoJPGNpcmNsZSBpZD0nZ3BEb3QnIHI9JzAuNScgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZT0nY3VycmVudENvbG9yJy8+Cgk8cGF0aCBpZD0nZ3BQdDAnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNLTEsMCBoMiBNMCwtMSB2MicvPgoJPHBhdGggaWQ9J2dwUHQxJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgZD0nTS0xLC0xIEwxLDEgTTEsLTEgTC0xLDEnLz4KCTxwYXRoIGlkPSdncFB0Micgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00tMSwwIEwxLDAgTTAsLTEgTDAsMSBNLTEsLTEgTDEsMSBNLTEsMSBMMSwtMScvPgoJPHJlY3QgaWQ9J2dwUHQzJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgeD0nLTEnIHk9Jy0xJyB3aWR0aD0nMicgaGVpZ2h0PScyJy8+Cgk8cmVjdCBpZD0nZ3BQdDQnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBmaWxsPSdjdXJyZW50Q29sb3InIHg9Jy0xJyB5PSctMScgd2lkdGg9JzInIGhlaWdodD0nMicvPgoJPGNpcmNsZSBpZD0nZ3BQdDUnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBjeD0nMCcgY3k9JzAnIHI9JzEnLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ1JyBpZD0nZ3BQdDYnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8cGF0aCBpZD0nZ3BQdDcnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNMCwtMS4zMyBMLTEuMzMsMC42NyBMMS4zMywwLjY3IHonLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ3JyBpZD0nZ3BQdDgnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0NycgaWQ9J2dwUHQ5JyBzdHJva2U9J2N1cnJlbnRDb2xvcicgdHJhbnNmb3JtPSdyb3RhdGUoMTgwKScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDknIGlkPSdncFB0MTAnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0MycgaWQ9J2dwUHQxMScgc3Ryb2tlPSdjdXJyZW50Q29sb3InIHRyYW5zZm9ybT0ncm90YXRlKDQ1KScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDExJyBpZD0nZ3BQdDEyJyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPHBhdGggaWQ9J2dwUHQxMycgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00wLDEuMzMwIEwxLjI2NSwwLjQxMSBMMC43ODIsLTEuMDY3IEwtMC43ODIsLTEuMDc2IEwtMS4yNjUsMC40MTEgeicvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDEzJyBpZD0nZ3BQdDE0JyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPGZpbHRlciBpZD0ndGV4dGJveCcgZmlsdGVyVW5pdHM9J29iamVjdEJvdW5kaW5nQm94JyB4PScwJyB5PScwJyBoZWlnaHQ9JzEnIHdpZHRoPScxJz4KCSAgPGZlRmxvb2QgZmxvb2QtY29sb3I9J3doaXRlJyBmbG9vZC1vcGFjaXR5PScxJyByZXN1bHQ9J2JnbmQnLz4KCSAgPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2JnbmQnIG9wZXJhdG9yPSdhdG9wJy8+Cgk8L2ZpbHRlcj4KCTxmaWx0ZXIgaWQ9J2dyZXlib3gnIGZpbHRlclVuaXRzPSdvYmplY3RCb3VuZGluZ0JveCcgeD0nMCcgeT0nMCcgaGVpZ2h0PScxJyB3aWR0aD0nMSc+CgkgIDxmZUZsb29kIGZsb29kLWNvbG9yPSdsaWdodGdyZXknIGZsb29kLW9wYWNpdHk9JzEnIHJlc3VsdD0nZ3JleScvPgoJICA8ZmVDb21wb3NpdGUgaW49J1NvdXJjZUdyYXBoaWMnIGluMj0nZ3JleScgb3BlcmF0b3I9J2F0b3AnLz4KCTwvZmlsdGVyPgo8L2RlZnM+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNMzcuNzUsNDE5Ljg5IEw1NzQuODIsNDE5Ljg5ICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNMTg0LjIyLDQxOS44OSBMMTg0LjIyLDc4LjEyICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00zNy43NSw3OC4xMiBMMzcuNzUsNDE5Ljg5IEw1NzQuODIsNDE5Ljg5IEw1NzQuODIsNzguMTIgTDM3Ljc1LDc4LjEyIFogICcvPjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMSIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfMTwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIzLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIzLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsICAgMCwgMjU1KScgIGQ9J00xODQuMjIsNDE5Ljg0IEwxODQuMjIsNzguMTIgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMiIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfMjwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJyZ2IoICAwLCAgIDAsIDI1NSkiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoMjU1LCAgIDAsICAgMCknICBkPSdNMjkzLjM5LDQxOC40NiBMMjkzLjM2LDQxNy4wMyBMMjkzLjMxLDQxNS42MCBMMjkzLjI1LDQxNC4xOCBMMjkzLjE2LDQxMi43NSBMMjkzLjA2LDQxMS4zMiBMMjkyLjk0LDQwOS45MCBMMjkyLjgwLDQwOC40OAoJCUwyOTIuNjQsNDA3LjA2IEwyOTIuNDYsNDA1LjY0IEwyOTIuMjcsNDA0LjIyIEwyOTIuMDUsNDAyLjgxIEwyOTEuODIsNDAxLjQwIEwyOTEuNTcsMzk5Ljk5IEwyOTEuMzAsMzk4LjU5IEwyOTEuMDEsMzk3LjE5CgkJTDI5MC43MSwzOTUuODAgTDI5MC4zOCwzOTQuNDAgTDI5MC4wNCwzOTMuMDIgTDI4OS42OCwzOTEuNjMgTDI4OS4zMCwzOTAuMjYgTDI4OC45MCwzODguODggTDI4OC40OSwzODcuNTIgTDI4OC4wNiwzODYuMTUKCQlMMjg3LjYwLDM4NC44MCBMMjg3LjE0LDM4My40NSBMMjg2LjY1LDM4Mi4xMCBMMjg2LjE1LDM4MC43NyBMMjg1LjYzLDM3OS40MyBMMjg1LjA5LDM3OC4xMSBMMjg0LjUzLDM3Ni43OSBMMjgzLjk2LDM3NS40OAoJCUwyODMuMzcsMzc0LjE4IEwyODIuNzYsMzcyLjg5IEwyODIuMTQsMzcxLjYwIEwyODEuNTAsMzcwLjMzIEwyODAuODQsMzY5LjA2IEwyODAuMTcsMzY3LjgwIEwyNzkuNDgsMzY2LjU1IEwyNzguNzcsMzY1LjMwCgkJTDI3OC4wNSwzNjQuMDcgTDI3Ny4zMSwzNjIuODUgTDI3Ni41NiwzNjEuNjMgTDI3NS43OSwzNjAuNDMgTDI3NS4wMCwzNTkuMjQgTDI3NC4yMCwzNTguMDUgTDI3My4zOCwzNTYuODggTDI3Mi41NSwzNTUuNzIKCQlMMjcxLjcwLDM1NC41NyBMMjcwLjg0LDM1My40MyBMMjY5Ljk2LDM1Mi4zMCBMMjY5LjA3LDM1MS4xOCBMMjY4LjE2LDM1MC4wOCBMMjY3LjI0LDM0OC45OSBMMjY2LjMxLDM0Ny45MSBMMjY1LjM2LDM0Ni44NAoJCUwyNjQuMzksMzQ1Ljc4IEwyNjMuNDIsMzQ0Ljc0IEwyNjIuNDMsMzQzLjcxIEwyNjEuNDIsMzQyLjY5IEwyNjAuNDAsMzQxLjY5IEwyNTkuMzcsMzQwLjcwIEwyNTguMzMsMzM5LjcyIEwyNTcuMjgsMzM4Ljc2CgkJTDI1Ni4yMSwzMzcuODEgTDI1NS4xMywzMzYuODcgTDI1NC4wMywzMzUuOTUgTDI1Mi45MywzMzUuMDUgTDI1MS44MSwzMzQuMTUgTDI1MC42OSwzMzMuMjggTDI0OS41NSwzMzIuNDEgTDI0OC40MCwzMzEuNTcKCQlMMjQ3LjIzLDMzMC43MyBMMjQ2LjA2LDMyOS45MiBMMjQ0Ljg4LDMyOS4xMSBMMjQzLjY4LDMyOC4zMyBMMjQyLjQ4LDMyNy41NiBMMjQxLjI3LDMyNi44MCBMMjQwLjA0LDMyNi4wNiBMMjM4LjgxLDMyNS4zNAoJCUwyMzcuNTcsMzI0LjY0IEwyMzYuMzIsMzIzLjk1IEwyMzUuMDYsMzIzLjI3IEwyMzMuNzksMzIyLjYxIEwyMzIuNTEsMzIxLjk3IEwyMzEuMjIsMzIxLjM1IEwyMjkuOTMsMzIwLjc0IEwyMjguNjMsMzIwLjE1CgkJTDIyNy4zMiwzMTkuNTggTDIyNi4wMCwzMTkuMDMgTDIyNC42OCwzMTguNDkgTDIyMy4zNSwzMTcuOTcgTDIyMi4wMSwzMTcuNDYgTDIyMC42NywzMTYuOTggTDIxOS4zMiwzMTYuNTEgTDIxNy45NiwzMTYuMDYKCQlMMjE2LjYwLDMxNS42MyBMMjE1LjIzLDMxNS4yMSBMMjEzLjg2LDMxNC44MSBMMjEyLjQ4LDMxNC40NCBMMjExLjEwLDMxNC4wNyBMMjA5LjcxLDMxMy43MyBMMjA4LjMyLDMxMy40MSBMMjA2LjkyLDMxMy4xMAoJCUwyMDUuNTIsMzEyLjgxIEwyMDQuMTIsMzEyLjU0IEwyMDIuNzEsMzEyLjI5IEwyMDEuMzAsMzEyLjA2IEwxOTkuODksMzExLjg1IEwxOTguNDcsMzExLjY1IEwxOTcuMDYsMzExLjQ3IEwxOTUuNjQsMzExLjMxCgkJTDE5NC4yMSwzMTEuMTcgTDE5Mi43OSwzMTEuMDUgTDE5MS4zNiwzMTAuOTUgTDE4OS45NCwzMTAuODcgTDE4OC41MSwzMTAuODAgTDE4Ny4wOCwzMTAuNzUgTDE4NS42NSwzMTAuNzIgTDE4NC4yMiwzMTAuNzIKCQlMMTgyLjc5LDMxMC43MiBMMTgxLjM3LDMxMC43NSBMMTc5Ljk0LDMxMC44MCBMMTc4LjUxLDMxMC44NyBMMTc3LjA4LDMxMC45NSBMMTc1LjY2LDMxMS4wNSBMMTc0LjIzLDMxMS4xNyBMMTcyLjgxLDMxMS4zMQoJCUwxNzEuMzksMzExLjQ3IEwxNjkuOTcsMzExLjY1IEwxNjguNTYsMzExLjg1IEwxNjcuMTQsMzEyLjA2IEwxNjUuNzMsMzEyLjI5IEwxNjQuMzMsMzEyLjU0IEwxNjIuOTIsMzEyLjgxIEwxNjEuNTIsMzEzLjEwCgkJTDE2MC4xMywzMTMuNDEgTDE1OC43NCwzMTMuNzMgTDE1Ny4zNSwzMTQuMDcgTDE1NS45NywzMTQuNDQgTDE1NC41OSwzMTQuODEgTDE1My4yMiwzMTUuMjEgTDE1MS44NSwzMTUuNjMgTDE1MC40OSwzMTYuMDYKCQlMMTQ5LjEzLDMxNi41MSBMMTQ3Ljc4LDMxNi45OCBMMTQ2LjQ0LDMxNy40NiBMMTQ1LjEwLDMxNy45NyBMMTQzLjc3LDMxOC40OSBMMTQyLjQ0LDMxOS4wMyBMMTQxLjEzLDMxOS41OCBMMTM5LjgyLDMyMC4xNQoJCUwxMzguNTIsMzIwLjc0IEwxMzcuMjIsMzIxLjM1IEwxMzUuOTQsMzIxLjk3IEwxMzQuNjYsMzIyLjYxIEwxMzMuMzksMzIzLjI3IEwxMzIuMTMsMzIzLjk1IEwxMzAuODgsMzI0LjY0IEwxMjkuNjQsMzI1LjM0CgkJTDEyOC40MCwzMjYuMDYgTDEyNy4xOCwzMjYuODAgTDEyNS45NywzMjcuNTYgTDEyNC43NiwzMjguMzMgTDEyMy41NywzMjkuMTEgTDEyMi4zOSwzMjkuOTIgTDEyMS4yMSwzMzAuNzMgTDEyMC4wNSwzMzEuNTcKCQlMMTE4LjkwLDMzMi40MSBMMTE3Ljc2LDMzMy4yOCBMMTE2LjYzLDMzNC4xNSBMMTE1LjUyLDMzNS4wNSBMMTE0LjQxLDMzNS45NSBMMTEzLjMyLDMzNi44NyBMMTEyLjI0LDMzNy44MSBMMTExLjE3LDMzOC43NgoJCUwxMTAuMTIsMzM5LjcyIEwxMDkuMDcsMzQwLjcwIEwxMDguMDQsMzQxLjY5IEwxMDcuMDMsMzQyLjY5IEwxMDYuMDIsMzQzLjcxIEwxMDUuMDMsMzQ0Ljc0IEwxMDQuMDUsMzQ1Ljc4IEwxMDMuMDksMzQ2Ljg0CgkJTDEwMi4xNCwzNDcuOTEgTDEwMS4yMSwzNDguOTkgTDEwMC4yOSwzNTAuMDggTDk5LjM4LDM1MS4xOCBMOTguNDksMzUyLjMwIEw5Ny42MSwzNTMuNDMgTDk2Ljc1LDM1NC41NyBMOTUuOTAsMzU1LjcyCgkJTDk1LjA3LDM1Ni44OCBMOTQuMjUsMzU4LjA1IEw5My40NSwzNTkuMjQgTDkyLjY2LDM2MC40MyBMOTEuODksMzYxLjYzIEw5MS4xNCwzNjIuODUgTDkwLjQwLDM2NC4wNyBMODkuNjgsMzY1LjMwCgkJTDg4Ljk3LDM2Ni41NSBMODguMjgsMzY3LjgwIEw4Ny42MSwzNjkuMDYgTDg2Ljk1LDM3MC4zMyBMODYuMzEsMzcxLjYwIEw4NS42OCwzNzIuODkgTDg1LjA4LDM3NC4xOCBMODQuNDksMzc1LjQ4CgkJTDgzLjkxLDM3Ni43OSBMODMuMzYsMzc4LjExIEw4Mi44MiwzNzkuNDMgTDgyLjMwLDM4MC43NyBMODEuODAsMzgyLjEwIEw4MS4zMSwzODMuNDUgTDgwLjg0LDM4NC44MCBMODAuMzksMzg2LjE1CgkJTDc5Ljk2LDM4Ny41MiBMNzkuNTQsMzg4Ljg4IEw3OS4xNSwzOTAuMjYgTDc4Ljc3LDM5MS42MyBMNzguNDEsMzkzLjAyIEw3OC4wNywzOTQuNDAgTDc3Ljc0LDM5NS44MCBMNzcuNDMsMzk3LjE5CgkJTDc3LjE1LDM5OC41OSBMNzYuODgsMzk5Ljk5IEw3Ni42Myw0MDEuNDAgTDc2LjM5LDQwMi44MSBMNzYuMTgsNDA0LjIyIEw3NS45OCw0MDUuNjQgTDc1LjgxLDQwNy4wNiBMNzUuNjUsNDA4LjQ4CgkJTDc1LjUxLDQwOS45MCBMNzUuMzksNDExLjMyIEw3NS4yOCw0MTIuNzUgTDc1LjIwLDQxNC4xOCBMNzUuMTMsNDE1LjYwIEw3NS4wOSw0MTcuMDMgTDc1LjA2LDQxOC40NiAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF8zIiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF8zPC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsIDI1NSwgICAwKScgIGQ9J00zMzAuNjksNDE4LjYxIEwzMzAuNjYsNDE3LjMzIEwzMzAuNjIsNDE2LjA2IEwzMzAuNTYsNDE0Ljc4IEwzMzAuNDksNDEzLjUwIEwzMzAuNDAsNDEyLjIzIEwzMzAuMjksNDEwLjk1IEwzMzAuMTYsNDA5LjY4CgkJTDMzMC4wMiw0MDguNDEgTDMyOS44Niw0MDcuMTQgTDMyOS42OSw0MDUuODggTDMyOS41MCw0MDQuNjEgTDMyOS4yOSw0MDMuMzUgTDMyOS4wNiw0MDIuMDkgTDMyOC44Miw0MDAuODQgTDMyOC41NiwzOTkuNTkKCQlMMzI4LjI5LDM5OC4zNCBMMzI4LjAwLDM5Ny4wOSBMMzI3LjY5LDM5NS44NSBMMzI3LjM3LDM5NC42MiBMMzI3LjAzLDM5My4zOCBMMzI2LjY4LDM5Mi4xNiBMMzI2LjMxLDM5MC45MyBMMzI1LjkyLDM4OS43MQoJCUwzMjUuNTIsMzg4LjUwIEwzMjUuMTAsMzg3LjI5IEwzMjQuNjYsMzg2LjA5IEwzMjQuMjEsMzg0LjkwIEwzMjMuNzUsMzgzLjcxIEwzMjMuMjYsMzgyLjUyIEwzMjIuNzcsMzgxLjM0IEwzMjIuMjYsMzgwLjE3CgkJTDMyMS43MywzNzkuMDEgTDMyMS4xOCwzNzcuODUgTDMyMC42MywzNzYuNzAgTDMyMC4wNSwzNzUuNTYgTDMxOS40NywzNzQuNDIgTDMxOC44NiwzNzMuMzAgTDMxOC4yNSwzNzIuMTggTDMxNy42MSwzNzEuMDcKCQlMMzE2Ljk3LDM2OS45NiBMMzE2LjMxLDM2OC44NyBMMzE1LjYzLDM2Ny43OCBMMzE0Ljk0LDM2Ni43MSBMMzE0LjI0LDM2NS42NCBMMzEzLjUyLDM2NC41OCBMMzEyLjc5LDM2My41MyBMMzEyLjA1LDM2Mi40OQoJCUwzMTEuMjksMzYxLjQ2IEwzMTAuNTIsMzYwLjQ1IEwzMDkuNzMsMzU5LjQ0IEwzMDguOTQsMzU4LjQ0IEwzMDguMTIsMzU3LjQ1IEwzMDcuMzAsMzU2LjQ3IEwzMDYuNDYsMzU1LjUxIEwzMDUuNjIsMzU0LjU1CgkJTDMwNC43NSwzNTMuNjEgTDMwMy44OCwzNTIuNjcgTDMwMi45OSwzNTEuNzUgTDMwMi4xMCwzNTAuODQgTDMwMS4xOSwzNDkuOTQgTDMwMC4yNywzNDkuMDYgTDI5OS4zMywzNDguMTggTDI5OC4zOSwzNDcuMzIKCQlMMjk3LjQzLDM0Ni40NyBMMjk2LjQ3LDM0NS42NCBMMjk1LjQ5LDM0NC44MSBMMjk0LjUwLDM0NC4wMCBMMjkzLjUwLDM0My4yMCBMMjkyLjQ5LDM0Mi40MiBMMjkxLjQ3LDM0MS42NSBMMjkwLjQ0LDM0MC44OQoJCUwyODkuNDEsMzQwLjE1IEwyODguMzYsMzM5LjQyIEwyODcuMzAsMzM4LjcwIEwyODYuMjMsMzM4LjAwIEwyODUuMTYsMzM3LjMxIEwyODQuMDcsMzM2LjYzIEwyODIuOTgsMzM1Ljk3IEwyODEuODcsMzM1LjMyCgkJTDI4MC43NiwzMzQuNjkgTDI3OS42NCwzMzQuMDcgTDI3OC41MiwzMzMuNDcgTDI3Ny4zOCwzMzIuODggTDI3Ni4yNCwzMzIuMzEgTDI3NS4wOSwzMzEuNzUgTDI3My45MywzMzEuMjEgTDI3Mi43NywzMzAuNjgKCQlMMjcxLjU5LDMzMC4xNyBMMjcwLjQyLDMyOS42NyBMMjY5LjIzLDMyOS4xOSBMMjY4LjA0LDMyOC43MyBMMjY2Ljg1LDMyOC4yOCBMMjY1LjY0LDMyNy44NCBMMjY0LjQ0LDMyNy40MiBMMjYzLjIyLDMyNy4wMgoJCUwyNjIuMDEsMzI2LjYzIEwyNjAuNzgsMzI2LjI2IEwyNTkuNTUsMzI1LjkxIEwyNTguMzIsMzI1LjU3IEwyNTcuMDgsMzI1LjI1IEwyNTUuODQsMzI0Ljk0IEwyNTQuNjAsMzI0LjY1IEwyNTMuMzUsMzI0LjM4CgkJTDI1Mi4xMCwzMjQuMTIgTDI1MC44NCwzMjMuODggTDI0OS41OSwzMjMuNjUgTDI0OC4zMiwzMjMuNDQgTDI0Ny4wNiwzMjMuMjUgTDI0NS43OSwzMjMuMDggTDI0NC41MywzMjIuOTIgTDI0My4yNiwzMjIuNzgKCQlMMjQxLjk4LDMyMi42NSBMMjQwLjcxLDMyMi41NCBMMjM5LjQzLDMyMi40NSBMMjM4LjE2LDMyMi4zOCBMMjM2Ljg4LDMyMi4zMiBMMjM1LjYwLDMyMi4yNyBMMjM0LjMzLDMyMi4yNSBMMjMzLjA1LDMyMi4yNAoJCUwyMzEuNzcsMzIyLjI1IEwyMzAuNDksMzIyLjI3IEwyMjkuMjEsMzIyLjMyIEwyMjcuOTQsMzIyLjM4IEwyMjYuNjYsMzIyLjQ1IEwyMjUuMzksMzIyLjU0IEwyMjQuMTEsMzIyLjY1IEwyMjIuODQsMzIyLjc4CgkJTDIyMS41NywzMjIuOTIgTDIyMC4zMCwzMjMuMDggTDIxOS4wNCwzMjMuMjUgTDIxNy43NywzMjMuNDQgTDIxNi41MSwzMjMuNjUgTDIxNS4yNSwzMjMuODggTDIxNC4wMCwzMjQuMTIgTDIxMi43NSwzMjQuMzgKCQlMMjExLjUwLDMyNC42NSBMMjEwLjI1LDMyNC45NCBMMjA5LjAxLDMyNS4yNSBMMjA3Ljc3LDMyNS41NyBMMjA2LjU0LDMyNS45MSBMMjA1LjMxLDMyNi4yNiBMMjA0LjA5LDMyNi42MyBMMjAyLjg3LDMyNy4wMgoJCUwyMDEuNjYsMzI3LjQyIEwyMDAuNDUsMzI3Ljg0IEwxOTkuMjUsMzI4LjI4IEwxOTguMDUsMzI4LjczIEwxOTYuODYsMzI5LjE5IEwxOTUuNjgsMzI5LjY3IEwxOTQuNTAsMzMwLjE3IEwxOTMuMzMsMzMwLjY4CgkJTDE5Mi4xNywzMzEuMjEgTDE5MS4wMSwzMzEuNzUgTDE4OS44NiwzMzIuMzEgTDE4OC43MiwzMzIuODggTDE4Ny41OCwzMzMuNDcgTDE4Ni40NSwzMzQuMDcgTDE4NS4zMywzMzQuNjkgTDE4NC4yMiwzMzUuMzIKCQlMMTgzLjEyLDMzNS45NyBMMTgyLjAzLDMzNi42MyBMMTgwLjk0LDMzNy4zMSBMMTc5Ljg2LDMzOC4wMCBMMTc4LjgwLDMzOC43MCBMMTc3Ljc0LDMzOS40MiBMMTc2LjY5LDM0MC4xNSBMMTc1LjY1LDM0MC44OQoJCUwxNzQuNjIsMzQxLjY1IEwxNzMuNjAsMzQyLjQyIEwxNzIuNTksMzQzLjIwIEwxNzEuNjAsMzQ0LjAwIEwxNzAuNjEsMzQ0LjgxIEwxNjkuNjMsMzQ1LjY0IEwxNjguNjYsMzQ2LjQ3IEwxNjcuNzEsMzQ3LjMyCgkJTDE2Ni43NiwzNDguMTggTDE2NS44MywzNDkuMDYgTDE2NC45MSwzNDkuOTQgTDE2NC4wMCwzNTAuODQgTDE2My4xMCwzNTEuNzUgTDE2Mi4yMiwzNTIuNjcgTDE2MS4zNCwzNTMuNjEgTDE2MC40OCwzNTQuNTUKCQlMMTU5LjYzLDM1NS41MSBMMTU4LjgwLDM1Ni40NyBMMTU3Ljk3LDM1Ny40NSBMMTU3LjE2LDM1OC40NCBMMTU2LjM2LDM1OS40NCBMMTU1LjU4LDM2MC40NSBMMTU0LjgxLDM2MS40NiBMMTU0LjA1LDM2Mi40OQoJCUwxNTMuMzAsMzYzLjUzIEwxNTIuNTcsMzY0LjU4IEwxNTEuODYsMzY1LjY0IEwxNTEuMTUsMzY2LjcxIEwxNTAuNDYsMzY3Ljc4IEwxNDkuNzksMzY4Ljg3IEwxNDkuMTMsMzY5Ljk2IEwxNDguNDgsMzcxLjA3CgkJTDE0Ny44NSwzNzIuMTggTDE0Ny4yMywzNzMuMzAgTDE0Ni42MywzNzQuNDIgTDE0Ni4wNCwzNzUuNTYgTDE0NS40NywzNzYuNzAgTDE0NC45MSwzNzcuODUgTDE0NC4zNywzNzkuMDEgTDE0My44NCwzODAuMTcKCQlMMTQzLjMzLDM4MS4zNCBMMTQyLjgzLDM4Mi41MiBMMTQyLjM1LDM4My43MSBMMTQxLjg4LDM4NC45MCBMMTQxLjQzLDM4Ni4wOSBMMTQxLjAwLDM4Ny4yOSBMMTQwLjU4LDM4OC41MCBMMTQwLjE4LDM4OS43MQoJCUwxMzkuNzksMzkwLjkzIEwxMzkuNDIsMzkyLjE2IEwxMzkuMDcsMzkzLjM4IEwxMzguNzMsMzk0LjYyIEwxMzguNDAsMzk1Ljg1IEwxMzguMTAsMzk3LjA5IEwxMzcuODEsMzk4LjM0IEwxMzcuNTMsMzk5LjU5CgkJTDEzNy4yOCw0MDAuODQgTDEzNy4wMyw0MDIuMDkgTDEzNi44MSw0MDMuMzUgTDEzNi42MCw0MDQuNjEgTDEzNi40MSw0MDUuODggTDEzNi4yMyw0MDcuMTQgTDEzNi4wOCw0MDguNDEgTDEzNS45Myw0MDkuNjgKCQlMMTM1LjgxLDQxMC45NSBMMTM1LjcwLDQxMi4yMyBMMTM1LjYxLDQxMy41MCBMMTM1LjUzLDQxNC43OCBMMTM1LjQ3LDQxNi4wNiBMMTM1LjQzLDQxNy4zMyBMMTM1LjQxLDQxOC42MSAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF80IiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF80PC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9IndoaXRlIiBzdHJva2U9InJnYiggIDAsIDI1NSwgICAwKSIgc3Ryb2tlLXdpZHRoPSIyLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYigyNTUsICAgMCwgMjU1KScgIGQ9J000MjguMzQsNDE4LjI5IEw0MjguMzAsNDE2LjY5IEw0MjguMjUsNDE1LjEwIEw0MjguMTgsNDEzLjUwIEw0MjguMDksNDExLjkxIEw0MjcuOTcsNDEwLjMxIEw0MjcuODMsNDA4LjcyIEw0MjcuNjgsNDA3LjEzCgkJTDQyNy41MCw0MDUuNTQgTDQyNy4zMCw0MDMuOTYgTDQyNy4wOCw0MDIuMzggTDQyNi44NCw0MDAuODAgTDQyNi41OCwzOTkuMjIgTDQyNi4zMCwzOTcuNjUgTDQyNi4wMCwzOTYuMDggTDQyNS42OCwzOTQuNTEKCQlMNDI1LjM0LDM5Mi45NSBMNDI0Ljk3LDM5MS40MCBMNDI0LjU5LDM4OS44NCBMNDI0LjE5LDM4OC4zMCBMNDIzLjc2LDM4Ni43NiBMNDIzLjMyLDM4NS4yMiBMNDIyLjg2LDM4My42OSBMNDIyLjM3LDM4Mi4xNwoJCUw0MjEuODcsMzgwLjY1IEw0MjEuMzUsMzc5LjE1IEw0MjAuODAsMzc3LjY0IEw0MjAuMjQsMzc2LjE1IEw0MTkuNjYsMzc0LjY2IEw0MTkuMDUsMzczLjE4IEw0MTguNDMsMzcxLjcxIEw0MTcuNzksMzcwLjI0CgkJTDQxNy4xMywzNjguNzkgTDQxNi40NiwzNjcuMzQgTDQxNS43NiwzNjUuOTAgTDQxNS4wNCwzNjQuNDggTDQxNC4zMSwzNjMuMDYgTDQxMy41NSwzNjEuNjUgTDQxMi43OCwzNjAuMjUgTDQxMS45OSwzNTguODYKCQlMNDExLjE5LDM1Ny40OCBMNDEwLjM2LDM1Ni4xMSBMNDA5LjUyLDM1NC43NiBMNDA4LjY1LDM1My40MSBMNDA3Ljc4LDM1Mi4wOCBMNDA2Ljg4LDM1MC43NSBMNDA1Ljk3LDM0OS40NCBMNDA1LjAzLDM0OC4xNAoJCUw0MDQuMDksMzQ2Ljg2IEw0MDMuMTIsMzQ1LjU4IEw0MDIuMTQsMzQ0LjMyIEw0MDEuMTQsMzQzLjA3IEw0MDAuMTMsMzQxLjg0IEwzOTkuMTAsMzQwLjYyIEwzOTguMDYsMzM5LjQxIEwzOTYuOTksMzM4LjIyCgkJTDM5NS45MiwzMzcuMDQgTDM5NC44MywzMzUuODcgTDM5My43MiwzMzQuNzIgTDM5Mi42MCwzMzMuNTggTDM5MS40NiwzMzIuNDYgTDM5MC4zMSwzMzEuMzUgTDM4OS4xNCwzMzAuMjYgTDM4Ny45NiwzMjkuMTgKCQlMMzg2Ljc3LDMyOC4xMiBMMzg1LjU2LDMyNy4wNyBMMzg0LjM0LDMyNi4wNCBMMzgzLjEwLDMyNS4wMyBMMzgxLjg1LDMyNC4wMyBMMzgwLjU5LDMyMy4wNSBMMzc5LjMyLDMyMi4wOSBMMzc4LjAzLDMyMS4xNAoJCUwzNzYuNzMsMzIwLjIxIEwzNzUuNDIsMzE5LjMwIEwzNzQuMTAsMzE4LjQwIEwzNzIuNzYsMzE3LjUyIEwzNzEuNDIsMzE2LjY2IEwzNzAuMDYsMzE1LjgyIEwzNjguNjksMzE0Ljk5IEwzNjcuMzIsMzE0LjE4CgkJTDM2NS45MywzMTMuMzkgTDM2NC41MywzMTIuNjIgTDM2My4xMiwzMTEuODcgTDM2MS43MCwzMTEuMTMgTDM2MC4yNywzMTAuNDIgTDM1OC44MywzMDkuNzIgTDM1Ny4zOSwzMDkuMDQgTDM1NS45MywzMDguMzgKCQlMMzU0LjQ3LDMwNy43NCBMMzUzLjAwLDMwNy4xMiBMMzUxLjUyLDMwNi41MiBMMzUwLjAzLDMwNS45NCBMMzQ4LjUzLDMwNS4zNyBMMzQ3LjAzLDMwNC44MyBMMzQ1LjUyLDMwNC4zMSBMMzQ0LjAwLDMwMy44MAoJCUwzNDIuNDgsMzAzLjMyIEwzNDAuOTUsMzAyLjg2IEwzMzkuNDIsMzAyLjQxIEwzMzcuODgsMzAxLjk5IEwzMzYuMzMsMzAxLjU4IEwzMzQuNzgsMzAxLjIwIEwzMzMuMjIsMzAwLjg0IEwzMzEuNjYsMzAwLjUwCgkJTDMzMC4xMCwzMDAuMTcgTDMyOC41MywyOTkuODcgTDMyNi45NiwyOTkuNTkgTDMyNS4zOCwyOTkuMzMgTDMyMy44MCwyOTkuMDkgTDMyMi4yMiwyOTguODcgTDMyMC42MywyOTguNjggTDMxOS4wNCwyOTguNTAKCQlMMzE3LjQ1LDI5OC4zNCBMMzE1Ljg2LDI5OC4yMSBMMzE0LjI3LDI5OC4wOSBMMzEyLjY3LDI5OC4wMCBMMzExLjA4LDI5Ny45MiBMMzA5LjQ4LDI5Ny44NyBMMzA3Ljg4LDI5Ny44NCBMMzA2LjI4LDI5Ny44MwoJCUwzMDQuNjksMjk3Ljg0IEwzMDMuMDksMjk3Ljg3IEwzMDEuNDksMjk3LjkyIEwyOTkuOTAsMjk4LjAwIEwyOTguMzAsMjk4LjA5IEwyOTYuNzEsMjk4LjIxIEwyOTUuMTIsMjk4LjM0IEwyOTMuNTMsMjk4LjUwCgkJTDI5MS45NCwyOTguNjggTDI5MC4zNSwyOTguODcgTDI4OC43NywyOTkuMDkgTDI4Ny4xOSwyOTkuMzMgTDI4NS42MSwyOTkuNTkgTDI4NC4wNCwyOTkuODcgTDI4Mi40NywzMDAuMTcgTDI4MC45MSwzMDAuNTAKCQlMMjc5LjM1LDMwMC44NCBMMjc3Ljc5LDMwMS4yMCBMMjc2LjI0LDMwMS41OCBMMjc0LjY5LDMwMS45OSBMMjczLjE1LDMwMi40MSBMMjcxLjYyLDMwMi44NiBMMjcwLjA5LDMwMy4zMiBMMjY4LjU3LDMwMy44MAoJCUwyNjcuMDUsMzA0LjMxIEwyNjUuNTQsMzA0LjgzIEwyNjQuMDQsMzA1LjM3IEwyNjIuNTQsMzA1Ljk0IEwyNjEuMDUsMzA2LjUyIEwyNTkuNTcsMzA3LjEyIEwyNTguMTAsMzA3Ljc0IEwyNTYuNjQsMzA4LjM4CgkJTDI1NS4xOCwzMDkuMDQgTDI1My43NCwzMDkuNzIgTDI1Mi4zMCwzMTAuNDIgTDI1MC44NywzMTEuMTMgTDI0OS40NSwzMTEuODcgTDI0OC4wNCwzMTIuNjIgTDI0Ni42NCwzMTMuMzkgTDI0NS4yNSwzMTQuMTgKCQlMMjQzLjg4LDMxNC45OSBMMjQyLjUxLDMxNS44MiBMMjQxLjE1LDMxNi42NiBMMjM5LjgxLDMxNy41MiBMMjM4LjQ3LDMxOC40MCBMMjM3LjE1LDMxOS4zMCBMMjM1Ljg0LDMyMC4yMSBMMjM0LjU0LDMyMS4xNAoJCUwyMzMuMjUsMzIyLjA5IEwyMzEuOTgsMzIzLjA1IEwyMzAuNzIsMzI0LjAzIEwyMjkuNDcsMzI1LjAzIEwyMjguMjMsMzI2LjA0IEwyMjcuMDEsMzI3LjA3IEwyMjUuODAsMzI4LjEyIEwyMjQuNjEsMzI5LjE4CgkJTDIyMy40MywzMzAuMjYgTDIyMi4yNiwzMzEuMzUgTDIyMS4xMSwzMzIuNDYgTDIxOS45NywzMzMuNTggTDIxOC44NSwzMzQuNzIgTDIxNy43NCwzMzUuODcgTDIxNi42NSwzMzcuMDQgTDIxNS41OCwzMzguMjIKCQlMMjE0LjUxLDMzOS40MSBMMjEzLjQ3LDM0MC42MiBMMjEyLjQ0LDM0MS44NCBMMjExLjQzLDM0My4wNyBMMjEwLjQzLDM0NC4zMiBMMjA5LjQ1LDM0NS41OCBMMjA4LjQ4LDM0Ni44NiBMMjA3LjU0LDM0OC4xNAoJCUwyMDYuNjAsMzQ5LjQ0IEwyMDUuNjksMzUwLjc1IEwyMDQuNzksMzUyLjA4IEwyMDMuOTIsMzUzLjQxIEwyMDMuMDUsMzU0Ljc2IEwyMDIuMjEsMzU2LjExIEwyMDEuMzgsMzU3LjQ4IEwyMDAuNTgsMzU4Ljg2CgkJTDE5OS43OSwzNjAuMjUgTDE5OS4wMiwzNjEuNjUgTDE5OC4yNiwzNjMuMDYgTDE5Ny41MywzNjQuNDggTDE5Ni44MSwzNjUuOTAgTDE5Ni4xMSwzNjcuMzQgTDE5NS40NCwzNjguNzkgTDE5NC43OCwzNzAuMjQKCQlMMTk0LjE0LDM3MS43MSBMMTkzLjUyLDM3My4xOCBMMTkyLjkxLDM3NC42NiBMMTkyLjMzLDM3Ni4xNSBMMTkxLjc3LDM3Ny42NCBMMTkxLjIyLDM3OS4xNSBMMTkwLjcwLDM4MC42NSBMMTkwLjIwLDM4Mi4xNwoJCUwxODkuNzEsMzgzLjY5IEwxODkuMjUsMzg1LjIyIEwxODguODEsMzg2Ljc2IEwxODguMzgsMzg4LjMwIEwxODcuOTgsMzg5Ljg0IEwxODcuNjAsMzkxLjQwIEwxODcuMjMsMzkyLjk1IEwxODYuODksMzk0LjUxCgkJTDE4Ni41NywzOTYuMDggTDE4Ni4yNywzOTcuNjUgTDE4NS45OSwzOTkuMjIgTDE4NS43Myw0MDAuODAgTDE4NS40OSw0MDIuMzggTDE4NS4yNyw0MDMuOTYgTDE4NS4wNyw0MDUuNTQgTDE4NC44OSw0MDcuMTMKCQlMMTg0Ljc0LDQwOC43MiBMMTg0LjYwLDQxMC4zMSBMMTg0LjQ4LDQxMS45MSBMMTg0LjM5LDQxMy41MCBMMTg0LjMyLDQxNS4xMCBMMTg0LjI3LDQxNi42OSBMMTg0LjIzLDQxOC4yOSAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF81IiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF81PC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsICAgMCwgICAwKScgIGQ9J00yMzMuMDUsNDE5Ljg0IEwyMzMuMDUsNzguMTIgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfNiIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfNjwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJyZ2IoICAwLCAgIDAsICAgMCkiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoICAwLCAyNTUsIDI1NSknICBkPSdNNDY4Ljc4LDQxOC4wOCBMNDY4Ljc1LDQxNi4yOCBMNDY4LjY5LDQxNC40NyBMNDY4LjYwLDQxMi42NiBMNDY4LjUwLDQxMC44NiBMNDY4LjM3LDQwOS4wNiBMNDY4LjIxLDQwNy4yNSBMNDY4LjA0LDQwNS40NgoJCUw0NjcuODQsNDAzLjY2IEw0NjcuNjEsNDAxLjg2IEw0NjcuMzYsNDAwLjA3IEw0NjcuMDksMzk4LjI5IEw0NjYuODAsMzk2LjUwIEw0NjYuNDgsMzk0LjcyIEw0NjYuMTQsMzkyLjk1IEw0NjUuNzgsMzkxLjE4CgkJTDQ2NS4zOSwzODkuNDEgTDQ2NC45OCwzODcuNjUgTDQ2NC41NCwzODUuOTAgTDQ2NC4wOSwzODQuMTUgTDQ2My42MSwzODIuNDEgTDQ2My4xMSwzODAuNjcgTDQ2Mi41OCwzNzguOTQgTDQ2Mi4wNCwzNzcuMjIKCQlMNDYxLjQ3LDM3NS41MCBMNDYwLjg3LDM3My43OSBMNDYwLjI2LDM3Mi4wOSBMNDU5LjYyLDM3MC40MCBMNDU4Ljk2LDM2OC43MiBMNDU4LjI4LDM2Ny4wNCBMNDU3LjU4LDM2NS4zOCBMNDU2Ljg1LDM2My43MgoJCUw0NTYuMTEsMzYyLjA3IEw0NTUuMzQsMzYwLjQ0IEw0NTQuNTUsMzU4LjgxIEw0NTMuNzQsMzU3LjIwIEw0NTIuOTEsMzU1LjU5IEw0NTIuMDYsMzU0LjAwIEw0NTEuMTksMzUyLjQxIEw0NTAuMjksMzUwLjg0CgkJTDQ0OS4zOCwzNDkuMjggTDQ0OC40NCwzNDcuNzQgTDQ0Ny40OSwzNDYuMjAgTDQ0Ni41MSwzNDQuNjggTDQ0NS41MiwzNDMuMTcgTDQ0NC41MSwzNDEuNjcgTDQ0My40NywzNDAuMTkgTDQ0Mi40MiwzMzguNzIKCQlMNDQxLjM1LDMzNy4yNiBMNDQwLjI2LDMzNS44MiBMNDM5LjE1LDMzNC40MCBMNDM4LjAyLDMzMi45OCBMNDM2Ljg3LDMzMS41OSBMNDM1LjcxLDMzMC4yMCBMNDM0LjUyLDMyOC44NCBMNDMzLjMyLDMyNy40OQoJCUw0MzIuMTAsMzI2LjE1IEw0MzAuODcsMzI0LjgzIEw0MjkuNjIsMzIzLjUzIEw0MjguMzUsMzIyLjI0IEw0MjcuMDYsMzIwLjk3IEw0MjUuNzYsMzE5LjcyIEw0MjQuNDQsMzE4LjQ4IEw0MjMuMTAsMzE3LjI2CgkJTDQyMS43NSwzMTYuMDYgTDQyMC4zOCwzMTQuODggTDQxOS4wMCwzMTMuNzIgTDQxNy42MCwzMTIuNTcgTDQxNi4xOSwzMTEuNDQgTDQxNC43NywzMTAuMzMgTDQxMy4zMiwzMDkuMjQgTDQxMS44NywzMDguMTcKCQlMNDEwLjQwLDMwNy4xMiBMNDA4LjkyLDMwNi4wOCBMNDA3LjQyLDMwNS4wNyBMNDA1LjkxLDMwNC4wNyBMNDA0LjM5LDMwMy4xMCBMNDAyLjg1LDMwMi4xNCBMNDAxLjMxLDMwMS4yMSBMMzk5Ljc1LDMwMC4zMAoJCUwzOTguMTcsMjk5LjQwIEwzOTYuNTksMjk4LjUzIEwzOTUuMDAsMjk3LjY4IEwzOTMuMzksMjk2Ljg1IEwzOTEuNzgsMjk2LjA0IEwzOTAuMTUsMjk1LjI1IEwzODguNTEsMjk0LjQ4IEwzODYuODcsMjkzLjczCgkJTDM4NS4yMSwyOTMuMDEgTDM4My41NCwyOTIuMzEgTDM4MS44NywyOTEuNjMgTDM4MC4xOSwyOTAuOTcgTDM3OC40OSwyOTAuMzMgTDM3Ni43OSwyODkuNzIgTDM3NS4wOSwyODkuMTIgTDM3My4zNywyODguNTUKCQlMMzcxLjY1LDI4OC4wMSBMMzY5LjkyLDI4Ny40OCBMMzY4LjE4LDI4Ni45OCBMMzY2LjQ0LDI4Ni41MCBMMzY0LjY5LDI4Ni4wNCBMMzYyLjk0LDI4NS42MSBMMzYxLjE3LDI4NS4yMCBMMzU5LjQxLDI4NC44MQoJCUwzNTcuNjQsMjg0LjQ1IEwzNTUuODYsMjg0LjExIEwzNTQuMDgsMjgzLjc5IEwzNTIuMzAsMjgzLjQ5IEwzNTAuNTEsMjgzLjIyIEwzNDguNzIsMjgyLjk4IEwzNDYuOTMsMjgyLjc1IEwzNDUuMTMsMjgyLjU1CgkJTDM0My4zMywyODIuMzcgTDM0MS41MywyODIuMjIgTDMzOS43MywyODIuMDkgTDMzNy45MiwyODEuOTggTDMzNi4xMiwyODEuOTAgTDMzNC4zMSwyODEuODQgTDMzMi41MCwyODEuODEgTDMzMC43MCwyODEuNzkKCQlMMzI4Ljg5LDI4MS44MSBMMzI3LjA4LDI4MS44NCBMMzI1LjI4LDI4MS45MCBMMzIzLjQ3LDI4MS45OCBMMzIxLjY3LDI4Mi4wOSBMMzE5Ljg2LDI4Mi4yMiBMMzE4LjA2LDI4Mi4zNyBMMzE2LjI2LDI4Mi41NQoJCUwzMTQuNDcsMjgyLjc1IEwzMTIuNjcsMjgyLjk4IEwzMTAuODgsMjgzLjIyIEwzMDkuMDksMjgzLjQ5IEwzMDcuMzEsMjgzLjc5IEwzMDUuNTMsMjg0LjExIEwzMDMuNzYsMjg0LjQ1IEwzMDEuOTksMjg0LjgxCgkJTDMwMC4yMiwyODUuMjAgTDI5OC40NiwyODUuNjEgTDI5Ni43MCwyODYuMDQgTDI5NC45NiwyODYuNTAgTDI5My4yMSwyODYuOTggTDI5MS40OCwyODcuNDggTDI4OS43NSwyODguMDEgTDI4OC4wMiwyODguNTUKCQlMMjg2LjMxLDI4OS4xMiBMMjg0LjYwLDI4OS43MiBMMjgyLjkwLDI5MC4zMyBMMjgxLjIxLDI5MC45NyBMMjc5LjUyLDI5MS42MyBMMjc3Ljg1LDI5Mi4zMSBMMjc2LjE4LDI5My4wMSBMMjc0LjUzLDI5My43MwoJCUwyNzIuODgsMjk0LjQ4IEwyNzEuMjUsMjk1LjI1IEwyNjkuNjIsMjk2LjA0IEwyNjguMDAsMjk2Ljg1IEwyNjYuNDAsMjk3LjY4IEwyNjQuODAsMjk4LjUzIEwyNjMuMjIsMjk5LjQwIEwyNjEuNjUsMzAwLjMwCgkJTDI2MC4wOSwzMDEuMjEgTDI1OC41NCwzMDIuMTQgTDI1Ny4wMSwzMDMuMTAgTDI1NS40OCwzMDQuMDcgTDI1My45NywzMDUuMDcgTDI1Mi40OCwzMDYuMDggTDI1MS4wMCwzMDcuMTIgTDI0OS41MywzMDguMTcKCQlMMjQ4LjA3LDMwOS4yNCBMMjQ2LjYzLDMxMC4zMyBMMjQ1LjIwLDMxMS40NCBMMjQzLjc5LDMxMi41NyBMMjQyLjM5LDMxMy43MiBMMjQxLjAxLDMxNC44OCBMMjM5LjY0LDMxNi4wNiBMMjM4LjI5LDMxNy4yNgoJCUwyMzYuOTYsMzE4LjQ4IEwyMzUuNjQsMzE5LjcyIEwyMzQuMzMsMzIwLjk3IEwyMzMuMDUsMzIyLjI0IEwyMzEuNzgsMzIzLjUzIEwyMzAuNTMsMzI0LjgzIEwyMjkuMjksMzI2LjE1IEwyMjguMDcsMzI3LjQ5CgkJTDIyNi44NywzMjguODQgTDIyNS42OSwzMzAuMjAgTDIyNC41MiwzMzEuNTkgTDIyMy4zOCwzMzIuOTggTDIyMi4yNSwzMzQuNDAgTDIyMS4xNCwzMzUuODIgTDIyMC4wNSwzMzcuMjYgTDIxOC45NywzMzguNzIKCQlMMjE3LjkyLDM0MC4xOSBMMjE2Ljg5LDM0MS42NyBMMjE1Ljg3LDM0My4xNyBMMjE0Ljg4LDM0NC42OCBMMjEzLjkxLDM0Ni4yMCBMMjEyLjk1LDM0Ny43NCBMMjEyLjAyLDM0OS4yOCBMMjExLjEwLDM1MC44NAoJCUwyMTAuMjEsMzUyLjQxIEwyMDkuMzQsMzU0LjAwIEwyMDguNDgsMzU1LjU5IEwyMDcuNjUsMzU3LjIwIEwyMDYuODQsMzU4LjgxIEwyMDYuMDUsMzYwLjQ0IEwyMDUuMjksMzYyLjA3IEwyMDQuNTQsMzYzLjcyCgkJTDIwMy44MiwzNjUuMzggTDIwMy4xMSwzNjcuMDQgTDIwMi40MywzNjguNzIgTDIwMS43NywzNzAuNDAgTDIwMS4xNCwzNzIuMDkgTDIwMC41MiwzNzMuNzkgTDE5OS45MywzNzUuNTAgTDE5OS4zNiwzNzcuMjIKCQlMMTk4LjgxLDM3OC45NCBMMTk4LjI5LDM4MC42NyBMMTk3Ljc5LDM4Mi40MSBMMTk3LjMxLDM4NC4xNSBMMTk2Ljg1LDM4NS45MCBMMTk2LjQyLDM4Ny42NSBMMTk2LjAxLDM4OS40MSBMMTk1LjYyLDM5MS4xOAoJCUwxOTUuMjUsMzkyLjk1IEwxOTQuOTEsMzk0LjcyIEwxOTQuNjAsMzk2LjUwIEwxOTQuMzAsMzk4LjI5IEwxOTQuMDMsNDAwLjA3IEwxOTMuNzgsNDAxLjg2IEwxOTMuNTYsNDAzLjY2IEwxOTMuMzYsNDA1LjQ2CgkJTDE5My4xOCw0MDcuMjUgTDE5My4wMyw0MDkuMDYgTDE5Mi45MCw0MTAuODYgTDE5Mi43OSw0MTIuNjYgTDE5Mi43MSw0MTQuNDcgTDE5Mi42NSw0MTYuMjggTDE5Mi42MSw0MTguMDggICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfNyIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfNzwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoICAwLCAgIDAsIDI1NSknICBkPSdNNTU1LjU1LDQxNy41OSBMNTU1LjUwLDQxNS4yOCBMNTU1LjQzLDQxMi45OCBMNTU1LjMyLDQxMC42OCBMNTU1LjE4LDQwOC4zOCBMNTU1LjAyLDQwNi4wOCBMNTU0LjgyLDQwMy43OCBMNTU0LjYwLDQwMS40OQoJCUw1NTQuMzQsMzk5LjIwIEw1NTQuMDYsMzk2LjkxIEw1NTMuNzQsMzk0LjYzIEw1NTMuMzksMzkyLjM1IEw1NTMuMDIsMzkwLjA4IEw1NTIuNjEsMzg3LjgxIEw1NTIuMTgsMzg1LjU1IEw1NTEuNzEsMzgzLjI5CgkJTDU1MS4yMiwzODEuMDQgTDU1MC43MCwzNzguNzkgTDU1MC4xNCwzNzYuNTYgTDU0OS41NiwzNzQuMzMgTDU0OC45NSwzNzIuMTEgTDU0OC4zMSwzNjkuODkgTDU0Ny42NCwzNjcuNjkgTDU0Ni45NSwzNjUuNDkKCQlMNTQ2LjIyLDM2My4zMCBMNTQ1LjQ2LDM2MS4xMyBMNTQ0LjY4LDM1OC45NiBMNTQzLjg3LDM1Ni44MCBMNTQzLjAzLDM1NC42NiBMNTQyLjE2LDM1Mi41MiBMNTQxLjI3LDM1MC40MCBMNTQwLjM0LDM0OC4yOQoJCUw1MzkuMzksMzQ2LjE5IEw1MzguNDEsMzQ0LjEwIEw1MzcuNDEsMzQyLjAzIEw1MzYuMzcsMzM5Ljk3IEw1MzUuMzEsMzM3LjkyIEw1MzQuMjMsMzM1Ljg5IEw1MzMuMTIsMzMzLjg3IEw1MzEuOTgsMzMxLjg3CgkJTDUzMC44MSwzMjkuODggTDUyOS42MiwzMjcuOTEgTDUyOC40MCwzMjUuOTUgTDUyNy4xNiwzMjQuMDEgTDUyNS44OSwzMjIuMDkgTDUyNC42MCwzMjAuMTggTDUyMy4yOCwzMTguMjkgTDUyMS45NCwzMTYuNDIKCQlMNTIwLjU3LDMxNC41NiBMNTE5LjE4LDMxMi43MiBMNTE3Ljc3LDMxMC45MSBMNTE2LjMzLDMwOS4xMSBMNTE0Ljg3LDMwNy4zMiBMNTEzLjM4LDMwNS41NiBMNTExLjg4LDMwMy44MiBMNTEwLjM0LDMwMi4xMAoJCUw1MDguNzksMzAwLjM5IEw1MDcuMjIsMjk4LjcxIEw1MDUuNjIsMjk3LjA1IEw1MDQuMDAsMjk1LjQxIEw1MDIuMzYsMjkzLjc5IEw1MDAuNzAsMjkyLjIwIEw0OTkuMDIsMjkwLjYyIEw0OTcuMzIsMjg5LjA3CgkJTDQ5NS41OSwyODcuNTQgTDQ5My44NSwyODYuMDMgTDQ5Mi4wOSwyODQuNTQgTDQ5MC4zMSwyODMuMDggTDQ4OC41MSwyODEuNjQgTDQ4Ni42OSwyODAuMjMgTDQ4NC44NSwyNzguODQgTDQ4My4wMCwyNzcuNDcKCQlMNDgxLjEyLDI3Ni4xMyBMNDc5LjIzLDI3NC44MSBMNDc3LjMyLDI3My41MiBMNDc1LjQwLDI3Mi4yNSBMNDczLjQ2LDI3MS4wMSBMNDcxLjUwLDI2OS43OSBMNDY5LjUzLDI2OC42MCBMNDY3LjU0LDI2Ny40NAoJCUw0NjUuNTQsMjY2LjMwIEw0NjMuNTIsMjY1LjE4IEw0NjEuNDksMjY0LjEwIEw0NTkuNDQsMjYzLjA0IEw0NTcuMzgsMjYyLjAxIEw0NTUuMzEsMjYxLjAwIEw0NTMuMjIsMjYwLjAyIEw0NTEuMTIsMjU5LjA3CgkJTDQ0OS4wMSwyNTguMTUgTDQ0Ni44OSwyNTcuMjUgTDQ0NC43NSwyNTYuMzggTDQ0Mi42MSwyNTUuNTQgTDQ0MC40NSwyNTQuNzMgTDQzOC4yOCwyNTMuOTUgTDQzNi4xMSwyNTMuMTkgTDQzMy45MiwyNTIuNDcKCQlMNDMxLjcyLDI1MS43NyBMNDI5LjUyLDI1MS4xMCBMNDI3LjMxLDI1MC40NiBMNDI1LjA4LDI0OS44NSBMNDIyLjg1LDI0OS4yNyBMNDIwLjYyLDI0OC43MiBMNDE4LjM3LDI0OC4xOSBMNDE2LjEyLDI0Ny43MAoJCUw0MTMuODcsMjQ3LjIzIEw0MTEuNjAsMjQ2LjgwIEw0MDkuMzMsMjQ2LjM5IEw0MDcuMDYsMjQ2LjAyIEw0MDQuNzgsMjQ1LjY3IEw0MDIuNTAsMjQ1LjM2IEw0MDAuMjEsMjQ1LjA3IEwzOTcuOTIsMjQ0LjgyCgkJTDM5NS42MywyNDQuNTkgTDM5My4zMywyNDQuMzkgTDM5MS4wNCwyNDQuMjMgTDM4OC43NCwyNDQuMDkgTDM4Ni40MywyNDMuOTkgTDM4NC4xMywyNDMuOTEgTDM4MS44MywyNDMuODcgTDM3OS41MiwyNDMuODUKCQlMMzc3LjIyLDI0My44NyBMMzc0LjkxLDI0My45MSBMMzcyLjYxLDI0My45OSBMMzcwLjMxLDI0NC4wOSBMMzY4LjAxLDI0NC4yMyBMMzY1LjcxLDI0NC4zOSBMMzYzLjQxLDI0NC41OSBMMzYxLjEyLDI0NC44MgoJCUwzNTguODMsMjQ1LjA3IEwzNTYuNTQsMjQ1LjM2IEwzNTQuMjYsMjQ1LjY3IEwzNTEuOTgsMjQ2LjAyIEwzNDkuNzEsMjQ2LjM5IEwzNDcuNDQsMjQ2LjgwIEwzNDUuMTgsMjQ3LjIzIEwzNDIuOTIsMjQ3LjcwCgkJTDM0MC42NywyNDguMTkgTDMzOC40MywyNDguNzIgTDMzNi4xOSwyNDkuMjcgTDMzMy45NiwyNDkuODUgTDMzMS43NCwyNTAuNDYgTDMyOS41MiwyNTEuMTAgTDMyNy4zMiwyNTEuNzcgTDMyNS4xMiwyNTIuNDcKCQlMMzIyLjk0LDI1My4xOSBMMzIwLjc2LDI1My45NSBMMzE4LjU5LDI1NC43MyBMMzE2LjQzLDI1NS41NCBMMzE0LjI5LDI1Ni4zOCBMMzEyLjE1LDI1Ny4yNSBMMzEwLjAzLDI1OC4xNSBMMzA3LjkyLDI1OS4wNwoJCUwzMDUuODIsMjYwLjAyIEwzMDMuNzMsMjYxLjAwIEwzMDEuNjYsMjYyLjAxIEwyOTkuNjAsMjYzLjA0IEwyOTcuNTYsMjY0LjEwIEwyOTUuNTIsMjY1LjE4IEwyOTMuNTEsMjY2LjMwIEwyOTEuNTAsMjY3LjQ0CgkJTDI4OS41MSwyNjguNjAgTDI4Ny41NCwyNjkuNzkgTDI4NS41OCwyNzEuMDEgTDI4My42NCwyNzIuMjUgTDI4MS43MiwyNzMuNTIgTDI3OS44MSwyNzQuODEgTDI3Ny45MiwyNzYuMTMgTDI3Ni4wNSwyNzcuNDcKCQlMMjc0LjE5LDI3OC44NCBMMjcyLjM2LDI4MC4yMyBMMjcwLjU0LDI4MS42NCBMMjY4Ljc0LDI4My4wOCBMMjY2Ljk2LDI4NC41NCBMMjY1LjE5LDI4Ni4wMyBMMjYzLjQ1LDI4Ny41NCBMMjYxLjczLDI4OS4wNwoJCUwyNjAuMDMsMjkwLjYyIEwyNTguMzQsMjkyLjIwIEwyNTYuNjgsMjkzLjc5IEwyNTUuMDQsMjk1LjQxIEwyNTMuNDIsMjk3LjA1IEwyNTEuODMsMjk4LjcxIEwyNTAuMjUsMzAwLjM5IEwyNDguNzAsMzAyLjEwCgkJTDI0Ny4xNywzMDMuODIgTDI0NS42NiwzMDUuNTYgTDI0NC4xOCwzMDcuMzIgTDI0Mi43MSwzMDkuMTEgTDI0MS4yOCwzMTAuOTEgTDIzOS44NiwzMTIuNzIgTDIzOC40NywzMTQuNTYgTDIzNy4xMCwzMTYuNDIKCQlMMjM1Ljc2LDMxOC4yOSBMMjM0LjQ0LDMyMC4xOCBMMjMzLjE1LDMyMi4wOSBMMjMxLjg4LDMyNC4wMSBMMjMwLjY0LDMyNS45NSBMMjI5LjQyLDMyNy45MSBMMjI4LjIzLDMyOS44OCBMMjI3LjA3LDMzMS44NwoJCUwyMjUuOTMsMzMzLjg3IEwyMjQuODIsMzM1Ljg5IEwyMjMuNzMsMzM3LjkyIEwyMjIuNjcsMzM5Ljk3IEwyMjEuNjQsMzQyLjAzIEwyMjAuNjMsMzQ0LjEwIEwyMTkuNjUsMzQ2LjE5IEwyMTguNzAsMzQ4LjI5CgkJTDIxNy43OCwzNTAuNDAgTDIxNi44OCwzNTIuNTIgTDIxNi4wMSwzNTQuNjYgTDIxNS4xNywzNTYuODAgTDIxNC4zNiwzNTguOTYgTDIxMy41OCwzNjEuMTMgTDIxMi44MiwzNjMuMzAgTDIxMi4xMCwzNjUuNDkKCQlMMjExLjQwLDM2Ny42OSBMMjEwLjczLDM2OS44OSBMMjEwLjA5LDM3Mi4xMSBMMjA5LjQ4LDM3NC4zMyBMMjA4LjkwLDM3Ni41NiBMMjA4LjM1LDM3OC43OSBMMjA3LjgyLDM4MS4wNCBMMjA3LjMzLDM4My4yOQoJCUwyMDYuODYsMzg1LjU1IEwyMDYuNDMsMzg3LjgxIEwyMDYuMDMsMzkwLjA4IEwyMDUuNjUsMzkyLjM1IEwyMDUuMzAsMzk0LjYzIEwyMDQuOTksMzk2LjkxIEwyMDQuNzAsMzk5LjIwIEwyMDQuNDUsNDAxLjQ5CgkJTDIwNC4yMiw0MDMuNzggTDIwNC4wMyw0MDYuMDggTDIwMy44Niw0MDguMzggTDIwMy43Miw0MTAuNjggTDIwMy42Miw0MTIuOTggTDIwMy41NCw0MTUuMjggTDIwMy41MCw0MTcuNTkgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfOCIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfODwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDQnIHRyYW5zZm9ybT0ndHJhbnNsYXRlKDIzMy4wNSwzMjIuMjQpIHNjYWxlKDkuMDApJyBjb2xvcj0ncmdiKDI1NSwgICAwLCAgIDApJy8+CjwvZz4KCTwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDQxOS44OSBMNDYuNzUsNDE5Ljg5IE01NzQuODIsNDE5Ljg5IEw1NjUuODIsNDE5Ljg5ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsNDIzLjc5KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDM3MS4wNyBMNDYuNzUsMzcxLjA3IE01NzQuODIsMzcxLjA3IEw1NjUuODIsMzcxLjA3ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMzc0Ljk3KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAxPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDMyMi4yNCBMNDYuNzUsMzIyLjI0IE01NzQuODIsMzIyLjI0IEw1NjUuODIsMzIyLjI0ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMzI2LjE0KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAyPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDI3My40MiBMNDYuNzUsMjczLjQyIE01NzQuODIsMjczLjQyIEw1NjUuODIsMjczLjQyICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMjc3LjMyKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAzPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDIyNC41OSBMNDYuNzUsMjI0LjU5IE01NzQuODIsMjI0LjU5IEw1NjUuODIsMjI0LjU5ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMjI4LjQ5KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA0PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDE3NS43NyBMNDYuNzUsMTc1Ljc3IE01NzQuODIsMTc1Ljc3IEw1NjUuODIsMTc1Ljc3ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMTc5LjY3KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA1PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDEyNi45NCBMNDYuNzUsMTI2Ljk0IE01NzQuODIsMTI2Ljk0IEw1NjUuODIsMTI2Ljk0ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkuMzYsMTMwLjg0KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA2PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM3Ljc1LDc4LjEyIEw0Ni43NSw3OC4xMiBNNTc0LjgyLDc4LjEyIEw1NjUuODIsNzguMTIgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOS4zNiw4Mi4wMikiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gNzwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J004Ni41Nyw0MTkuODkgTDg2LjU3LDQxMC44OSBNODYuNTcsNzguMTIgTDg2LjU3LDg3LjEyICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODYuNTcsNDQxLjc5KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPi0yPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTE4NC4yMiw0MTkuODkgTDE4NC4yMiw0MTAuODkgTTE4NC4yMiw3OC4xMiBMMTg0LjIyLDg3LjEyICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTg0LjIyLDQ0MS43OSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00yODEuODcsNDE5Ljg5IEwyODEuODcsNDEwLjg5IE0yODEuODcsNzguMTIgTDI4MS44Nyw4Ny4xMiAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4MS44Nyw0NDEuNzkpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMzc5LjUyLDQxOS44OSBMMzc5LjUyLDQxMC44OSBNMzc5LjUyLDc4LjEyIEwzNzkuNTIsODcuMTIgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzkuNTIsNDQxLjc5KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA0PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTQ3Ny4xNyw0MTkuODkgTDQ3Ny4xNyw0MTAuODkgTTQ3Ny4xNyw3OC4xMiBMNDc3LjE3LDg3LjEyICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDc3LjE3LDQ0MS43OSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gNjwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J001NzQuODIsNDE5Ljg5IEw1NzQuODIsNDEwLjg5IE01NzQuODIsNzguMTIgTDU3NC44Miw4Ny4xMiAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU3NC44Miw0NDEuNzkpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDg8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTM3Ljc1LDQxOS44OSBMNTc0LjgyLDQxOS44OSAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTE4NC4yMiw0MTkuODkgTDE4NC4yMiw3OC4xMiAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMzcuNzUsNzguMTIgTDM3Ljc1LDQxOS44OSBMNTc0LjgyLDQxOS44OSBMNTc0LjgyLDc4LjEyIEwzNy43NSw3OC4xMiBaICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzA2LjI4LDU1LjAyKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPnRocm91Z2ggUDogaW5maW5pdGVseSBtYW55IGdlb2Rlc2ljcyBtaXNzaW5nIHRoZSBpbWFnaW5hcnkgYXhpczwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjwvZz4KPC9zdmc+Cgo="/>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1d4247dd">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><table>
+<h1 id="4.07-%E2%80%94-Space-Forms-and-Constant-Curvature">4.07 — Space Forms and Constant Curvature<a class="anchor-link" href="#4.07-%E2%80%94-Space-Forms-and-Constant-Curvature">¶</a></h1><p>Stage 2 built three geometries by hand: Euclidean, spherical and hyperbolic, each as a set with a transformation group in Klein's sense. Stage 4 has been building geometry from a metric instead. This notebook shows they are the same list — and that the list is complete.</p>
+<p><strong>Constant curvature.</strong> $M$ has constant sectional curvature $K$ if $K(\sigma) = K$ for every 2-plane $\sigma$ at every point. Equivalently, the curvature tensor takes the form</p>
+<p>$$R_{ijkl} = K\,(g_{ik}g_{jl} - g_{il}g_{jk}),$$</p>
+<p>the only tensor with Riemann's symmetries built from $g$ alone.</p>
+<p><strong>Schur's lemma.</strong> For $n \ge 3$, if $K(\sigma)$ is independent of $\sigma$ at each point — <em>isotropy</em> — then it is automatically independent of the point too. Pointwise isotropy forces global homogeneity. The contracted Bianchi identity is what does it, and dimension 2 is excluded because there is only one plane per point, so every surface is trivially isotropic.</p>
+<p><strong>Killing–Hopf.</strong> A complete, simply connected Riemannian manifold of constant curvature $K$ is isometric to exactly one of</p>
+<table>
 <thead>
 <tr>
-<th></th>
-<th>Half-plane $\mathbb H$</th>
-<th>Disc $\mathbb D$</th>
+<th>$K$</th>
+<th>model</th>
+<th>Stage 2</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>space</td>
-<td>$\operatorname{Im} z &gt; 0$</td>
-<td>$\lvert w\rvert &lt; 1$</td>
+<td>$K &gt; 0$</td>
+<td>$S^n(1/\sqrt K)$</td>
+<td>2.07</td>
 </tr>
 <tr>
-<td>group</td>
-<td>$PSL_2(\mathbb R)$</td>
-<td>conjugate of it by the Cayley map</td>
+<td>$K = 0$</td>
+<td>$\mathbb{E}^n$</td>
+<td>1.01–1.07</td>
 </tr>
 <tr>
-<td>metric</td>
-<td>$ds = \dfrac{\lvert dz\rvert}{\operatorname{Im} z}$</td>
-<td>$ds = \dfrac{2\lvert dw\rvert}{1-\lvert w\rvert^2}$</td>
-</tr>
-<tr>
-<td>geodesics</td>
-<td>vertical lines, semicircles $\perp \mathbb R$</td>
-<td>diameters, arcs $\perp$ boundary</td>
-</tr>
-<tr>
-<td>ideal boundary</td>
-<td>$\mathbb R \cup \{\infty\}$</td>
-<td>the unit circle</td>
+<td>$K &lt; 0$</td>
+<td>$H^n(1/\sqrt{-K})$</td>
+<td>2.06</td>
 </tr>
 </tbody>
 </table>
-<p>Everything was derived rather than posited. The single identity</p>
-<p>$$\operatorname{Im}\left(\frac{az+b}{cz+d}\right) = \frac{\operatorname{Im} z}{|cz+d|^2}$$</p>
-<p>does three jobs at once: it shows $PSL_2(\mathbb R)$ preserves $\mathbb H$, it forces the metric $|dz|/\operatorname{Im}z$ to be the invariant one, and it makes the group act by isometries. Klein's thesis is not decoration here — <strong>the group picked the metric</strong>.</p>
-<p>The results, all checked numerically:</p>
-<ul>
-<li>$d(i, 4i) = \ln 4$, and the boundary is infinitely far ($d \to \infty$ as $\operatorname{Im} \to 0$).</li>
-<li>Distance is a logarithm of a cross-ratio against the ideal boundary — the <strong>Cayley–Klein</strong> construction, rebuilding a metric from purely projective data.</li>
-<li>Through a point off a line pass <strong>infinitely many</strong> non-intersecting geodesics: two asymptotic parallels bounding a continuum of hyper-parallels.</li>
-<li><strong>Area $= \pi - (\alpha+\beta+\gamma)$</strong>, verified to machine zero for three triangles, with the ideal triangle having area exactly $\pi$.</li>
-</ul>
-<h2 id="Why-the-area-identity-is-the-important-one">Why the area identity is the important one<a class="anchor-link" href="#Why-the-area-identity-is-the-important-one">¶</a></h2><p>Angle deficit equals area. Read it as a statement about <strong>curvature</strong> and it becomes the local version of a theorem we will meet twice more:</p>
-<p>$$\underbrace{\alpha + \beta + \gamma - \pi}_{\text{excess}} \;=\; \int\!\!\int_T K\,dA, \qquad K = -1 \text{ here.}$$</p>
-<ul>
-<li>In <strong>spherical</strong> geometry (2.07) the same formula holds with $K = +1$: angle <em>excess</em> equals area, which is Girard's theorem.</li>
-<li>In <strong>Euclidean</strong> geometry $K = 0$ and the excess is zero — the angle sum is exactly $\pi$.</li>
-<li>On a <strong>general surface</strong> (3.08) this becomes the Gauss–Bonnet theorem, with $K$ varying from point to point.</li>
-</ul>
-<p>So the three geometries of Stage 2 are the three constant-curvature cases of one theorem, and the trichotomy $\sum 1/n_i \gtrless 1$ from 1.04 was the same trichotomy in disguise. Hyperbolic geometry is not an exotic alternative to Euclidean geometry; it is the $K &lt; 0$ member of a family.</p>
-<p>That is also where the Erlangen picture reaches its limit. These three are the only <em>homogeneous</em> surfaces — the only ones with enough symmetry for a transformation group to define the geometry. Stage 3 abandons homogeneity, lets $K$ vary, and has to rebuild geometry locally. Riemann's programme begins exactly where Klein's runs out.</p>
-<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>2.07 — Spherical and Elliptic Geometry</strong> does the positive-curvature case: great circles as geodesics, no parallels at all, and area $= \alpha+\beta+\gamma-\pi$. Placing it beside this notebook completes the trichotomy and closes Stage 2.</p>
+<p>Every other constant-curvature manifold — every <strong>space form</strong> — is a quotient $\tilde M/\Gamma$ by a discrete group of isometries acting freely and properly discontinuously. The geometry is fixed by $K$; the topology is a choice of $\Gamma$.</p>
+<p><strong>Maximal symmetry.</strong> The isometry group of an $n$-dimensional Riemannian manifold has dimension at most $\tfrac12 n(n+1)$, and the three models are exactly the spaces attaining it. In dimension 2 that is 3, matching $E(2)$, $SO(3)$ and $PSL_2(\mathbb R)$ — the three groups Stage 2 worked with. <strong>This is where Erlangen and Riemann meet.</strong> Klein starts from the group; Riemann starts from the metric; for constant curvature they determine each other.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=02e0bcc8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
+<span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
+<span class="nf">ts</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">))$</span>
+<span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">ginv</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span><span class="w">  </span><span class="nv">ginv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">invert</span><span class="p">(</span><span class="nv">g</span><span class="p">)),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">ginv</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
+<span class="w">                        </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">G</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
+<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rr</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">Rr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">Rr</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">assume</span><span class="p">(</span><span class="nv">R0</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">ch</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">ch</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">te</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">te</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">)$</span>
+
+<span class="cm">/* --- The constant-curvature form of the Riemann tensor --- */</span>
+<span class="cm">/* Our index order is Rm[i][j][k][l] = Rm_{ijkl} with the lowered index LAST</span>
+<span class="cm">   (4.04).  In that convention the model form reads</span>
+<span class="cm">      Rm_{ijkl} = K ( g_{il} g_{jk} − g_{ik} g_{jl} ),</span>
+<span class="cm">   which is the standard  K(g_ik g_jl − g_il g_jk)  with the last two</span>
+<span class="cm">   indices swapped.  We test both orderings and report which matches, rather</span>
+<span class="cm">   than asserting one. */</span>
+<span class="nf">model_form</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">K</span><span class="p">,</span><span class="w"> </span><span class="nv">sgn</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">g</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">    </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">sgn</span><span class="o">*</span><span class="nv">K</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="o">*</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="o">*</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">maxdev</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">B</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">m</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">m</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">k</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">A</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">B</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">m</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">m</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">m</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">check_form</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">,</span><span class="w"> </span><span class="nv">K</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rm</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">Rm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">,</span><span class="w"> </span><span class="s">":  mismatches with +K(g_ik g_jl − g_il g_jk) = "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">maxdev</span><span class="p">(</span><span class="nv">Rm</span><span class="p">,</span><span class="w"> </span><span class="nf">model_form</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">K</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="p">),</span>
+<span class="w">        </span><span class="s">" ;  with −K(...) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">maxdev</span><span class="p">(</span><span class="nv">Rm</span><span class="p">,</span><span class="w"> </span><span class="nf">model_form</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">K</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">"Rm_{ijkl} = ±K (g_ik g_jl − g_il g_jk)  —  which sign fits?"</span><span class="p">)$</span>
+<span class="nf">check_form</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"S²(R₀)     "</span><span class="p">)$</span>
+<span class="nf">check_form</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w">        </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w">     </span><span class="s">"H²         "</span><span class="p">)$</span>
+<span class="nf">check_form</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">rr</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w">             </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="s">"E² (polar) "</span><span class="p">)$</span>
+<span class="nf">check_form</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">te</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span>
+<span class="w">           </span><span class="p">[</span><span class="nv">ch</span><span class="p">,</span><span class="nv">te</span><span class="p">,</span><span class="nv">ph</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">"S³(1)      "</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Zero mismatches in the −K column throughout: with the lowered index"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"in the LAST slot the model form carries a minus sign relative to the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"textbook statement, which places it FIRST.  Same tensor, same K —"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"only the index convention differs.  (4.04 recorded the same trap.)"</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Rm_{ijkl} = ±K (g_ik g_jl − g_il g_jk)  —  which sign fits?
+    S²(R₀)      :  mismatches with +K(g_ik g_jl − g_il g_jk) =  4
+    ;  with −K(...) =  0
+    H²          :  mismatches with +K(g_ik g_jl − g_il g_jk) =  4
+    ;  with −K(...) =  0
+    E² (polar)  :  mismatches with +K(g_ik g_jl − g_il g_jk) =  0
+    ;  with −K(...) =  0
+    S³(1)       :  mismatches with +K(g_ik g_jl − g_il g_jk) =  12
+    ;  with −K(...) =  0
+Zero mismatches in the −K column throughout: with the lowered index
+in the LAST slot the model form carries a minus sign relative to the
+textbook statement, which places it FIRST.  Same tensor, same K —
+only the index convention differs.  (4.04 recorded the same trap.)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dfc2a169">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Killing fields: the Erlangen group, recovered from the metric --- */</span>
+<span class="cm">/* X is Killing iff the Lie derivative of g along X vanishes:</span>
+<span class="cm">      (L_X g)_ij = X^k ∂_k g_ij + g_kj ∂_i X^k + g_ik ∂_j X^k = 0. */</span>
+<span class="nf">lie_g</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">,</span><span class="w"> </span><span class="nv">X</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">genmatrix</span><span class="p">(</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">i</span><span class="p">,</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span>
+<span class="w">      </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">X</span><span class="p">[</span><span class="nv">k</span><span class="p">]</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">k</span><span class="p">]),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">j</span><span class="p">]</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">X</span><span class="p">[</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">]),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">X</span><span class="p">[</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">]),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)),</span><span class="w"> </span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">"EUCLIDEAN PLANE, g = dx² + dy²"</span><span class="p">)$</span>
+<span class="nv">gE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">X</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">]]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   X = "</span><span class="p">,</span><span class="w"> </span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="s">"   L_X g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">lie_g</span><span class="p">(</span><span class="nv">gE</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="nv">X</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   two translations and one rotation: dim Isom = 3 = ½n(n+1) ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   that is E(2), the group of 1.02–1.04."</span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"UNIT SPHERE, g = du² + sin²u dv²   (u polar, v azimuthal)"</span><span class="p">)$</span>
+<span class="nv">gS</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">X</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span>
+<span class="w">          </span><span class="p">[</span><span class="nf">sin</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">/</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)],</span>
+<span class="w">          </span><span class="p">[</span><span class="nf">cos</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="nf">sin</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">/</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)]]</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   X = "</span><span class="p">,</span><span class="w"> </span><span class="nv">X</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      L_X g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">lie_g</span><span class="p">(</span><span class="nv">gS</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="nv">X</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the three rotations about the coordinate axes: dim = 3 ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   that is SO(3), the group of 2.07."</span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"HYPERBOLIC HALF-PLANE, g = (dx² + dy²)/y²"</span><span class="p">)$</span>
+<span class="nv">gH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">X</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">x</span><span class="o">*</span><span class="nv">y</span><span class="p">]]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   X = "</span><span class="p">,</span><span class="w"> </span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="s">"   L_X g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">lie_g</span><span class="p">(</span><span class="nv">gH</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="nv">X</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   translation, dilation, special conformal: dim = 3 ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   these are the generators of PSL₂(ℝ), the group of 2.06."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   In the complex coordinate z = x + iy the three fields are"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   1, z and z², whose flows are z ↦ z+t, z ↦ e^t z and"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   z ↦ z/(1−tz) — Möbius transformations, which is exactly what"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   2.06 obtained from circle geometry with no metric in sight."</span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"A SURFACE THAT IS NOT A SPACE FORM: torus of revolution"</span><span class="p">)$</span>
+<span class="nv">gT</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,(</span><span class="mi">2</span><span class="o">+</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   X = "</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">"   L_X g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">lie_g</span><span class="p">(</span><span class="nv">gT</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span>
+<span class="w">      </span><span class="s">"   (rotation ✓)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   X = "</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="s">"   L_X g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">lie_g</span><span class="p">(</span><span class="nv">gT</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      not Killing — the offending entry is ∂_u(f²) ≠ 0."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Its curvature is non-constant (4.06), so dim Isom &lt; 3.  Maximal"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   symmetry and constant curvature are the same condition."</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>EUCLIDEAN PLANE, g = dx² + dy²
+   X =  [1,0]    L_X g =  matrix([0,0],[0,0])
+   X =  [0,1]    L_X g =  matrix([0,0],[0,0])
+   X =  [-y,x]    L_X g =  matrix([0,0],[0,0])
+   two translations and one rotation: dim Isom = 3 = ½n(n+1) ✓
+   that is E(2), the group of 1.02–1.04.
+UNIT SPHERE, g = du² + sin²u dv²   (u polar, v azimuthal)
+   X =  [0,1]
+      L_X g =  matrix([0,0],[0,0])
+   X =  [sin(v),(cos(u)*cos(v))/sin(u)]
+      L_X g =  matrix([0,0],[0,0])
+   X =  [cos(v),-((cos(u)*sin(v))/sin(u))]
+      L_X g =  matrix([0,0],[0,0])
+   the three rotations about the coordinate axes: dim = 3 ✓
+   that is SO(3), the group of 2.07.
+HYPERBOLIC HALF-PLANE, g = (dx² + dy²)/y²
+   X =  [1,0]    L_X g =  matrix([0,0],[0,0])
+   X =  [x,y]    L_X g =  matrix([0,0],[0,0])
+   X =  [x^2-y^2,2*x*y]    L_X g =  matrix([0,0],[0,0])
+   translation, dilation, special conformal: dim = 3 ✓
+   these are the generators of PSL₂(ℝ), the group of 2.06.
+   In the complex coordinate z = x + iy the three fields are
+   1, z and z², whose flows are z ↦ z+t, z ↦ e^t z and
+   z ↦ z/(1−tz) — Möbius transformations, which is exactly what
+   2.06 obtained from circle geometry with no metric in sight.
+A SURFACE THAT IS NOT A SPACE FORM: torus of revolution
+   X =  [0,1]    L_X g =  matrix([0,0],[0,0])    (rotation ✓)
+   X =  [1,0]    L_X g =  matrix([0,0],[0,(-(2*cos(u))-4)*sin(u)])
+      not Killing — the offending entry is ∂_u(f²) ≠ 0.
+   Its curvature is non-constant (4.06), so dim Isom &lt; 3.  Maximal
+   symmetry and constant curvature are the same condition.</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=575f4fe1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Which topologies admit which curvature?  Gauss–Bonnet decides. --- */</span>
+<span class="cm">/* For a closed surface of constant curvature K,  K·Area = 2πχ  (3.08),</span>
+<span class="cm">   so the SIGN of K is forced by the topology and nothing else. */</span>
+<span class="nf">chi</span><span class="p">(</span><span class="nv">gen</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">gen</span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"closed orientable surfaces, constant curvature:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   genus   χ    sign of K   model geometry"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">gen</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">c</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">c</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">chi</span><span class="p">(</span><span class="nv">gen</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">gen</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">c</span><span class="p">,</span><span class="w"> </span><span class="s">"    "</span><span class="p">,</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">" K &gt; 0 "</span><span class="w"> </span><span class="k">elseif</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">" K = 0 "</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s">" K &lt; 0 "</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"   "</span><span class="p">,</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">"S²"</span><span class="w"> </span><span class="k">elseif</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">"E²"</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s">"H²"</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Exactly one genus is spherical and exactly one is flat; every other"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"closed orientable surface is hyperbolic.  Hyperbolic geometry is the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"generic case — which is why 6.04 spends its time there."</span><span class="p">)$</span>
+
+<span class="cm">/* Areas, normalised to K = −1 */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"hyperbolic surfaces with K = −1:  Area = 2π|χ| = 4π(g−1)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   genus    Gauss–Bonnet 2π|χ|      polygon area (4g−2)π − 2π"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">gen</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">gen</span><span class="p">,</span><span class="w"> </span><span class="s">"        "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nf">abs</span><span class="p">(</span><span class="nf">chi</span><span class="p">(</span><span class="nv">gen</span><span class="p">))),</span>
+<span class="w">        </span><span class="s">"          "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">((</span><span class="mi">4</span><span class="o">*</span><span class="nv">gen</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="p">))</span><span class="w"> </span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The second column is independent: a genus-g surface is a regular"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"hyperbolic 4g-gon with its sides glued, all 4g vertices meeting at one"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"point so the angles sum to 2π, and the area of a hyperbolic m-gon is"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"(m−2)π − Σangles.  Two unrelated routes, identical numbers."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   genus 2: an octagon with all angles π/4, area = 6π − 2π = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">float</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="no">%pi</span><span class="p">))$</span>
+
+<span class="cm">/* --- The complete lists in dimension 2 --- */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"COMPLETE 2-DIMENSIONAL SPACE FORMS (all quotients of a model):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K &gt; 0 :  S²,  ℝP² = S²/±                              — 2 of them"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K = 0 :  E²,  cylinder,  Möbius band,  torus,  Klein bottle"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                                                          — 5 of them"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K &lt; 0 :  infinitely many — every genus ≥ 2 surface, and"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"            for each genus a whole moduli space of them"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The geometry is determined by K alone; the topology is the choice of"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"discrete group Γ.  That is the Killing–Hopf theorem in one sentence."</span><span class="p">)$</span>
+
+<span class="cm">/* --- Sanity: quotients really do inherit the curvature --- */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Quotients are LOCAL isometries, so curvature is inherited exactly:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   flat torus ℝ²/ℤ²      : g = dx² + dy² in every chart, so K = 0"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ℝP² = S²(1)/±         : K = 1, but diam = π/2, not π (4.06)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Curvature is local; topology is global.  Constant curvature pins down"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"the first completely and constrains — but does not determine — the second."</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>closed orientable surfaces, constant curvature:
+   genus   χ    sign of K   model geometry
+    0       2       K &gt; 0      S²
+    1       0       K = 0      E²
+    2       -2       K &lt; 0      H²
+    3       -4       K &lt; 0      H²
+    4       -6       K &lt; 0      H²
+Exactly one genus is spherical and exactly one is flat; every other
+closed orientable surface is hyperbolic.  Hyperbolic geometry is the
+generic case — which is why 6.04 spends its time there.
+hyperbolic surfaces with K = −1:  Area = 2π|χ| = 4π(g−1)
+   genus    Gauss–Bonnet 2π|χ|      polygon area (4g−2)π − 2π
+    2          12.566370614359172            12.566370614359172
+    3          25.132741228718345            25.132741228718345
+    4          37.69911184307752            37.69911184307752
+    5          50.26548245743669            50.26548245743669
+The second column is independent: a genus-g surface is a regular
+hyperbolic 4g-gon with its sides glued, all 4g vertices meeting at one
+point so the angles sum to 2π, and the area of a hyperbolic m-gon is
+(m−2)π − Σangles.  Two unrelated routes, identical numbers.
+   genus 2: an octagon with all angles π/4, area = 6π − 2π =
+  12.566370614359172
+COMPLETE 2-DIMENSIONAL SPACE FORMS (all quotients of a model):
+   K &gt; 0 :  S²,  ℝP² = S²/±                              — 2 of them
+   K = 0 :  E²,  cylinder,  Möbius band,  torus,  Klein bottle
+                                                          — 5 of them
+   K &lt; 0 :  infinitely many — every genus ≥ 2 surface, and
+            for each genus a whole moduli space of them
+The geometry is determined by K alone; the topology is the choice of
+discrete group Γ.  That is the Killing–Hopf theorem in one sentence.
+Quotients are LOCAL isometries, so curvature is inherited exactly:
+   flat torus ℝ²/ℤ²      : g = dx² + dy² in every chart, so K = 0
+   ℝP² = S²(1)/±         : K = 1, but diam = π/2, not π (4.06)
+Curvature is local; topology is global.  Constant curvature pins down
+the first completely and constrains — but does not determine — the second.</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=10d0d9b9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$R_{ijkl} = K\,(g_{ik}g_{jl} - g_{il}g_{jk}) \qquad \Longleftrightarrow \qquad \dim\mathrm{Isom}(M) = \tfrac12 n(n+1)$$</p>
+<p><strong>The model form, checked rather than asserted.</strong> Both sign conventions were tested against the computed Riemann tensor for $S^2(R_0)$, $H^2$, $E^2$ and $S^3$. With the lowered index in the <strong>last</strong> slot — this repo's convention since 4.04 — the fit is the <em>negative</em> of the textbook expression, with zero mismatches out of 16 (and 81 for $S^3$). The textbook form lowers into the first slot. Same tensor, same $K$; the sign is bookkeeping, and 4.04 was caught by exactly this before.</p>
+<p><strong>Stage 2's three groups, recovered from three metrics.</strong> The Killing equation $\mathcal{L}_Xg = 0$ was solved by verification on each model, and each has a 3-dimensional solution space — the maximum $\tfrac12 n(n+1)$ for $n=2$:</p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>Killing fields</th>
+<th>group</th>
+<th>built in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\mathbb{E}^2$</td>
+<td>$\partial_x,\ \partial_y,\ -y\partial_x + x\partial_y$</td>
+<td>$E(2)$</td>
+<td>1.02–1.04</td>
+</tr>
+<tr>
+<td>$S^2$</td>
+<td>the three axis rotations</td>
+<td>$SO(3)$</td>
+<td>2.07</td>
+</tr>
+<tr>
+<td>$H^2$</td>
+<td>$1,\ z,\ z^2$ in $z = x+iy$</td>
+<td>$PSL_2(\mathbb{R})$</td>
+<td>2.06</td>
+</tr>
+</tbody>
+</table>
+<p>The hyperbolic case is the sharpest. The fields $1, z, z^2$ have flows $z \mapsto z+t$, $z \mapsto e^tz$, $z \mapsto z/(1-tz)$ — Möbius transformations, which 2.06 derived from circle geometry with no metric anywhere in the argument. <strong>Klein's group and Riemann's metric are two descriptions of one object.</strong></p>
+<p>The torus of revolution is the control: its rotation field is Killing, but $\partial_u$ is not, and its curvature is non-constant (4.06). Maximal symmetry and constant curvature stand or fall together.</p>
+<p><strong>Gauss–Bonnet decides the topology.</strong> For a closed surface $K\cdot\mathrm{Area} = 2\pi\chi$, so the sign of $K$ is fixed by the genus and nothing else: genus 0 spherical, genus 1 flat, <strong>every other closed orientable surface hyperbolic</strong>. Hyperbolic geometry is not an exotic case but the generic one.</p>
+<p>The areas were computed twice by unrelated routes — $2\pi|\chi| = 4\pi(g-1)$ from Gauss–Bonnet, and $(4g-2)\pi - 2\pi$ from the hyperbolic area of the regular $4g$-gon whose sides are glued — with identical output at every genus. Genus 2: an octagon with all angles $\pi/4$, area $4\pi$.</p>
+<p><strong>The complete lists in dimension 2.</strong> Two spherical space forms ($S^2$, $\mathbb{RP}^2$); five flat ones ($\mathbb{E}^2$, cylinder, Möbius band, torus, Klein bottle); infinitely many hyperbolic, with a moduli space at each genus. The geometry is $K$; the topology is $\Gamma$.</p>
+<p><strong>Stage 4 closes here.</strong> It began with a metric and no ambient space (4.01), built the connection it forces (4.02), the geodesics that connection defines (4.03), the curvature that survives coordinate change (4.04), the traces that make curvature usable (4.05), and the comparison theorems that turn curvature bounds into topology (4.06). This notebook shows that in the maximally symmetric case the whole apparatus collapses back onto the three geometries of Stage 2.</p>
+<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>Stage 5 — Lie Groups, Bundles and Curvature as a Field</strong> takes the isometry groups seriously as geometric objects. The Killing fields computed here are the Lie algebra of $\mathrm{Isom}(M)$; Stage 5 gives them their own geometry, and reinterprets curvature as the field strength of a connection on a principal bundle — the language in which gauge theory and general relativity are the same construction.</p>
 <h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
-<li>★ Hartshorne, R. (2000) <em>Geometry: Euclid and Beyond</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/978-0-387-22676-7. Chapter 7 is the fullest treatment here: §33 history of the parallel postulate, §36 non-Euclidean area, §37 circular inversion, §39 the Poincaré model, §40 hyperbolic geometry, §42 hyperbolic trigonometry.</li>
-<li>★ Lee, N.-H. (2020) <em>Geometry: from Isometries to Special Relativity</em>. Undergraduate Texts in Mathematics. Cham: Springer. doi:10.1007/978-3-030-42101-4. Chapter 4 is the hyperbolic plane, developed from isometries exactly as here, and Chapter 5 carries it into special relativity.</li>
-<li>★ Stillwell, J. (2005) <em>The Four Pillars of Geometry</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/0-387-29052-4. Chapter 8 on the hyperbolic plane, reached via the projective route of Chapters 5–6.</li>
-<li>Anderson, J.W. (2005) <em>Hyperbolic Geometry</em>. 2nd edn. Springer Undergraduate Mathematics Series. London: Springer. A short undergraduate book devoted entirely to the upper half-plane model — the closest single match to this notebook.</li>
-<li>Beardon, A.F. (1983) <em>The Geometry of Discrete Groups</em>. Graduate Texts in Mathematics 91. New York: Springer. The reference for $PSL_2(\mathbb R)$, its classification into elliptic, parabolic and hyperbolic elements, and Fuchsian groups.</li>
+<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. doi:10.1007/978-3-319-91755-9. Chapter 8 for the constant-curvature form of $Rm$ and Schur's lemma; Chapter 3 §"Model Riemannian Manifolds" for the three models and their isometry groups.</li>
+<li>Wolf, J.A. (2011) <em>Spaces of Constant Curvature</em>. 6th edn. Providence: AMS Chelsea. The classification of space forms in full, in every dimension. This is the reference the Killing–Hopf theorem lives in.</li>
+<li>★ Stillwell, J. (2005) <em>The Four Pillars of Geometry</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/0-387-29052-4. Chapters 8–9 for the transformation-group view of the same three geometries, at the level Stage 2 works at.</li>
+<li>★ Hartshorne, R. (2000) <em>Geometry: Euclid and Beyond</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/978-0-387-22676-7. Chapter 7 for non-Euclidean geometry reached axiomatically rather than metrically — the third route to the same list.</li>
+<li>Thurston, W.P. (1997) <em>Three-Dimensional Geometry and Topology</em>. Princeton: Princeton University Press. Where this story goes in dimension 3, and the setting for 6.04.</li>
 </ul>
-<p>The independence of the parallel postulate was established in the 1820s–30s by Lobachevsky and Bolyai, with Gauss having reached similar conclusions privately and not published them.</p>
 <hr/>
-<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result; the prose is written from knowledge and checked against these sources where they cover the material.</em></p>
+<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell was executed. The sign of the constant-curvature form was determined by testing both options against computed output, not by recall.</em></p>
 </div>
 </div>
 </div>
