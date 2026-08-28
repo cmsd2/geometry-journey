@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>04-the-curvature-tensor</title>
+<title>03-invariant-metrics-and-homogeneous-spaces</title>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7771,122 +7771,332 @@ a.anchor-link {
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b82c829e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2539e06f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="4.04-%E2%80%94-The-Curvature-Tensor">4.04 — The Curvature Tensor<a class="anchor-link" href="#4.04-%E2%80%94-The-Curvature-Tensor">¶</a></h1><p>4.03 showed that $\Gamma$ can be made to vanish at any single point. So curvature cannot be $\Gamma$ itself — it must be something built from $\Gamma$ that <em>survives</em> that transformation. The construction is:</p>
-<p>$$R(X,Y)Z \;=\; \nabla_X\nabla_Y Z \;-\; \nabla_Y\nabla_X Z \;-\; \nabla_{[X,Y]}Z .$$</p>
-<p><strong>Curvature is the failure of covariant derivatives to commute.</strong> In flat space partial derivatives commute and $R = 0$; the last term subtracts off the part of the non-commutation that is merely due to the vector fields themselves not commuting, leaving something that depends only on the values of $X, Y, Z$ at the point — which is what makes $R$ a <strong>tensor</strong>.</p>
-<p>In coordinates,</p>
-<p>$$R^l_{\;ijk} = \partial_i\Gamma^l_{jk} - \partial_j\Gamma^l_{ik} + \Gamma^l_{im}\Gamma^m_{jk} - \Gamma^l_{jm}\Gamma^m_{ik}.$$</p>
-<p>Note it involves <strong>first derivatives of $\Gamma$</strong>, hence second derivatives of $g$ — exactly the order 4.03 found could not be transformed away.</p>
-<p><strong>This is the holonomy of 4.02, made infinitesimal.</strong> Transport a vector around a small parallelogram spanned by $X$ and $Y$; the discrepancy on return is $R(X,Y)Z$ to leading order. The finite rotation computed in 4.02 was the integral of this.</p>
-<p><strong>Symmetries.</strong> With all indices lowered, $R_{ijkl} = g_{im}R^m_{\;jkl}$ satisfies</p>
-<p>$$R_{ijkl} = -R_{jikl} = -R_{ijlk}, \qquad R_{ijkl} = R_{klij}, \qquad R_{i[jkl]} = 0 \;\text{(first Bianchi)},$$</p>
-<p>which cut the $n^4$ components down to $\tfrac{1}{12}n^2(n^2-1)$ independent ones:</p>
-<table>
-<thead>
-<tr>
-<th>$n$</th>
-<th>components</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2</td>
-<td><strong>1</strong> — a single number, which is $K$</td>
-</tr>
-<tr>
-<td>3</td>
-<td>6</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>20</strong> — the number relevant to general relativity</td>
-</tr>
-</tbody>
-</table>
-<p>Dimension 2 is special: one component means all curvature information is the Gaussian curvature of Stage 3. Only from $n = 3$ does curvature become genuinely richer than a scalar.</p>
-<p>Maxima ships the <code>ctensor</code> package for exactly these computations, and we use it alongside a hand-rolled version so the machinery is not a black box.</p>
+<h1 id="5.03-%E2%80%94-Invariant-Metrics-and-Homogeneous-Spaces">5.03 — Invariant Metrics and Homogeneous Spaces<a class="anchor-link" href="#5.03-%E2%80%94-Invariant-Metrics-and-Homogeneous-Spaces">¶</a></h1><p>5.01 and 5.02 treated $G$ as an algebraic object. This notebook puts a <strong>metric</strong> on it and hands the whole of Stage 4 back.</p>
+<p><strong>Left-invariant metrics.</strong> Choose any inner product $\langle\cdot,\cdot\rangle$ on $\mathfrak g = T_eG$ and push it around by left translation: $\langle u,v\rangle_g := \langle (dL_{g^{-1}})u, (dL_{g^{-1}})v\rangle_e$. Every choice gives a Riemannian metric, and $G$ acts on itself by isometries. So a Lie group has as many left-invariant metrics as $\mathfrak g$ has inner products — a whole cone of them, most with nothing special about them.</p>
+<p><strong>Bi-invariant metrics</strong> are the good ones: invariant under left <em>and</em> right translation, equivalently under $\mathrm{Ad}$:</p>
+<p>$$\langle \mathrm{Ad}_g X, \mathrm{Ad}_g Y\rangle = \langle X, Y\rangle \quad\Longleftrightarrow\quad \langle [Z,X], Y\rangle + \langle X, [Z,Y]\rangle = 0.$$</p>
+<p>The infinitesimal form on the right says $\mathrm{ad}_Z$ is <strong>skew-adjoint</strong>. Such a metric exists precisely when $G$ is compact (up to abelian factors), and then everything simplifies at once:</p>
+<p>$$\nabla_XY = \tfrac12[X,Y], \qquad R(X,Y)Z = \tfrac14[[X,Y],Z], \qquad K(X,Y) = \tfrac{\tfrac14\big|[X,Y]\big|^2}{|X|^2|Y|^2 - \langle X,Y\rangle^2}.$$</p>
+<p><strong>Curvature is the bracket.</strong> $K \ge 0$ always, and $K = 0$ exactly where $X$ and $Y$ commute. All of Stage 4's machinery collapses into algebra — no Christoffel symbols to compute, no coordinates to choose. And the group exponential of 5.02 coincides with the Riemannian $\exp_e$ of 4.03: <strong>one-parameter subgroups are geodesics</strong>.</p>
+<p><strong>The Killing form.</strong></p>
+<p>$$B(X,Y) = \operatorname{tr}(\mathrm{ad}_X\,\mathrm{ad}_Y)$$</p>
+<p>is the canonical $\mathrm{Ad}$-invariant bilinear form, built from nothing but the bracket. Cartan's criterion: $\mathfrak g$ is semisimple iff $B$ is non-degenerate, and <strong>compact</strong> iff $B$ is negative definite. So $-B$ is a bi-invariant metric on a compact semisimple group, and 5.01's observation — compactness tracking the sign of curvature — becomes a computation.</p>
+<p><strong>Homogeneous spaces.</strong> If $G$ acts transitively on $M$ with stabiliser $H$ at a point, then $M \cong G/H$. This is Klein's Erlangen program (2.01) in Riemannian dress: the space is <em>reconstructed</em> from the group. Spheres, projective spaces and Grassmannians all arise this way, and a $G$-invariant metric on $G/H$ corresponds to an $\mathrm{Ad}(H)$-invariant inner product on $\mathfrak g/\mathfrak h$.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4d6e765a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4afe6dea">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"numerics"</span><span class="p">)$</span>
-<span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
 <span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
-<span class="nf">ts</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">)$</span>
+<span class="nv">linsolvewarn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span><span class="w">    </span><span class="cm">/* else every coords() call reports eliminated</span>
+<span class="cm">                            dependent equations — hundreds of lines */</span>
+<span class="nf">br</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">X</span><span class="o">.</span><span class="nv">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Y</span><span class="o">.</span><span class="nv">X</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="cm">/* NOTE: these helpers are named *_hand deliberately.  Maxima's ctensor</span>
-<span class="cm">   package (used below for an independent check) defines `christof` and</span>
-<span class="cm">   `riemann` itself, and shadowing those would break it. */</span>
+<span class="cm">/* coordinates of a matrix in a given basis of the algebra */</span>
+<span class="nf">coords</span><span class="p">(</span><span class="nv">M</span><span class="p">,</span><span class="w"> </span><span class="nv">basis</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">cs</span><span class="p">,</span><span class="w"> </span><span class="nv">eqs</span><span class="p">,</span><span class="w"> </span><span class="nv">sol</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">basis</span><span class="p">),</span>
+<span class="w">  </span><span class="nv">cs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">concat</span><span class="p">(</span><span class="nv">kk_</span><span class="p">,</span><span class="w"> </span><span class="nv">i</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">),</span>
+<span class="w">  </span><span class="nv">eqs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="w"> </span><span class="nf">args</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nv">cs</span><span class="p">[</span><span class="nv">i</span><span class="p">]</span><span class="o">*</span><span class="nv">basis</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">M</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">  </span><span class="nv">sol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">linsolve</span><span class="p">(</span><span class="nv">eqs</span><span class="p">,</span><span class="w"> </span><span class="nv">cs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">rhs</span><span class="p">(</span><span class="nv">sol</span><span class="p">[</span><span class="nv">i</span><span class="p">]),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="cm">/* matrix of ad_X in that basis: column j is the image of basis[j] */</span>
+<span class="nf">admat</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">basis</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="nv">matrix</span><span class="p">,</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">coords</span><span class="p">(</span><span class="w"> </span><span class="nf">br</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">basis</span><span class="p">[</span><span class="nv">j</span><span class="p">]),</span><span class="w"> </span><span class="nv">basis</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">basis</span><span class="p">))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="cm">/* the Killing form B(X,Y) = tr(ad_X ad_Y) */</span>
+<span class="nf">killing</span><span class="p">(</span><span class="nv">basis</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">],</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">basis</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">genmatrix</span><span class="p">(</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">i</span><span class="p">,</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span>
+<span class="w">      </span><span class="nf">admat</span><span class="p">(</span><span class="nv">basis</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nv">basis</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nf">admat</span><span class="p">(</span><span class="nv">basis</span><span class="p">[</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">basis</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)),</span><span class="w"> </span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">report</span><span class="p">(</span><span class="nv">basis</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">B</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">B</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">killing</span><span class="p">(</span><span class="nv">basis</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">,</span><span class="w"> </span><span class="s">" :  B = "</span><span class="p">,</span><span class="w"> </span><span class="nv">B</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      det B = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">B</span><span class="p">)),</span>
+<span class="w">        </span><span class="s">"     eigenvalues = "</span><span class="p">,</span><span class="w"> </span><span class="nf">eigenvalues</span><span class="p">(</span><span class="nv">B</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">"Killing forms B(X,Y) = tr(ad_X ad_Y):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+
+<span class="cm">/* so(3) */</span>
+<span class="nv">Lb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
+<span class="nf">report</span><span class="p">(</span><span class="nv">Lb</span><span class="p">,</span><span class="w"> </span><span class="s">"so(3)  "</span><span class="p">)$</span>
+
+<span class="cm">/* su(2) */</span>
+<span class="nv">Eb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
+<span class="nf">report</span><span class="p">(</span><span class="nv">Eb</span><span class="p">,</span><span class="w"> </span><span class="s">"su(2)  "</span><span class="p">)$</span>
+
+<span class="cm">/* sl(2,ℝ), basis h, e, f */</span>
+<span class="nv">Sb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
+<span class="nf">report</span><span class="p">(</span><span class="nv">Sb</span><span class="p">,</span><span class="w"> </span><span class="s">"sl(2,ℝ)"</span><span class="p">)$</span>
+
+<span class="cm">/* the affine "ax+b" algebra: 2-dimensional, spanned by the translation</span>
+<span class="cm">   generator X = E₁₂ and the dilation generator Y = E₁₁ */</span>
+<span class="nv">Ab</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the affine algebra of x ↦ ax+b:  [X,Y] = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">coords</span><span class="p">(</span><span class="nf">br</span><span class="p">(</span><span class="nv">Ab</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nv">Ab</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="nv">Ab</span><span class="p">),</span><span class="w"> </span><span class="s">" in the basis (X,Y), i.e. [Y,X] = X —"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the 2-dimensional non-abelian algebra, unique up to isomorphism."</span><span class="p">)$</span>
+<span class="nf">report</span><span class="p">(</span><span class="nv">Ab</span><span class="p">,</span><span class="w"> </span><span class="s">"aff(1) "</span><span class="p">)$</span>
+
+<span class="cm">/* Heisenberg: strictly upper triangular 3×3, nilpotent */</span>
+<span class="nv">Hb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
+<span class="nf">report</span><span class="p">(</span><span class="nv">Hb</span><span class="p">,</span><span class="w"> </span><span class="s">"heis   "</span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"CARTAN'S CRITERIA, read off the table:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   so(3), su(2) : B = −2·I, negative definite ⟹ semisimple AND"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                  compact.  −B is a bi-invariant metric."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   sl(2,ℝ)      : non-degenerate (det = −128) but INDEFINITE,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                  eigenvalues −4, 4, 8 ⟹ semisimple, not compact."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                  No bi-invariant Riemannian metric exists."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   aff(1), heis : B degenerate ⟹ not semisimple.  For Heisenberg,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                  B vanishes identically — nilpotent algebras are"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"                  invisible to the Killing form."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"5.01 observed that compactness tracked the sign of the curvature."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The Killing form is what makes that a computation rather than a"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"coincidence."</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Killing forms B(X,Y) = tr(ad_X ad_Y):
+    so(3)    :  B =  matrix([-2,0,0],[0,-2,0],[0,0,-2])
+      det B =  -8      eigenvalues =  [-2]
+    su(2)    :  B =  matrix([-2,0,0],[0,-2,0],[0,0,-2])
+      det B =  -8      eigenvalues =  [-2]
+    sl(2,ℝ)  :  B =  matrix([8,0,0],[0,0,4],[0,4,0])
+      det B =  -128      eigenvalues =  [-4,4,8]
+   the affine algebra of x ↦ ax+b:  [X,Y] =
+  [-1,0]  in the basis (X,Y), i.e. [Y,X] = X —
+   the 2-dimensional non-abelian algebra, unique up to isomorphism.
+    aff(1)   :  B =  matrix([0,0],[0,1])
+      det B =  0      eigenvalues =  [0,1]
+    heis     :  B =  matrix([0,0,0],[0,0,0],[0,0,0])
+      det B =  0      eigenvalues =  [0]
+CARTAN'S CRITERIA, read off the table:
+   so(3), su(2) : B = −2·I, negative definite ⟹ semisimple AND
+                  compact.  −B is a bi-invariant metric.
+   sl(2,ℝ)      : non-degenerate (det = −128) but INDEFINITE,
+                  eigenvalues −4, 4, 8 ⟹ semisimple, not compact.
+                  No bi-invariant Riemannian metric exists.
+   aff(1), heis : B degenerate ⟹ not semisimple.  For Heisenberg,
+                  B vanishes identically — nilpotent algebras are
+                  invisible to the Killing form.
+5.01 observed that compactness tracked the sign of the curvature.
+The Killing form is what makes that a computation rather than a
+coincidence.</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7f41a5a2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- A bi-invariant metric on SU(2), and curvature from the bracket --- */</span>
+<span class="cm">/* ⟨X,Y⟩ = −2 tr(XY) makes the basis (E₁,E₂,E₃) orthonormal. */</span>
+<span class="nf">ip</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">X</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">"⟨X,Y⟩ = −2 tr(XY) on su(2):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Gram matrix = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">genmatrix</span><span class="p">(</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">i</span><span class="p">,</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nf">ip</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="nv">j</span><span class="p">])),</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span>
+<span class="w">      </span><span class="s">"   orthonormal ✓"</span><span class="p">)$</span>
+
+<span class="cm">/* bi-invariance ⟺ ad_Z skew-adjoint */</span>
+<span class="nv">bad</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">k</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">ip</span><span class="p">(</span><span class="nf">br</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="nv">i</span><span class="p">]),</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">ip</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nf">br</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="nv">j</span><span class="p">]))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">then</span><span class="w"> </span><span class="nv">bad</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"bi-invariance test ⟨[Z,X],Y⟩ + ⟨X,[Z,Y]⟩ = 0 over all 27 triples:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   violations = "</span><span class="p">,</span><span class="w"> </span><span class="nv">bad</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ the metric is bi-invariant."</span><span class="p">)$</span>
+
+<span class="cm">/* sectional curvature straight from the bracket */</span>
+<span class="nf">secK</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="nf">ip</span><span class="p">(</span><span class="nf">br</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Y</span><span class="p">),</span><span class="w"> </span><span class="nf">br</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Y</span><span class="p">))</span>
+<span class="w">                       </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nf">ip</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">X</span><span class="p">)</span><span class="o">*</span><span class="nf">ip</span><span class="p">(</span><span class="nv">Y</span><span class="p">,</span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">ip</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Y</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"K(X,Y) = ¼|[X,Y]|² / (|X|²|Y|² − ⟨X,Y⟩²) on basis pairs:"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="o">:</span><span class="nv">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   K(E"</span><span class="p">,</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="s">", E"</span><span class="p">,</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="w"> </span><span class="s">") = "</span><span class="p">,</span><span class="w"> </span><span class="nf">secK</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="nv">j</span><span class="p">]))$</span>
+
+<span class="cm">/* and for a GENERIC pair — constant curvature, not just on the basis */</span>
+<span class="nv">Xg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">x1</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">x2</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">x3</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">3</span><span class="p">]$</span>
+<span class="nv">Yg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">y1</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">y2</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">y3</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">3</span><span class="p">]$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   generic X = Σxᵢ Eᵢ, Y = Σyᵢ Eᵢ :  K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">secK</span><span class="p">(</span><span class="nv">Xg</span><span class="p">,</span><span class="w"> </span><span class="nv">Yg</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Constant, for every 2-plane at every point.  SU(2) with this"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   metric is a space form (4.07) — a round 3-sphere."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Why ¼: [X,Y] corresponds to x × y under 5.01's hat map, and"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   |x×y|² = |x|²|y|² − (x·y)², so the numerator and denominator"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   cancel exactly, leaving ¼ with nothing left over."</span><span class="p">)$</span>
+
+<span class="cm">/* which sphere? */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"K = 1/4 ⟹ radius 2, since K = 1/R² (3.04, 4.04)."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Check against 4.05: S = n(n−1)K with n = 3 gives "</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span>
+<span class="w">      </span><span class="s">" for radius 2,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   and rescaling the metric by ¼ gives K = 1 and S = "</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="s">" — the value"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   4.05 computed for the unit 3-sphere by an entirely different route."</span><span class="p">)$</span>
+
+<span class="cm">/* geodesics */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"∇_X Y = ½[X,Y] for a bi-invariant metric, so ∇_X X = ½[X,X] = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">br</span><span class="p">(</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">Eb</span><span class="p">[</span><span class="mi">1</span><span class="p">]))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Every left-invariant field is its own geodesic field: the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"ONE-PARAMETER SUBGROUPS ARE GEODESICS, and the group exponential"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"of 5.02 coincides with the Riemannian exp_e of 4.03."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   exp(t E₃) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">matrixexp</span><span class="p">(</span><span class="nv">t</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
+<span class="w">      </span><span class="s">"  — a great circle on S³."</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>⟨X,Y⟩ = −2 tr(XY) on su(2):
+   Gram matrix =  matrix([1,0,0],[0,1,0],[0,0,1])    orthonormal ✓
+bi-invariance test ⟨[Z,X],Y⟩ + ⟨X,[Z,Y]⟩ = 0 over all 27 triples:
+   violations =  0    ⟹ the metric is bi-invariant.
+K(X,Y) = ¼|[X,Y]|² / (|X|²|Y|² − ⟨X,Y⟩²) on basis pairs:
+   K(E 1 , E 2 ) =  1/4
+   K(E 1 , E 3 ) =  1/4
+   K(E 2 , E 3 ) =  1/4
+   generic X = Σxᵢ Eᵢ, Y = Σyᵢ Eᵢ :  K =  1/4
+   Constant, for every 2-plane at every point.  SU(2) with this
+   metric is a space form (4.07) — a round 3-sphere.
+   Why ¼: [X,Y] corresponds to x × y under 5.01's hat map, and
+   |x×y|² = |x|²|y|² − (x·y)², so the numerator and denominator
+   cancel exactly, leaving ¼ with nothing left over.
+K = 1/4 ⟹ radius 2, since K = 1/R² (3.04, 4.04).
+   Check against 4.05: S = n(n−1)K with n = 3 gives  3/2  for radius 2,
+   and rescaling the metric by ¼ gives K = 1 and S =  6  — the value
+   4.05 computed for the unit 3-sphere by an entirely different route.
+∇_X Y = ½[X,Y] for a bi-invariant metric, so ∇_X X = ½[X,X] =
+  matrix([0,0],[0,0])
+Every left-invariant field is its own geodesic field: the
+ONE-PARAMETER SUBGROUPS ARE GEODESICS, and the group exponential
+of 5.02 coincides with the Riemannian exp_e of 4.03.
+Proviso: assuming 64*t # 0
+   exp(t E₃) =  matrix([%e^-((%i*t)/2),0],[0,%e^((%i*t)/2)])
+                 — a great circle on S³.</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2b1a010c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Left-invariant but NOT bi-invariant: the ax+b group --- */</span>
+<span class="cm">/* Is there a bi-invariant inner product on aff(1)?  The condition is</span>
+<span class="cm">   ad_Zᵀ G + G ad_Z = 0 for every Z, a linear system in the entries of G. */</span>
+<span class="nv">adX</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">admat</span><span class="p">(</span><span class="nv">Ab</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">Ab</span><span class="p">)$</span>
+<span class="nv">adY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">admat</span><span class="p">(</span><span class="nv">Ab</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">Ab</span><span class="p">)$</span>
+<span class="nv">Gg</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">pp</span><span class="p">,</span><span class="w"> </span><span class="nv">qq</span><span class="p">],[</span><span class="nv">qq</span><span class="p">,</span><span class="w"> </span><span class="nv">rr</span><span class="p">])$</span>
+<span class="nv">eqs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="nf">args</span><span class="p">(</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nv">adX</span><span class="p">)</span><span class="o">.</span><span class="nv">Gg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Gg</span><span class="o">.</span><span class="nv">adX</span><span class="w"> </span><span class="p">)),</span>
+<span class="w">              </span><span class="nf">flatten</span><span class="p">(</span><span class="nf">args</span><span class="p">(</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nv">adY</span><span class="p">)</span><span class="o">.</span><span class="nv">Gg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Gg</span><span class="o">.</span><span class="nv">adY</span><span class="w"> </span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"aff(1): ad_X = "</span><span class="p">,</span><span class="w"> </span><span class="nv">adX</span><span class="p">,</span><span class="w"> </span><span class="s">"   ad_Y = "</span><span class="p">,</span><span class="w"> </span><span class="nv">adY</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   bi-invariance equations: "</span><span class="p">,</span><span class="w"> </span><span class="nv">eqs</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   solution: "</span><span class="p">,</span><span class="w"> </span><span class="nf">linsolve</span><span class="p">(</span><span class="nv">eqs</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">pp</span><span class="p">,</span><span class="w"> </span><span class="nv">qq</span><span class="p">,</span><span class="w"> </span><span class="nv">rr</span><span class="p">]))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   p = q = 0 forced, so G = diag(0, r): DEGENERATE."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   No bi-invariant inner product on aff(1) is positive definite,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   matching the degenerate Killing form found above."</span><span class="p">)$</span>
+
+<span class="cm">/* --- but there is a left-invariant one, and it is the hyperbolic plane --- */</span>
+<span class="cm">/* Group: (a,b) with a &gt; 0, acting on ℝ by x ↦ ax + b.</span>
+<span class="cm">   Product (a₀,b₀)·(a,b) = (a₀a, a₀b + b₀). */</span>
+<span class="nf">assume</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">a0</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
+<span class="nv">gL</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">a</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">a</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span><span class="w">        </span><span class="cm">/* ds² = (da² + db²)/a² */</span>
+<span class="nv">Jac</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">a0</span><span class="p">])$</span><span class="w">             </span><span class="cm">/* d of left translation */</span>
+<span class="nv">gAt</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nv">a0</span><span class="o">*</span><span class="nv">a</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nv">a0</span><span class="o">*</span><span class="nv">a</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span><span class="w">   </span><span class="cm">/* g at the image point */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"left translation L_{(a₀,b₀)}(a,b) = (a₀a, a₀b + b₀), Jacobian "</span><span class="p">,</span><span class="w"> </span><span class="nv">Jac</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   pullback of g − g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nv">Jac</span><span class="p">)</span><span class="o">.</span><span class="nv">gAt</span><span class="o">.</span><span class="nv">Jac</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">gL</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   so ds² = (da² + db²)/a² is LEFT-invariant."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   And that is the hyperbolic metric of 2.06 and 4.07, with (b,a)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the upper half-plane coordinates."</span><span class="p">)$</span>
+
+<span class="cm">/* curvature, by Stage 4's machinery */</span>
+<span class="nf">ts</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">))$</span>
 <span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">ginv</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
 <span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span><span class="w">  </span><span class="nv">ginv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">invert</span><span class="p">(</span><span class="nv">g</span><span class="p">)),</span>
 <span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
-<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">ginv</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span>
-<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
+<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">ginv</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
 <span class="w">                        </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
 <span class="w">    </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="cm">/* CONVENTION (following Lee):</span>
-<span class="cm">     R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_[X,Y] Z,   R(∂ᵢ,∂ⱼ)∂ₖ = R^l_{ijk} ∂_l</span>
-<span class="cm">   and the fully covariant tensor lowers the index into the LAST slot,</span>
-<span class="cm">     Rm_{ijkl} = g_{lm} R^m_{ijk} = ⟨R(∂ᵢ,∂ⱼ)∂ₖ, ∂_l⟩.</span>
-<span class="cm">   Sectional curvature is K = Rm(X,Y,Y,X)/(|X|²|Y|²−⟨X,Y⟩²), so in 2D</span>
-<span class="cm">     K = Rm_1221 / det g.</span>
-<span class="cm">   The index order 1,2,2,1 matters: lowering into the first slot instead</span>
-<span class="cm">   flips the sign, which is the commonest source of sign confusion here. */</span>
 <span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">G</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
 <span class="w">  </span><span class="nv">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
 <span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
 <span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
 <span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
 <span class="w">    </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
 <span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rr</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
 <span class="w">  </span><span class="nv">Rr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
 <span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
 <span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">Rr</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
-<span class="w">    </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span><span class="w">      </span><span class="cm">/* index order i,j,k,l */</span>
-
+<span class="w">    </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 <span class="nf">K2d</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rm</span><span class="p">],</span><span class="w"> </span><span class="nv">Rm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span>
 <span class="w">  </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">determinant</span><span class="p">(</span><span class="nv">g</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">assume</span><span class="p">(</span><span class="nv">R0</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
-
-<span class="nv">g_sph</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">Rms</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"SPHERE of radius R₀, g = "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_sph</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   Rm_1212 = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Rms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     Rm_1221 = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Rms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   antisymmetric in the last pair, as required ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   K = Rm_1221/det g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">]),</span><span class="w"> </span><span class="s">"   = 1/R₀² ✓ (3.04 agrees)"</span><span class="p">)$</span>
-
-<span class="nv">g_hyp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"HYPERBOLIC half-plane: K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]),</span><span class="w"> </span><span class="s">"   ✓"</span><span class="p">)$</span>
-
-<span class="nv">g_flat</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span>
-<span class="nv">g_pol</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">rr</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gL</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">]),</span><span class="w"> </span><span class="s">"   — the hyperbolic plane, K = −1 ✓"</span><span class="p">)$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"EUCLIDEAN plane, Cartesian:  K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_flat</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the SAME plane in polar coordinates, g = "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="s">":"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   Γ ≠ 0 : "</span><span class="p">,</span><span class="w"> </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">" , "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])[</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   but R = "</span><span class="p">,</span><span class="w"> </span><span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   and K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">]),</span><span class="w"> </span><span class="s">" ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"A bi-invariant metric forces K = ¼|[X,Y]|²/(...) ≥ 0.  Here K = −1,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"so this left-invariant metric CANNOT be bi-invariant — which the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"linear system above already showed directly.  Three independent"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"routes to the same fact:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   • the Killing form of aff(1) is degenerate"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   • the bi-invariance equations force a degenerate G"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   • the curvature is negative, and bi-invariant ⟹ K ≥ 0"</span><span class="p">)$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Nonzero Γ with zero R: the connection was reporting curved COORDINATES,"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"not a curved space. Only R distinguishes the two."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"So the hyperbolic plane is a LIE GROUP with a left-invariant metric,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"as well as the homogeneous space PSL₂(ℝ)/SO(2).  Two descriptions of"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"the same surface, and 2.06 used neither."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7899,76 +8109,108 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>SPHERE of radius R₀, g =  matrix([R0^2,0],[0,R0^2*sin(u)^2])
-   Rm_1212 =  -(R0^2*sin(u)^2)      Rm_1221 =  R0^2*sin(u)^2
-   antisymmetric in the last pair, as required ✓
-   K = Rm_1221/det g =  1/R0^2    = 1/R₀² ✓ (3.04 agrees)
-HYPERBOLIC half-plane: K =  -1    ✓
-EUCLIDEAN plane, Cartesian:  K =  0
-the SAME plane in polar coordinates, g =  matrix([1,0],[0,rr^2]) :
-   Γ ≠ 0 :  [[0,0],[0,-rr]]  ,  [[0,1/rr],[1/rr,0]]
-   but R =  [[[[0,0],[0,0]],[[0,0],[0,0]]],[[[0,0],[0,0]],[[0,0],[0,0]]]]
-   and K =  0  ✓
-Nonzero Γ with zero R: the connection was reporting curved COORDINATES,
-not a curved space. Only R distinguishes the two.</pre>
+<pre>aff(1): ad_X =  matrix([0,-1],[0,0])    ad_Y =  matrix([1,0],[0,0])
+   bi-invariance equations:  [0,-pp,-pp,-(2*qq),2*pp,qq,qq,0]
+   solution:  [pp = 0,qq = 0,rr = %r1]
+   p = q = 0 forced, so G = diag(0, r): DEGENERATE.
+   No bi-invariant inner product on aff(1) is positive definite,
+   matching the degenerate Killing form found above.
+left translation L_{(a₀,b₀)}(a,b) = (a₀a, a₀b + b₀), Jacobian
+  matrix([a0,0],[0,a0])
+   pullback of g − g =  matrix([0,0],[0,0])
+   so ds² = (da² + db²)/a² is LEFT-invariant.
+   And that is the hyperbolic metric of 2.06 and 4.07, with (b,a)
+   the upper half-plane coordinates.
+   K =  -1    — the hyperbolic plane, K = −1 ✓
+A bi-invariant metric forces K = ¼|[X,Y]|²/(...) ≥ 0.  Here K = −1,
+so this left-invariant metric CANNOT be bi-invariant — which the
+linear system above already showed directly.  Three independent
+routes to the same fact:
+   • the Killing form of aff(1) is degenerate
+   • the bi-invariance equations force a degenerate G
+   • the curvature is negative, and bi-invariant ⟹ K ≥ 0
+So the hyperbolic plane is a LIE GROUP with a left-invariant metric,
+as well as the homogeneous space PSL₂(ℝ)/SO(2).  Two descriptions of
+the same surface, and 2.06 used neither.</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d32733c1">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=47046983">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Independent check with Maxima's ctensor package --- */</span>
-<span class="nf">load</span><span class="p">(</span><span class="nv">ctensor</span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Homogeneous spaces M = G/H --- */</span>
+<span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="nv">n</span><span class="o">*</span><span class="p">(</span><span class="nv">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">$</span>
+<span class="nf">dU</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="w">   </span><span class="o">:=</span><span class="w"> </span><span class="nv">n</span><span class="o">^</span><span class="mi">2</span><span class="p">$</span>
+<span class="nf">dSU</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="nv">n</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
+<span class="nf">dSUkn</span><span class="p">(</span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nv">k</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nv">n</span><span class="o">-</span><span class="nv">k</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span><span class="w">        </span><span class="cm">/* S(U(k) × U(n−k)) */</span>
 
-<span class="cm">/* ctensor stores Christoffel symbols as mcs[i,j,k] = Γᵏ_{ij}, i.e. the</span>
-<span class="cm">   UPPER index LAST — the opposite placement to the Γ[k][i][j] used above.</span>
-<span class="cm">   It also caches results in globals, so the whole chain must be recomputed</span>
-<span class="cm">   for each new metric: cmetric → christof → riemann → ricci → scurvature.</span>
-<span class="cm">   Calling scurvature() alone silently reuses the previous metric's Ricci</span>
-<span class="cm">   tensor, which is how a first version of this cell reported the sphere's</span>
-<span class="cm">   answer for the hyperbolic plane. */</span>
-<span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">metric</span><span class="p">,</span><span class="w"> </span><span class="nv">coords</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([],</span>
-<span class="w">  </span><span class="nv">dim</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">coords</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">ct_coords</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">coords</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">lg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">metric</span><span class="p">,</span>
-<span class="w">  </span><span class="nf">cmetric</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">christof</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">riemann</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">ricci</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">scurvature</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the sphere of radius R₀:"</span><span class="p">)$</span>
-<span class="nv">gs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_sph</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gs</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   mcs[2,2,1] = Γ¹₂₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">mcs</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span>
-<span class="w">      </span><span class="s">"     hand-rolled Γ¹₂₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   mcs[1,2,2] = Γ²₁₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">mcs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]),</span>
-<span class="w">      </span><span class="s">"     hand-rolled Γ²₁₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_sph</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = S/2 = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_sph</span><span class="o">/</span><span class="mi">2</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   hand-rolled K    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gs</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   difference       = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">sc_sph</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"dim M = dim G − dim H, checked against the known dimension:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Sⁿ = SO(n+1)/SO(n)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      n    dim G   dim H   difference   n"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="p">),</span><span class="w"> </span><span class="s">"       "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="p">),</span><span class="w"> </span><span class="s">"         "</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">)$</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the hyperbolic half-plane:"</span><span class="p">)$</span>
-<span class="nv">gh</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_hyp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gh</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_hyp</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_hyp</span><span class="o">/</span><span class="mi">2</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   hand-rolled K    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gh</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   difference       = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">sc_hyp</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gh</span><span class="p">,[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Gr(k,n) = O(n)/(O(k)×O(n−k)),  real Grassmannian"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      k  n    dim G   dim H   difference   k(n−k)"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">k</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="s">" "</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="p">),</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">k</span><span class="p">)</span><span class="o">+</span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="o">-</span><span class="nv">k</span><span class="p">),</span><span class="w"> </span><span class="s">"       "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="o">-</span><span class="nf">dSO</span><span class="p">(</span><span class="nv">k</span><span class="p">)</span><span class="o">-</span><span class="nf">dSO</span><span class="p">(</span><span class="nv">n</span><span class="o">-</span><span class="nv">k</span><span class="p">),</span>
+<span class="w">        </span><span class="s">"         "</span><span class="p">,</span><span class="w"> </span><span class="nv">k</span><span class="o">*</span><span class="p">(</span><span class="nv">n</span><span class="o">-</span><span class="nv">k</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      (k = 1 gives ℝPⁿ⁻¹, of dimension n−1, as it should.)"</span><span class="p">)$</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the flat plane in polar coordinates:"</span><span class="p">)$</span>
-<span class="nv">gp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">rr</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_pol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_pol</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_pol</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ℂPⁿ = SU(n+1)/S(U(n)×U(1)),  real dimension 2n"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      n    dim G   dim H   difference   2n"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSU</span><span class="p">(</span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nf">dSUkn</span><span class="p">(</span><span class="nv">n</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">"       "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">dSU</span><span class="p">(</span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="nf">dSUkn</span><span class="p">(</span><span class="nv">n</span><span class="p">,</span><span class="nv">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">"         "</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">n</span><span class="p">)$</span>
+
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Two independent implementations, three metrics, same answers."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"THE ERLANGEN TRIO, all with the SAME stabiliser SO(2):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      space   G            dim G   H       dim H   dim M"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      E²      E(2)             3    SO(2)      1      "</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      S²      SO(3)            3    SO(2)      1      "</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      H²      PSL₂(ℝ)          3    SO(2)      1      "</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Three geometries, three groups of the same dimension, the same"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   isotropy group.  What distinguishes them is not the dimension"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   count but the ALGEBRA — compact, flat or non-compact — which is"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   exactly what the Killing form measured above."</span><span class="p">)$</span>
+
+<span class="cm">/* --- transitivity, constructively --- */</span>
+<span class="cm">/* SO(3) acts transitively on S²: build a rotation taking e₃ to any unit v. */</span>
+<span class="nf">hat3</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="nv">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="nv">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]],[</span><span class="nv">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="nv">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]],[</span><span class="o">-</span><span class="nv">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="nv">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">])$</span>
+<span class="nf">rot_to</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">e3</span><span class="p">,</span><span class="w"> </span><span class="nv">ax</span><span class="p">,</span><span class="w"> </span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">cc</span><span class="p">,</span><span class="w"> </span><span class="nv">K</span><span class="p">],</span>
+<span class="w">  </span><span class="cm">/* Rodrigues about the axis e₃ × v through the angle between them */</span>
+<span class="w">  </span><span class="nv">e3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">ax</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nv">e3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="nv">e3</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">e3</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nv">e3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="nv">e3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="nv">e3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nv">s</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="w"> </span><span class="nv">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
+<span class="w">  </span><span class="nv">cc</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w">                       </span><span class="cm">/* e₃ · v */</span>
+<span class="w">  </span><span class="nv">K</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">hat3</span><span class="p">(</span><span class="nv">ax</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">ident</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">K</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">K</span><span class="o">^^</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nv">cc</span><span class="p">)</span><span class="o">/</span><span class="nv">s</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nv">vtest</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">/</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="o">/</span><span class="mi">13</span><span class="p">]$</span><span class="w">        </span><span class="cm">/* a unit vector: 9 + 16 + 144 = 169 */</span>
+<span class="nv">Rt</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">rot_to</span><span class="p">(</span><span class="nv">vtest</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"transitivity on S², target v = "</span><span class="p">,</span><span class="w"> </span><span class="nv">vtest</span><span class="p">,</span><span class="w"> </span><span class="s">" :"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   R = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Rt</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   R e₃ − v = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">Rt</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="w">                                 </span><span class="o">-</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="nv">vtest</span><span class="p">))</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   RᵀR − I = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nv">Rt</span><span class="p">)</span><span class="o">.</span><span class="nv">Rt</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">ident</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="s">"   det R = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">Rt</span><span class="p">)))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   So SO(3) reaches every point of S², and the stabiliser of e₃ is"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the rotations about the z-axis: SO(2).  Hence S² = SO(3)/SO(2),"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   with no coordinates and no metric used in the argument."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   That is Klein's construction (2.01) — the space rebuilt from the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   group — now carrying a Riemannian metric as well."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7981,185 +8223,123 @@ not a curved space. Only R distinguishes the two.</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>ctensor on the sphere of radius R₀:
-   mcs[2,2,1] = Γ¹₂₂ =  -(cos(u)*sin(u))      hand-rolled Γ¹₂₂ =
-                       -(cos(u)*sin(u))
-   mcs[1,2,2] = Γ²₁₂ =  cos(u)/sin(u)      hand-rolled Γ²₁₂ =  cos(u)/sin(u)
-   scalar curvature =  2/R0^2    ⟹ K = S/2 =  1/R0^2
-   hand-rolled K    =  1/R0^2
-   difference       =  0   ✓
-ctensor on the hyperbolic half-plane:
-   scalar curvature =  -2    ⟹ K =  -1
-   hand-rolled K    =  -1
-   difference       =  0   ✓
-ctensor on the flat plane in polar coordinates:
-   scalar curvature =  0    ⟹ K =  0   ✓
-Two independent implementations, three metrics, same answers.</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=23aea02c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The symmetries of R, checked component by component --- */</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rm</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">a1</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">Rm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">a1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">k</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">a1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">k</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">       </span><span class="k">then</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">,</span><span class="w"> </span><span class="s">":  violations —"</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      antisymmetry in first pair : "</span><span class="p">,</span><span class="w"> </span><span class="nv">a1</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      antisymmetry in last pair  : "</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      pair exchange R_ijkl=R_klij: "</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      first Bianchi identity     : "</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"symmetries of the Riemann tensor (count of violating components):"</span><span class="p">)$</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="s">"sphere    "</span><span class="p">)$</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w">        </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="s">"hyperbolic"</span><span class="p">)$</span>
-
-<span class="cm">/* --- Component counts --- */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"independent components of R in dimension n:  n²(n²−1)/12"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"    n      n⁴        independent"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">nn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="p">,</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="o">^</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s">"         "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nv">nn</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"n = 2 gives ONE component, so all curvature is the single number K —"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"which is why Stage 3 needed only a scalar. n = 4 gives 20, the count"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"that matters for general relativity (6.02)."</span><span class="p">)$</span>
-
-<span class="cm">/* --- A 3-dimensional example: the round 3-sphere --- */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the round 3-sphere, ds² = dχ² + sin²χ (dθ² + sin²θ dφ²):"</span><span class="p">)$</span>
-<span class="nv">g3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">te</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">g3</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">ch</span><span class="p">,</span><span class="w"> </span><span class="nv">te</span><span class="p">,</span><span class="w"> </span><span class="nv">ph</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc3</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   for a unit n-sphere S = n(n−1); with n = 3 that is 6 ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   constant, as a homogeneous space must be —"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   but now the curvature has 6 components, not 1."</span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>symmetries of the Riemann tensor (count of violating components):
-    sphere     :  violations —
-      antisymmetry in first pair :  0
-      antisymmetry in last pair  :  0
-      pair exchange R_ijkl=R_klij:  0
-      first Bianchi identity     :  0
-    hyperbolic :  violations —
-      antisymmetry in first pair :  0
-      antisymmetry in last pair  :  0
-      pair exchange R_ijkl=R_klij:  0
-      first Bianchi identity     :  0
-independent components of R in dimension n:  n²(n²−1)/12
-    n      n⁴        independent
-    2        16           1
-    3        81           6
-    4        256           20
-    5        625           50
-n = 2 gives ONE component, so all curvature is the single number K —
-which is why Stage 3 needed only a scalar. n = 4 gives 20, the count
-that matters for general relativity (6.02).
-the round 3-sphere, ds² = dχ² + sin²χ (dθ² + sin²θ dφ²):
-   scalar curvature =  6
-   for a unit n-sphere S = n(n−1); with n = 3 that is 6 ✓
-   constant, as a homogeneous space must be —
-   but now the curvature has 6 components, not 1.</pre>
+<pre>dim M = dim G − dim H, checked against the known dimension:
+   Sⁿ = SO(n+1)/SO(n)
+      n    dim G   dim H   difference   n
+      2       3        1         2           2
+      3       6        3         3           3
+      4       10        6         4           4
+      5       15        10         5           5
+      6       21        15         6           6
+   Gr(k,n) = O(n)/(O(k)×O(n−k)),  real Grassmannian
+      k  n    dim G   dim H   difference   k(n−k)
+      1   2       1        0         1           1
+      1   3       3        1         2           2
+      2   3       3        1         2           2
+      1   4       6        3         3           3
+      2   4       6        2         4           4
+      3   4       6        3         3           3
+      1   5       10        6         4           4
+      2   5       10        4         6           6
+      3   5       10        4         6           6
+      4   5       10        6         4           4
+      (k = 1 gives ℝPⁿ⁻¹, of dimension n−1, as it should.)
+   ℂPⁿ = SU(n+1)/S(U(n)×U(1)),  real dimension 2n
+      n    dim G   dim H   difference   2n
+      1       3        1         2           2
+      2       8        4         4           4
+      3       15        9         6           6
+      4       24        16         8           8
+      5       35        25         10           10
+THE ERLANGEN TRIO, all with the SAME stabiliser SO(2):
+      space   G            dim G   H       dim H   dim M
+      E²      E(2)             3    SO(2)      1       2
+      S²      SO(3)            3    SO(2)      1       2
+      H²      PSL₂(ℝ)          3    SO(2)      1       2
+   Three geometries, three groups of the same dimension, the same
+   isotropy group.  What distinguishes them is not the dimension
+   count but the ALGEBRA — compact, flat or non-compact — which is
+   exactly what the Killing form measured above.
+transitivity on S², target v =  [3/13,4/13,12/13]  :
+   R =
+       matrix([316/325,-(12/325),3/13],[-(12/325),309/325,4/13],
+              [-(3/13),-(4/13),12/13])
+   R e₃ − v =  matrix([0],[0],[0])
+   RᵀR − I =  matrix([0,0,0],[0,0,0],[0,0,0])    det R =  1
+   So SO(3) reaches every point of S², and the stabiliser of e₃ is
+   the rotations about the z-axis: SO(2).  Hence S² = SO(3)/SO(2),
+   with no coordinates and no metric used in the argument.
+   That is Klein's construction (2.01) — the space rebuilt from the
+   group — now carrying a Riemannian metric as well.</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1cd4f431">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=77900bcc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$R^l_{\;ijk} = \partial_i\Gamma^l_{jk} - \partial_j\Gamma^l_{ik} + \Gamma^l_{im}\Gamma^m_{jk} - \Gamma^l_{jm}\Gamma^m_{ik}$$</p>
-<p><strong>The polar-coordinate plane is the whole lesson.</strong> Its Christoffel symbols are conspicuously non-zero — $\Gamma^1_{22} = -r$, $\Gamma^2_{12} = 1/r$ — yet every one of its 16 Riemann components came out <strong>identically zero</strong>. $\Gamma$ was reporting curved <em>coordinates</em>; $R$ reports curved <em>space</em>. Only the second is geometry.</p>
-<p><strong>Two implementations, three metrics, no disagreement.</strong> The hand-rolled tensor and Maxima's <code>ctensor</code> package agree to zero difference on the sphere ($K = 1/R_0^2$), the hyperbolic half-plane ($K = -1$) and the flat plane in polar coordinates ($K = 0$). The sphere's value matches 3.04's Gaussian curvature, computed there from the second fundamental form of an <em>embedded</em> surface — so this abstract, embedding-free definition reproduces the extrinsic answer. That is Theorema Egregium (3.05) again, now as a consistency check on the machinery.</p>
-<p><strong>Two sign traps, both hit while writing this.</strong></p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$B(X,Y) = \operatorname{tr}(\mathrm{ad}_X\mathrm{ad}_Y), \qquad K(X,Y) = \frac{\tfrac14\big|[X,Y]\big|^2}{|X|^2|Y|^2 - \langle X,Y\rangle^2}$$</p>
+<p><strong>Cartan's criteria, as a table.</strong> The Killing form was computed from structure constants alone for five algebras:</p>
 <table>
 <thead>
 <tr>
-<th>Trap</th>
-<th>Symptom</th>
-<th>Fix</th>
+<th>algebra</th>
+<th>$B$</th>
+<th>verdict</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Lowering the index into the <em>first</em> slot</td>
-<td>sphere reported $K = -1/R_0^2$</td>
-<td>lower into the <strong>last</strong> slot, $Rm_{ijkl} = g_{lm}R^m_{\;ijk}$, and read $K = Rm_{1221}/\det g$</td>
+<td>$\mathfrak{so}(3)$, $\mathfrak{su}(2)$</td>
+<td>$-2I$, eigenvalues all $-2$</td>
+<td>semisimple <strong>and compact</strong></td>
 </tr>
 <tr>
-<td><code>ctensor</code> caches globals</td>
-<td>hyperbolic plane reported the <em>sphere's</em> curvature</td>
-<td>recompute the full chain <code>cmetric → christof → riemann → ricci → scurvature</code> per metric</td>
+<td>$\mathfrak{sl}(2,\mathbb R)$</td>
+<td>$\det = -128$, eigenvalues $-4,4,8$</td>
+<td>semisimple, <strong>not</strong> compact</td>
+</tr>
+<tr>
+<td>$\mathfrak{aff}(1)$</td>
+<td>$\operatorname{diag}(0,1)$, degenerate</td>
+<td>not semisimple</td>
+</tr>
+<tr>
+<td>Heisenberg</td>
+<td>identically $0$</td>
+<td>not semisimple — nilpotent algebras are invisible to $B$</td>
 </tr>
 </tbody>
 </table>
-<p>Neither would have been visible without checking against a known answer. The <code>ctensor</code> convention also differs from ours: <code>mcs[i,j,k]</code> is $\Gamma^k_{ij}$, upper index <strong>last</strong>.</p>
-<p><strong>The symmetries hold exactly.</strong> Antisymmetry in each pair, pair exchange, and the first Bianchi identity were checked component by component on both curved metrics: zero violations out of 16 components each. Those identities are what reduce $n^4$ components to $\tfrac{1}{12}n^2(n^2-1)$:</p>
-<table>
-<thead>
-<tr>
-<th>$n$</th>
-<th>$n^4$</th>
-<th>independent</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2</td>
-<td>16</td>
-<td><strong>1</strong></td>
-</tr>
-<tr>
-<td>3</td>
-<td>81</td>
-<td>6</td>
-</tr>
-<tr>
-<td>4</td>
-<td>256</td>
-<td><strong>20</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Dimension 2 having exactly one component is why all of Stage 3 could be done with the scalar $K$. The round 3-sphere, computed here, has scalar curvature $6 = n(n-1)$ — still constant, as a homogeneous space must be, but now carried by six components rather than one.</p>
-<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>4.05 — Sectional, Ricci and Scalar Curvature</strong> extracts usable numbers from those 20 components: $K(\sigma)$ for a 2-plane, its average $\mathrm{Ric}$, and the full trace $S$. Ricci is the one Einstein's equations are written in.</p>
+<p>5.01 noticed compactness tracking the sign of curvature. This is the mechanism.</p>
+<p><strong>Curvature is literally the bracket.</strong> With $\langle X,Y\rangle = -2\operatorname{tr}(XY)$ on $\mathfrak{su}(2)$ — verified orthonormal, and verified bi-invariant with <strong>zero violations out of 27 triples</strong> — the sectional curvature came out $\tfrac14$ on every basis pair <em>and for a fully generic pair of elements</em>. Constant curvature, computed with no metric in coordinates, no Christoffel symbols, no Riemann tensor.</p>
+<p>The reason the answer is exactly $\tfrac14$ and not a function of position: under 5.01's hat map $[X,Y]$ corresponds to $x \times y$, and $|x \times y|^2 = |x|^2|y|^2 - (x\cdot y)^2$ is precisely the denominator. Numerator and denominator cancel.</p>
+<p>$K = \tfrac14$ means radius 2. Rescaling the metric by $\tfrac14$ gives $K = 1$ and scalar curvature $S = n(n-1)K = 6$ — the value 4.05 obtained for the unit 3-sphere from <code>ctensor</code> and a hand-rolled Riemann tensor, by a completely different route.</p>
+<p>And since $\nabla_XX = \tfrac12[X,X] = 0$, <strong>one-parameter subgroups are geodesics</strong>: 5.02's group exponential and 4.03's Riemannian $\exp_e$ are the same map.</p>
+<p><strong>The hyperbolic plane is a Lie group.</strong> The $ax+b$ group carries $ds^2 = (da^2+db^2)/a^2$, verified left-invariant by pulling back along $L_{(a_0,b_0)}$ (difference zero), and Stage 4's machinery gives $K = -1$. It is 2.06's upper half-plane, arrived at from group theory rather than from Möbius maps or from a metric written down by hand.</p>
+<p>It has <strong>no</strong> bi-invariant metric, and this notebook shows that three independent ways:</p>
+<ul>
+<li>the Killing form of $\mathfrak{aff}(1)$ is degenerate;</li>
+<li>the bi-invariance equations $\mathrm{ad}_Z^TG + G\,\mathrm{ad}_Z = 0$ force $p = q = 0$, so $G = \operatorname{diag}(0,r)$ — solved explicitly here;</li>
+<li>bi-invariance would force $K \ge 0$, and $K = -1$.</li>
+</ul>
+<p><strong>Homogeneous spaces.</strong> $\dim G - \dim H$ matched the known dimension in every row: $S^n = SO(n+1)/SO(n)$, the real Grassmannians $O(n)/(O(k)\times O(n-k))$ with $k(n-k)$, and $\mathbb{CP}^n = SU(n+1)/S(U(n)\times U(1))$ with $2n$.</p>
+<p>Transitivity was checked constructively rather than asserted: for $v = (3,4,12)/13$ a Rodrigues rotation was built with $Re_3 = v$ exactly, $R^TR = I$, $\det R = 1$. The stabiliser of $e_3$ is the rotations about the $z$-axis, so $S^2 = SO(3)/SO(2)$ — no coordinates, no metric.</p>
+<p><strong>The Erlangen trio, one last time.</strong> $\mathbb{E}^2 = E(2)/SO(2)$, $S^2 = SO(3)/SO(2)$, $H^2 = PSL_2(\mathbb R)/SO(2)$: three groups of dimension 3, the same isotropy group $SO(2)$, three different geometries. The dimension count cannot tell them apart; the Killing form can.</p>
+<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>5.04 — Symmetric Spaces</strong> axiomatises what $S^n$, $H^n$ and the Grassmannians have in common: at every point there is an isometry reversing geodesics through it. Curvature then comes from the bracket alone, $R(X,Y)Z = -[[X,Y],Z]$, and compact and non-compact types pair off in a duality that sends $S^n$ to $H^n$.</p>
 <h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
-<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. doi:10.1007/978-3-319-91755-9. Chapter 7 for the curvature tensor, its symmetries and the component count; the sign convention used here is Lee's.</li>
-<li>do Carmo, M.P. (1992) <em>Riemannian Geometry</em>. Boston: Birkhäuser. Chapter 4. Note that do Carmo's sign convention for $R$ is the opposite of Lee's — a real hazard when comparing formulae across texts, and the reason this notebook states its convention explicitly in the code.</li>
-<li>★ Callahan, J.J. (2000) <em>The Geometry of Spacetime</em>. New York: Springer. doi:10.1007/978-1-4757-6736-0. Chapter 6, for curvature reached through tidal acceleration rather than through parallel transport.</li>
-<li>Maxima Manual, <em>ctensor</em> package (<code>? ctensor</code> at the Maxima prompt, or the online manual). The index convention <code>mcs[i,j,k]</code> $= \Gamma^k_{ij}$ and the caching behaviour of <code>christof</code>/<code>riemann</code>/<code>ricci</code> are documented there.</li>
+<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. <a href="https://doi.org/10.1007/978-3-319-91755-9">doi:10.1007/978-3-319-91755-9</a>. Chapter 3 for invariant metrics and homogeneous spaces; Chapter 7 Problem set for the bi-invariant curvature formula.</li>
+<li>Milnor, J. (1976) 'Curvatures of left invariant metrics on Lie groups', <em>Advances in Mathematics</em>, 21(3), pp. 293–329. <a href="https://doi.org/10.1016/S0001-8708(76)80002-3">doi:10.1016/S0001-8708(76)80002-3</a>. The definitive treatment, and the source of most of what is known about left-invariant metrics that are not bi-invariant — including the $ax+b$ example.</li>
+<li>Helgason, S. (1978) <em>Differential Geometry, Lie Groups, and Symmetric Spaces</em>. New York: Academic Press. Chapters 2 and 4. The standard reference for the Killing form, Cartan's criteria and $G/H$.</li>
+<li>do Carmo, M.P. (1992) <em>Riemannian Geometry</em>. Boston: Birkhäuser. Chapter 3 exercises 1–4 develop bi-invariant metrics from scratch at exactly this level.</li>
+<li>Besse, A.L. (1987) <em>Einstein Manifolds</em>. Berlin: Springer. Chapter 7 for homogeneous Einstein metrics, if the next question is which $G/H$ carry them.</li>
 </ul>
 <hr/>
-<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result. The two sign/caching errors described above were found by that execution, not by inspection — both produced confidently wrong output that looked plausible.</em></p>
+<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell was executed. <code>linsolvewarn : false</code> is set in the first cell because the coordinate solver otherwise emits several hundred lines of "dependent equations eliminated".</em></p>
 </div>
 </div>
 </div>

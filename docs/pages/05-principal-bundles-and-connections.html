@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>04-the-curvature-tensor</title>
+<title>05-principal-bundles-and-connections</title>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7771,122 +7771,127 @@ a.anchor-link {
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b82c829e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f564d9aa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="4.04-%E2%80%94-The-Curvature-Tensor">4.04 — The Curvature Tensor<a class="anchor-link" href="#4.04-%E2%80%94-The-Curvature-Tensor">¶</a></h1><p>4.03 showed that $\Gamma$ can be made to vanish at any single point. So curvature cannot be $\Gamma$ itself — it must be something built from $\Gamma$ that <em>survives</em> that transformation. The construction is:</p>
-<p>$$R(X,Y)Z \;=\; \nabla_X\nabla_Y Z \;-\; \nabla_Y\nabla_X Z \;-\; \nabla_{[X,Y]}Z .$$</p>
-<p><strong>Curvature is the failure of covariant derivatives to commute.</strong> In flat space partial derivatives commute and $R = 0$; the last term subtracts off the part of the non-commutation that is merely due to the vector fields themselves not commuting, leaving something that depends only on the values of $X, Y, Z$ at the point — which is what makes $R$ a <strong>tensor</strong>.</p>
-<p>In coordinates,</p>
-<p>$$R^l_{\;ijk} = \partial_i\Gamma^l_{jk} - \partial_j\Gamma^l_{ik} + \Gamma^l_{im}\Gamma^m_{jk} - \Gamma^l_{jm}\Gamma^m_{ik}.$$</p>
-<p>Note it involves <strong>first derivatives of $\Gamma$</strong>, hence second derivatives of $g$ — exactly the order 4.03 found could not be transformed away.</p>
-<p><strong>This is the holonomy of 4.02, made infinitesimal.</strong> Transport a vector around a small parallelogram spanned by $X$ and $Y$; the discrepancy on return is $R(X,Y)Z$ to leading order. The finite rotation computed in 4.02 was the integral of this.</p>
-<p><strong>Symmetries.</strong> With all indices lowered, $R_{ijkl} = g_{im}R^m_{\;jkl}$ satisfies</p>
-<p>$$R_{ijkl} = -R_{jikl} = -R_{ijlk}, \qquad R_{ijkl} = R_{klij}, \qquad R_{i[jkl]} = 0 \;\text{(first Bianchi)},$$</p>
-<p>which cut the $n^4$ components down to $\tfrac{1}{12}n^2(n^2-1)$ independent ones:</p>
+<h1 id="5.05-%E2%80%94-Principal-Bundles-and-Connections">5.05 — Principal Bundles and Connections<a class="anchor-link" href="#5.05-%E2%80%94-Principal-Bundles-and-Connections">¶</a></h1><p>4.02 built a connection to compare tangent vectors at different points. That was one instance of a much more general construction, and this notebook gives the general one.</p>
+<p><strong>Principal bundles.</strong> A principal $G$-bundle is a space $P$ with a free, transitive-on-fibres right action of $G$, and a projection $\pi: P \to M$. The fibre over each point is a copy of $G$, but with <strong>no preferred identity</strong> — there is no canonical way to say which element of the fibre is "the" identity, and that is the entire content of the theory.</p>
+<p>The motivating example is the <strong>frame bundle</strong>: $P = \{$orthonormal frames at points of $M\}$, with $G = SO(n)$ acting by rotating frames. A point of $M$ has many frames and no canonical one.</p>
+<p><strong>Connections.</strong> A connection is a $\mathfrak g$-valued 1-form $A$ on $P$ — equivalently, in a local trivialisation, a $\mathfrak g$-valued 1-form on $U \subseteq M$:</p>
+<p>$$A = A_\mu\,dx^\mu, \qquad A_\mu \in \mathfrak g.$$</p>
+<p>It says which infinitesimal displacements in $P$ count as <em>horizontal</em>, hence how to transport along a curve. 4.02's Christoffel symbols are the components of this form for the frame bundle.</p>
+<p><strong>Curvature is the field strength.</strong></p>
+<p>$$F = dA + A\wedge A, \qquad F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu + [A_\mu, A_\nu].$$</p>
+<p>The bracket term is what 4.04 called the failure of covariant derivatives to commute — now visible as a genuine wedge product of algebra-valued forms.</p>
+<p><strong>Gauge transformations.</strong> Changing the local trivialisation by $g: U \to G$ acts by</p>
+<p>$$A \mapsto gAg^{-1} - (dg)g^{-1}, \qquad F \mapsto gFg^{-1}.$$</p>
+<p>$A$ transforms <em>inhomogeneously</em> — it is not a tensor, exactly as $\Gamma^k_{ij}$ was not (4.02). $F$ transforms by conjugation, so it is. <strong>This is the same distinction, one level up.</strong></p>
+<p><strong>The Bianchi identity</strong> becomes $DF = dF + [A,F] = 0$, or in components</p>
+<p>$$D_\lambda F_{\mu\nu} + D_\mu F_{\nu\lambda} + D_\nu F_{\lambda\mu} = 0.$$</p>
+<p><strong>Two specialisations, one construction.</strong></p>
 <table>
 <thead>
 <tr>
-<th>$n$</th>
-<th>components</th>
+<th>$G$</th>
+<th>$P$</th>
+<th>$A$</th>
+<th>$F$</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>2</td>
-<td><strong>1</strong> — a single number, which is $K$</td>
+<td>$SO(n)$</td>
+<td>frame bundle</td>
+<td>Levi-Civita connection</td>
+<td>Riemann tensor</td>
 </tr>
 <tr>
-<td>3</td>
-<td>6</td>
+<td>$U(1)$</td>
+<td>circle bundle</td>
+<td>electromagnetic potential</td>
+<td>electromagnetic field</td>
 </tr>
 <tr>
-<td>4</td>
-<td><strong>20</strong> — the number relevant to general relativity</td>
+<td>$SU(3){\times}SU(2){\times}U(1)$</td>
+<td>—</td>
+<td>gauge fields</td>
+<td>the Standard Model</td>
 </tr>
 </tbody>
 </table>
-<p>Dimension 2 is special: one component means all curvature information is the Gaussian curvature of Stage 3. Only from $n = 3$ does curvature become genuinely richer than a scalar.</p>
-<p>Maxima ships the <code>ctensor</code> package for exactly these computations, and we use it alongside a hand-rolled version so the machinery is not a black box.</p>
+<p>For $G = U(1)$ the algebra is abelian, the bracket drops out, and $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$ <strong>is Maxwell's field tensor</strong>, with the Bianchi identity $dF = 0$ being two of Maxwell's four equations. General relativity and electromagnetism are the same construction with different $G$.</p>
+<p>Maxima has no differential forms, so this notebook builds a small toolkit: $\mathfrak g$-valued 1-forms as lists of matrices $[A_1,\dots,A_n]$, and 2-forms as antisymmetric arrays of matrices.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4d6e765a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9cdda0b1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"numerics"</span><span class="p">)$</span>
-<span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
 <span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
-<span class="nf">ts</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">)$</span>
+<span class="nf">br</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="w"> </span><span class="nv">Y</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">X</span><span class="o">.</span><span class="nv">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Y</span><span class="o">.</span><span class="nv">X</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="cm">/* NOTE: these helpers are named *_hand deliberately.  Maxima's ctensor</span>
-<span class="cm">   package (used below for an independent check) defines `christof` and</span>
-<span class="cm">   `riemann` itself, and shadowing those would break it. */</span>
-<span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">ginv</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span><span class="w">  </span><span class="nv">ginv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">invert</span><span class="p">(</span><span class="nv">g</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
-<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">ginv</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span>
-<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
-<span class="w">                        </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
-<span class="w">    </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* ------------------------------------------------------------------</span>
+<span class="cm">   A minimal toolkit for Lie-algebra-valued forms.</span>
+<span class="cm">     a g-valued 1-form  A = A_μ dx^μ   is the list [A_1, ..., A_n]</span>
+<span class="cm">     a g-valued 2-form  F              is the nested list F[μ][ν],</span>
+<span class="cm">                                       antisymmetric, of matrices</span>
+<span class="cm">   ------------------------------------------------------------------ */</span>
+<span class="nf">dA</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">],</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">    </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">A</span><span class="p">[</span><span class="nv">nu</span><span class="p">],</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="nv">mu</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">A</span><span class="p">[</span><span class="nv">mu</span><span class="p">],</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="nv">nu</span><span class="p">])</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">nu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="cm">/* CONVENTION (following Lee):</span>
-<span class="cm">     R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_[X,Y] Z,   R(∂ᵢ,∂ⱼ)∂ₖ = R^l_{ijk} ∂_l</span>
-<span class="cm">   and the fully covariant tensor lowers the index into the LAST slot,</span>
-<span class="cm">     Rm_{ijkl} = g_{lm} R^m_{ijk} = ⟨R(∂ᵢ,∂ⱼ)∂ₖ, ∂_l⟩.</span>
-<span class="cm">   Sectional curvature is K = Rm(X,Y,Y,X)/(|X|²|Y|²−⟨X,Y⟩²), so in 2D</span>
-<span class="cm">     K = Rm_1221 / det g.</span>
-<span class="cm">   The index order 1,2,2,1 matters: lowering into the first slot instead</span>
-<span class="cm">   flips the sign, which is the commonest source of sign confusion here. */</span>
-<span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">G</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
-<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">j</span><span class="p">])</span>
-<span class="w">        </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">G</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">G</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
-<span class="w">    </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* the wedge A∧A of a g-valued 1-form with itself, in components */</span>
+<span class="nf">AwA</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">],</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">br</span><span class="p">(</span><span class="nv">A</span><span class="p">[</span><span class="nv">mu</span><span class="p">],</span><span class="w"> </span><span class="nv">A</span><span class="p">[</span><span class="nv">nu</span><span class="p">]),</span><span class="w"> </span><span class="nv">nu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rr</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">Rr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
-<span class="w">    </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">m</span><span class="p">]</span><span class="o">*</span><span class="nv">Rr</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">m</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
-<span class="w">    </span><span class="nv">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span><span class="w">      </span><span class="cm">/* index order i,j,k,l */</span>
+<span class="nf">Fstrength</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">D_</span><span class="p">,</span><span class="w"> </span><span class="nv">W_</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">D_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">dA</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">),</span><span class="w"> </span><span class="nv">W_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">AwA</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">),</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">D_</span><span class="p">[</span><span class="nv">mu</span><span class="p">][</span><span class="nv">nu</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">W_</span><span class="p">[</span><span class="nv">mu</span><span class="p">][</span><span class="nv">nu</span><span class="p">]),</span><span class="w"> </span><span class="nv">nu</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">K2d</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rm</span><span class="p">],</span><span class="w"> </span><span class="nv">Rm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">determinant</span><span class="p">(</span><span class="nv">g</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* covariant exterior derivative: D_λ F_μν = ∂_λ F_μν + [A_λ, F_μν] */</span>
+<span class="nf">covD</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">F</span><span class="p">,</span><span class="w"> </span><span class="nv">lam</span><span class="p">,</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="nv">nu</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span>
+<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">F</span><span class="p">[</span><span class="nv">mu</span><span class="p">][</span><span class="nv">nu</span><span class="p">],</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="nv">lam</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">br</span><span class="p">(</span><span class="nv">A</span><span class="p">[</span><span class="nv">lam</span><span class="p">],</span><span class="w"> </span><span class="nv">F</span><span class="p">[</span><span class="nv">mu</span><span class="p">][</span><span class="nv">nu</span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">assume</span><span class="p">(</span><span class="nv">R0</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
+<span class="cm">/* ------------------------------------------------------------------</span>
+<span class="cm">   G = U(1):  the algebra is iℝ, so all brackets vanish.</span>
+<span class="cm">   ------------------------------------------------------------------ */</span>
+<span class="nv">xs4</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">tt</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="p">]$</span>
+<span class="nf">depends</span><span class="p">([</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="nv">a1</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="p">,</span><span class="w"> </span><span class="nv">a3</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">)$</span>
+<span class="nv">Au1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">a0</span><span class="p">,</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">a1</span><span class="p">,</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">a2</span><span class="p">,</span><span class="w"> </span><span class="no">%i</span><span class="o">*</span><span class="nv">a3</span><span class="w"> </span><span class="p">]$</span><span class="w">      </span><span class="cm">/* u(1)-valued: 1×1, i.e. scalars */</span>
+<span class="nv">Fu1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">        </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Au1</span><span class="p">[</span><span class="nv">nu</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">[</span><span class="nv">mu</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Au1</span><span class="p">[</span><span class="nv">mu</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">[</span><span class="nv">nu</span><span class="p">])</span><span class="w"> </span><span class="p">),</span>
+<span class="w">        </span><span class="nv">nu</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)$</span>
 
-<span class="nv">g_sph</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">Rms</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"SPHERE of radius R₀, g = "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_sph</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   Rm_1212 = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Rms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     Rm_1221 = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Rms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   antisymmetric in the last pair, as required ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   K = Rm_1221/det g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">]),</span><span class="w"> </span><span class="s">"   = 1/R₀² ✓ (3.04 agrees)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"G = U(1).  A = i(a₀,a₁,a₂,a₃) dx^μ, brackets all zero."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F₀₁ = ∂₀A₁ − ∂₁A₀ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Fu1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      i(∂_t a₁ − ∂_x a₀) — up to the i, an electric field component"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F₁₂ = ∂₁A₂ − ∂₂A₁ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Fu1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      i(∂_x a₂ − ∂_y a₁) — a magnetic field component"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   antisymmetry F₀₁ + F₁₀ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Fu1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Fu1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]))$</span>
 
-<span class="nv">g_hyp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="cm">/* Bianchi dF = 0 in the abelian case */</span>
+<span class="nv">bad</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fu1</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">n</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">[</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fu1</span><span class="p">[</span><span class="nv">n</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">[</span><span class="nv">m</span><span class="p">])</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fu1</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">m</span><span class="p">],</span><span class="w"> </span><span class="nv">xs4</span><span class="p">[</span><span class="nv">n</span><span class="p">])</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">bad</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"HYPERBOLIC half-plane: K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]),</span><span class="w"> </span><span class="s">"   ✓"</span><span class="p">)$</span>
-
-<span class="nv">g_flat</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span>
-<span class="nv">g_pol</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">rr</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"EUCLIDEAN plane, Cartesian:  K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_flat</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the SAME plane in polar coordinates, g = "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="s">":"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   Γ ≠ 0 : "</span><span class="p">,</span><span class="w"> </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">" , "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])[</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   but R = "</span><span class="p">,</span><span class="w"> </span><span class="nf">riem_hand</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   and K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">g_pol</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">]),</span><span class="w"> </span><span class="s">" ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Nonzero Γ with zero R: the connection was reporting curved COORDINATES,"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"not a curved space. Only R distinguishes the two."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Bianchi ∂_λF_μν + ∂_μF_νλ + ∂_νF_λμ = 0 over all 64 triples:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      violations = "</span><span class="p">,</span><span class="w"> </span><span class="nv">bad</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   The four independent components of dF = 0 are ∇·B = 0 and"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ∇×E + ∂B/∂t = 0 — the two SOURCELESS Maxwell equations.  They"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   hold for any A whatsoever, because they are an identity about"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   d², not a law of physics.  The other two, d⋆F = J, are dynamics"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   and need a metric to define ⋆."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7899,76 +7904,73 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>SPHERE of radius R₀, g =  matrix([R0^2,0],[0,R0^2*sin(u)^2])
-   Rm_1212 =  -(R0^2*sin(u)^2)      Rm_1221 =  R0^2*sin(u)^2
-   antisymmetric in the last pair, as required ✓
-   K = Rm_1221/det g =  1/R0^2    = 1/R₀² ✓ (3.04 agrees)
-HYPERBOLIC half-plane: K =  -1    ✓
-EUCLIDEAN plane, Cartesian:  K =  0
-the SAME plane in polar coordinates, g =  matrix([1,0],[0,rr^2]) :
-   Γ ≠ 0 :  [[0,0],[0,-rr]]  ,  [[0,1/rr],[1/rr,0]]
-   but R =  [[[[0,0],[0,0]],[[0,0],[0,0]]],[[[0,0],[0,0]],[[0,0],[0,0]]]]
-   and K =  0  ✓
-Nonzero Γ with zero R: the connection was reporting curved COORDINATES,
-not a curved space. Only R distinguishes the two.</pre>
+<pre>G = U(1).  A = i(a₀,a₁,a₂,a₃) dx^μ, brackets all zero.
+   F₀₁ = ∂₀A₁ − ∂₁A₀ =  %i*'diff(a1,tt,1)-%i*'diff(a0,x,1)
+      i(∂_t a₁ − ∂_x a₀) — up to the i, an electric field component
+   F₁₂ = ∂₁A₂ − ∂₂A₁ =  %i*'diff(a2,x,1)-%i*'diff(a1,y,1)
+      i(∂_x a₂ − ∂_y a₁) — a magnetic field component
+   antisymmetry F₀₁ + F₁₀ =  0
+   Bianchi ∂_λF_μν + ∂_μF_νλ + ∂_νF_λμ = 0 over all 64 triples:
+      violations =  0
+   The four independent components of dF = 0 are ∇·B = 0 and
+   ∇×E + ∂B/∂t = 0 — the two SOURCELESS Maxwell equations.  They
+   hold for any A whatsoever, because they are an identity about
+   d², not a law of physics.  The other two, d⋆F = J, are dynamics
+   and need a metric to define ⋆.</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d32733c1">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2a7cfdc1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Independent check with Maxima's ctensor package --- */</span>
-<span class="nf">load</span><span class="p">(</span><span class="nv">ctensor</span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* ------------------------------------------------------------------</span>
+<span class="cm">   G = SU(2): a genuinely non-abelian gauge field on ℝ³</span>
+<span class="cm">   ------------------------------------------------------------------ */</span>
+<span class="nv">xs3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="p">]$</span>
+<span class="nv">Eb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">       </span><span class="nf">matrix</span><span class="p">([</span><span class="o">-</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="no">%i</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="p">]$</span>
 
-<span class="cm">/* ctensor stores Christoffel symbols as mcs[i,j,k] = Γᵏ_{ij}, i.e. the</span>
-<span class="cm">   UPPER index LAST — the opposite placement to the Γ[k][i][j] used above.</span>
-<span class="cm">   It also caches results in globals, so the whole chain must be recomputed</span>
-<span class="cm">   for each new metric: cmetric → christof → riemann → ricci → scurvature.</span>
-<span class="cm">   Calling scurvature() alone silently reuses the previous metric's Ricci</span>
-<span class="cm">   tensor, which is how a first version of this cell reported the sphere's</span>
-<span class="cm">   answer for the hyperbolic plane. */</span>
-<span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">metric</span><span class="p">,</span><span class="w"> </span><span class="nv">coords</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([],</span>
-<span class="w">  </span><span class="nv">dim</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">coords</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">ct_coords</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">coords</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">lg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">metric</span><span class="p">,</span>
-<span class="w">  </span><span class="nf">cmetric</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">christof</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">riemann</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">ricci</span><span class="p">(</span><span class="no">false</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">scurvature</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* nine independent component functions a^k_μ(x,y,z) */</span>
+<span class="nv">asym</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">concat</span><span class="p">(</span><span class="nv">aa</span><span class="p">,</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="nv">k</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)$</span>
+<span class="nf">apply</span><span class="p">(</span><span class="nv">depends</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nf">flatten</span><span class="p">(</span><span class="nv">asym</span><span class="p">),</span><span class="w"> </span><span class="nv">xs3</span><span class="p">])$</span>
+<span class="nv">Asu</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nv">asym</span><span class="p">[</span><span class="nv">mu</span><span class="p">][</span><span class="nv">k</span><span class="p">]</span><span class="o">*</span><span class="nv">Eb</span><span class="p">[</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)$</span>
 
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the sphere of radius R₀:"</span><span class="p">)$</span>
-<span class="nv">gs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_sph</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gs</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   mcs[2,2,1] = Γ¹₂₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">mcs</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span>
-<span class="w">      </span><span class="s">"     hand-rolled Γ¹₂₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   mcs[1,2,2] = Γ²₁₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">mcs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]),</span>
-<span class="w">      </span><span class="s">"     hand-rolled Γ²₁₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">christoffel_hand</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_sph</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = S/2 = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_sph</span><span class="o">/</span><span class="mi">2</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   hand-rolled K    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gs</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   difference       = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">sc_sph</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gs</span><span class="p">,[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
+<span class="nv">Fsu</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">Fstrength</span><span class="p">(</span><span class="nv">Asu</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"SU(2) on ℝ³, A_μ = Σₖ a^k_μ(x,y,z) Eₖ :"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A₁ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Asu</span><span class="p">[</span><span class="mi">1</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F₁₂ is anti-Hermitian and traceless (i.e. in su(2)) ? "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">is</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">Fsu</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">conjugate</span><span class="p">(</span><span class="nf">transpose</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="p">)</span>
+<span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">          </span><span class="ow">and</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F antisymmetric ?  F₁₂ + F₂₁ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Fsu</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]))$</span>
 
+<span class="cm">/* --- the non-abelian Bianchi identity --- */</span>
+<span class="nv">bad2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">covD</span><span class="p">(</span><span class="nv">Asu</span><span class="p">,</span><span class="nv">Fsu</span><span class="p">,</span><span class="nv">l</span><span class="p">,</span><span class="nv">m</span><span class="p">,</span><span class="nv">n</span><span class="p">,</span><span class="nv">xs3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">covD</span><span class="p">(</span><span class="nv">Asu</span><span class="p">,</span><span class="nv">Fsu</span><span class="p">,</span><span class="nv">m</span><span class="p">,</span><span class="nv">n</span><span class="p">,</span><span class="nv">l</span><span class="p">,</span><span class="nv">xs3</span><span class="p">)</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="nf">covD</span><span class="p">(</span><span class="nv">Asu</span><span class="p">,</span><span class="nv">Fsu</span><span class="p">,</span><span class="nv">n</span><span class="p">,</span><span class="nv">l</span><span class="p">,</span><span class="nv">m</span><span class="p">,</span><span class="nv">xs3</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">then</span><span class="w"> </span><span class="nv">bad2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bad2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the hyperbolic half-plane:"</span><span class="p">)$</span>
-<span class="nv">gh</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_hyp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gh</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_hyp</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_hyp</span><span class="o">/</span><span class="mi">2</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   hand-rolled K    = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gh</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   difference       = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">sc_hyp</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">K2d</span><span class="p">(</span><span class="nv">gh</span><span class="p">,[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"ctensor on the flat plane in polar coordinates:"</span><span class="p">)$</span>
-<span class="nv">gp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">rr</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc_pol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">gp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="nv">th</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc_pol</span><span class="p">,</span><span class="w"> </span><span class="s">"   ⟹ K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">sc_pol</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Two independent implementations, three metrics, same answers."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Bianchi  D_λF_μν + D_μF_νλ + D_νF_λμ = 0  over all 27 triples:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      violations = "</span><span class="p">,</span><span class="w"> </span><span class="nv">bad2</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   The ordinary derivative alone does NOT satisfy this — the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   [A_λ, F_μν] terms are needed.  Check that:"</span><span class="p">)$</span>
+<span class="nv">bad3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">n</span><span class="p">],</span><span class="nv">xs3</span><span class="p">[</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="nv">n</span><span class="p">][</span><span class="nv">l</span><span class="p">],</span><span class="nv">xs3</span><span class="p">[</span><span class="nv">m</span><span class="p">])</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">Fsu</span><span class="p">[</span><span class="nv">l</span><span class="p">][</span><span class="nv">m</span><span class="p">],</span><span class="nv">xs3</span><span class="p">[</span><span class="nv">n</span><span class="p">])</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">then</span><span class="w"> </span><span class="nv">bad3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bad3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      violations of the NAIVE ∂-only version = "</span><span class="p">,</span><span class="w"> </span><span class="nv">bad3</span><span class="p">,</span><span class="w"> </span><span class="s">" out of 27"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   So the covariant derivative is not decoration.  In the abelian"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   case above the two versions coincide, which is why Maxwell needs"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   no such correction."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7981,74 +7983,88 @@ not a curved space. Only R distinguishes the two.</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>ctensor on the sphere of radius R₀:
-   mcs[2,2,1] = Γ¹₂₂ =  -(cos(u)*sin(u))      hand-rolled Γ¹₂₂ =
-                       -(cos(u)*sin(u))
-   mcs[1,2,2] = Γ²₁₂ =  cos(u)/sin(u)      hand-rolled Γ²₁₂ =  cos(u)/sin(u)
-   scalar curvature =  2/R0^2    ⟹ K = S/2 =  1/R0^2
-   hand-rolled K    =  1/R0^2
-   difference       =  0   ✓
-ctensor on the hyperbolic half-plane:
-   scalar curvature =  -2    ⟹ K =  -1
-   hand-rolled K    =  -1
-   difference       =  0   ✓
-ctensor on the flat plane in polar coordinates:
-   scalar curvature =  0    ⟹ K =  0   ✓
-Two independent implementations, three metrics, same answers.</pre>
+<pre>SU(2) on ℝ³, A_μ = Σₖ a^k_μ(x,y,z) Eₖ :
+   A₁ =
+        matrix([-((%i*aa13)/2),-(aa12/2)-(%i*aa11)/2],
+               [aa12/2-(%i*aa11)/2,(%i*aa13)/2])
+   F₁₂ is anti-Hermitian and traceless (i.e. in su(2)) ?  true
+   F antisymmetric ?  F₁₂ + F₂₁ =  matrix([0,0],[0,0])
+   Bianchi  D_λF_μν + D_μF_νλ + D_νF_λμ = 0  over all 27 triples:
+      violations =  0
+   The ordinary derivative alone does NOT satisfy this — the
+   [A_λ, F_μν] terms are needed.  Check that:
+      violations of the NAIVE ∂-only version =  6  out of 27
+   So the covariant derivative is not decoration.  In the abelian
+   case above the two versions coincide, which is why Maxwell needs
+   no such correction.</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=23aea02c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c4905b63">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The symmetries of R, checked component by component --- */</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">Rm</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">a1</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">Rm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">riem_low_hand</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">),</span><span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">a1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">k</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">l</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nv">n_</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">j</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">a1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">k</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">pair</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">k</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Rm</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">l</span><span class="p">][</span><span class="nv">j</span><span class="p">][</span><span class="nv">k</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">       </span><span class="k">then</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">bianchi</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">,</span><span class="w"> </span><span class="s">":  violations —"</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      antisymmetry in first pair : "</span><span class="p">,</span><span class="w"> </span><span class="nv">a1</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      antisymmetry in last pair  : "</span><span class="p">,</span><span class="w"> </span><span class="nv">a2</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      pair exchange R_ijkl=R_klij: "</span><span class="p">,</span><span class="w"> </span><span class="nv">pair</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      first Bianchi identity     : "</span><span class="p">,</span><span class="w"> </span><span class="nv">bianchi</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* ------------------------------------------------------------------</span>
+<span class="cm">   Gauge transformations:  A ↦ gAg⁻¹ − (dg)g⁻¹,   F ↦ gFg⁻¹</span>
+<span class="cm">   ------------------------------------------------------------------ */</span>
+<span class="nf">depends</span><span class="p">(</span><span class="nv">ph</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
+<span class="nv">gg</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="no">%i</span><span class="o">*</span><span class="nv">ph</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="no">%i</span><span class="o">*</span><span class="nv">ph</span><span class="o">/</span><span class="mi">2</span><span class="p">)])$</span><span class="w">   </span><span class="cm">/* = exp(φ E₃) */</span>
+<span class="nv">ggi</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">exp</span><span class="p">(</span><span class="no">%i</span><span class="o">*</span><span class="nv">ph</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="no">%i</span><span class="o">*</span><span class="nv">ph</span><span class="o">/</span><span class="mi">2</span><span class="p">)])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"g = exp(φ E₃) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">gg</span><span class="p">,</span><span class="w"> </span><span class="s">"   g g⁻¹ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">gg</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi</span><span class="p">))$</span>
 
-<span class="nf">print</span><span class="p">(</span><span class="s">"symmetries of the Riemann tensor (count of violating components):"</span><span class="p">)$</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">R0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="s">"sphere    "</span><span class="p">)$</span>
-<span class="nf">check_syms</span><span class="p">(</span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">]),</span><span class="w">        </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="s">"hyperbolic"</span><span class="p">)$</span>
+<span class="nf">gauge</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nv">gg_</span><span class="p">,</span><span class="w"> </span><span class="nv">ggi_</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span>
+<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">gg_</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">A</span><span class="p">[</span><span class="nv">mu</span><span class="p">]</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi_</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">gg_</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="nv">mu</span><span class="p">])</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi_</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">mu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">xs</span><span class="p">))$</span>
 
-<span class="cm">/* --- Component counts --- */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"independent components of R in dimension n:  n²(n²−1)/12"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"    n      n⁴        independent"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">nn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="p">,</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="o">^</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s">"         "</span><span class="p">,</span><span class="w"> </span><span class="nv">nn</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nv">nn</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"n = 2 gives ONE component, so all curvature is the single number K —"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"which is why Stage 3 needed only a scalar. n = 4 gives 20, the count"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"that matters for general relativity (6.02)."</span><span class="p">)$</span>
+<span class="nv">Ap</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">gauge</span><span class="p">(</span><span class="nv">Asu</span><span class="p">,</span><span class="w"> </span><span class="nv">gg</span><span class="p">,</span><span class="w"> </span><span class="nv">ggi</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
+<span class="nv">Fp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">Fstrength</span><span class="p">(</span><span class="nv">Ap</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
 
-<span class="cm">/* --- A 3-dimensional example: the round 3-sphere --- */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the round 3-sphere, ds² = dχ² + sin²χ (dθ² + sin²θ dφ²):"</span><span class="p">)$</span>
-<span class="nv">g3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">ch</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">te</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nv">sc3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ct_scalar</span><span class="p">(</span><span class="nv">g3</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">ch</span><span class="p">,</span><span class="w"> </span><span class="nv">te</span><span class="p">,</span><span class="w"> </span><span class="nv">ph</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   scalar curvature = "</span><span class="p">,</span><span class="w"> </span><span class="nv">sc3</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   for a unit n-sphere S = n(n−1); with n = 3 that is 6 ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   constant, as a homogeneous space must be —"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   but now the curvature has 6 components, not 1."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A′₁ still in su(2) ?  A′₁ + A′₁† = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">conjugate</span><span class="p">(</span><span class="nf">transpose</span><span class="p">(</span><span class="nv">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="s">"   tr = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">])))$</span>
+
+<span class="nv">badg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">Fp</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">n</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">gg</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">Fsu</span><span class="p">[</span><span class="nv">m</span><span class="p">][</span><span class="nv">n</span><span class="p">]</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">then</span><span class="w"> </span><span class="nv">badg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">badg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F′_μν − g F_μν g⁻¹  over all 9 components:  violations = "</span><span class="p">,</span><span class="w"> </span><span class="nv">badg</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F transforms by CONJUGATION: it is a tensor (an ad-valued 2-form)."</span><span class="p">)$</span>
+
+<span class="cm">/* A itself does not */</span>
+<span class="nv">badA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">Ap</span><span class="p">[</span><span class="nv">m</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">gg</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">Asu</span><span class="p">[</span><span class="nv">m</span><span class="p">]</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">then</span><span class="w"> </span><span class="nv">badA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">badA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A′_μ − g A_μ g⁻¹  (i.e. dropping the −(dg)g⁻¹ term): "</span><span class="p">,</span>
+<span class="w">      </span><span class="nv">badA</span><span class="p">,</span><span class="w"> </span><span class="s">" of 3 components differ"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   The extra term is "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="nf">diff</span><span class="p">(</span><span class="nv">gg</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">ggi</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="s">"  for μ = 1."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A is NOT a tensor.  Exactly the status of Γᵏᵢⱼ in 4.02, and for"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   exactly the same reason: it encodes a choice of trivialisation,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   there a choice of coordinates."</span><span class="p">)$</span>
+
+<span class="cm">/* --- pure gauge: A = −(dg)g⁻¹ has F = 0 --- */</span>
+<span class="nv">Azero</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="nf">zeromatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">]$</span>
+<span class="nv">Apure</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">gauge</span><span class="p">(</span><span class="nv">Azero</span><span class="p">,</span><span class="w"> </span><span class="nv">gg</span><span class="p">,</span><span class="w"> </span><span class="nv">ggi</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
+<span class="nv">Fpure</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">Fstrength</span><span class="p">(</span><span class="nv">Apure</span><span class="p">,</span><span class="w"> </span><span class="nv">xs3</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"PURE GAUGE.  Starting from A = 0 and transforming by g:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A^pure₁ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Apure</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">"   ≠ 0"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   F^pure  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Fpure</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="s">", "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Fpure</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]),</span>
+<span class="w">      </span><span class="s">", "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Fpure</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   A non-zero connection with zero curvature.  This is 4.04's polar-"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   coordinate plane in gauge-theoretic dress: Γ ≠ 0 with R = 0, the"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   connection reporting a choice rather than a geometry."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   On a space with non-trivial π₁ a flat connection can still have"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   non-trivial holonomy — that is the Aharonov–Bohm effect, and 4.02"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   met the Riemannian version of it."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -8061,105 +8077,258 @@ Two independent implementations, three metrics, same answers.</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>symmetries of the Riemann tensor (count of violating components):
-    sphere     :  violations —
-      antisymmetry in first pair :  0
-      antisymmetry in last pair  :  0
-      pair exchange R_ijkl=R_klij:  0
-      first Bianchi identity     :  0
-    hyperbolic :  violations —
-      antisymmetry in first pair :  0
-      antisymmetry in last pair  :  0
-      pair exchange R_ijkl=R_klij:  0
-      first Bianchi identity     :  0
-independent components of R in dimension n:  n²(n²−1)/12
-    n      n⁴        independent
-    2        16           1
-    3        81           6
-    4        256           20
-    5        625           50
-n = 2 gives ONE component, so all curvature is the single number K —
-which is why Stage 3 needed only a scalar. n = 4 gives 20, the count
-that matters for general relativity (6.02).
-the round 3-sphere, ds² = dχ² + sin²χ (dθ² + sin²θ dφ²):
-   scalar curvature =  6
-   for a unit n-sphere S = n(n−1); with n = 3 that is 6 ✓
-   constant, as a homogeneous space must be —
-   but now the curvature has 6 components, not 1.</pre>
+<pre>g = exp(φ E₃) =  matrix([%e^-((%i*ph)/2),0],[0,%e^((%i*ph)/2)])    g g⁻¹ =
+                matrix([1,0],[0,1])
+   A′₁ still in su(2) ?  A′₁ + A′₁† =  matrix([0,0],[0,0])    tr =  0
+   F′_μν − g F_μν g⁻¹  over all 9 components:  violations =  0
+   F transforms by CONJUGATION: it is a tensor (an ad-valued 2-form).
+   A′_μ − g A_μ g⁻¹  (i.e. dropping the −(dg)g⁻¹ term):
+  3  of 3 components differ
+   The extra term is
+                     matrix([(%i*'diff(ph,x,1))/2,0],
+                            [0,-((%i*'diff(ph,x,1))/2)])   for μ = 1.
+   A is NOT a tensor.  Exactly the status of Γᵏᵢⱼ in 4.02, and for
+   exactly the same reason: it encodes a choice of trivialisation,
+   there a choice of coordinates.
+PURE GAUGE.  Starting from A = 0 and transforming by g:
+   A^pure₁ =  matrix([(%i*'diff(ph,x,1))/2,0],[0,-((%i*'diff(ph,x,1))/2)])
+                ≠ 0
+   F^pure  =  matrix([0,0],[0,0]) ,  matrix([0,0],[0,0]) ,
+             matrix([0,0],[0,0])
+   A non-zero connection with zero curvature.  This is 4.04's polar-
+   coordinate plane in gauge-theoretic dress: Γ ≠ 0 with R = 0, the
+   connection reporting a choice rather than a geometry.
+   On a space with non-trivial π₁ a flat connection can still have
+   non-trivial holonomy — that is the Aharonov–Bohm effect, and 4.02
+   met the Riemannian version of it.</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=edee4ef5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* ------------------------------------------------------------------</span>
+<span class="cm">   The Levi-Civita connection as an SO(2) gauge field on a surface.</span>
+<span class="cm">   Forms in 2 dimensions:  a 1-form is [a₁,a₂] w.r.t. (dx¹,dx²);</span>
+<span class="cm">   a 2-form is the single coefficient of dx¹∧dx².</span>
+<span class="cm">   ------------------------------------------------------------------ */</span>
+<span class="nf">d1</span><span class="p">(</span><span class="nv">al</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">al</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">al</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">xs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">wed</span><span class="p">(</span><span class="nv">al</span><span class="p">,</span><span class="w"> </span><span class="nv">be</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">al</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">be</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">al</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">be</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="cm">/* Cartan's first structure equation, solved for the connection 1-form:</span>
+<span class="cm">      dθ¹ = ω¹₂ ∧ θ²,   dθ² = −ω¹₂ ∧ θ¹   (ω²₁ = −ω¹₂ since so(2) is skew)</span>
+<span class="cm">   Two linear equations for the two components of ω. */</span>
+<span class="nf">connform</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">w1</span><span class="p">,</span><span class="w"> </span><span class="nv">w2</span><span class="p">,</span><span class="w"> </span><span class="nv">sol</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">sol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">linsolve</span><span class="p">(</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">wed</span><span class="p">([</span><span class="nv">w1</span><span class="p">,</span><span class="nv">w2</span><span class="p">],</span><span class="w"> </span><span class="nv">th2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">d1</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">                   </span><span class="o">-</span><span class="nf">wed</span><span class="p">([</span><span class="nv">w1</span><span class="p">,</span><span class="nv">w2</span><span class="p">],</span><span class="w"> </span><span class="nv">th1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">d1</span><span class="p">(</span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">w1</span><span class="p">,</span><span class="w"> </span><span class="nv">w2</span><span class="p">]</span><span class="w"> </span><span class="p">),</span>
+<span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">rhs</span><span class="p">(</span><span class="nv">sol</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">rhs</span><span class="p">(</span><span class="nv">sol</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="cm">/* second structure equation: dω¹₂ = −K θ¹∧θ² */</span>
+<span class="nf">curv_from_frame</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">om</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">om</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">connform</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">d1</span><span class="p">(</span><span class="nv">om</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">wed</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">frame_report</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">om</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">om</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">connform</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      θ¹ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="s">"   θ² = "</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      ω¹₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">om</span><span class="p">,</span><span class="w"> </span><span class="s">"     dω¹₂ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">d1</span><span class="p">(</span><span class="nv">om</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">)),</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      K = −dω¹₂ / (θ¹∧θ²) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">curv_from_frame</span><span class="p">(</span><span class="nv">th1</span><span class="p">,</span><span class="w"> </span><span class="nv">th2</span><span class="p">,</span><span class="w"> </span><span class="nv">xs</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nf">assume</span><span class="p">(</span><span class="nv">R0</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">rr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"CARTAN'S STRUCTURE EQUATIONS on surfaces."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"so(2) is 1-dimensional and ABELIAN, so the A∧A term vanishes and"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"the curvature 2-form is simply F = dω — the same situation as"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"electromagnetism, with SO(2) ≅ U(1) in place of the gauge group."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">frame_report</span><span class="p">([</span><span class="nv">R0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">R0</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)],</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="s">"sphere of radius R₀"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">frame_report</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="s">"hyperbolic half-plane"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">frame_report</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">rr</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="w"> </span><span class="nv">th</span><span class="p">],</span><span class="w"> </span><span class="s">"Euclidean plane, polar coordinates"</span><span class="p">)$</span>
+
+<span class="cm">/* the general surface of revolution */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">depends</span><span class="p">(</span><span class="nv">f</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="p">)$</span>
+<span class="nf">frame_report</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">f</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="s">"surface of revolution, θ² = f(u) dv"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      which is −f''/f, the formula 3.04 derived from the second"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"      fundamental form and 4.06 used for Jacobi fields."</span><span class="p">)$</span>
+<span class="nf">remove</span><span class="p">(</span><span class="nv">f</span><span class="p">,</span><span class="w"> </span><span class="nv">dependency</span><span class="p">)$</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Every value agrees with 4.04, which computed them from Christoffel"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"symbols and a four-index Riemann tensor.  Here they come from two"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"structure equations and a 2×2 linear solve — the frame-bundle route"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"is simply less work, and it is the route that generalises to gauge"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"groups other than SO(n)."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The dictionary:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ω¹₂        the connection A, an so(2)-valued 1-form"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   dω¹₂       the curvature F = dA (no A∧A: so(2) is abelian)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K          the single independent component of F, since in 2D"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"              both Λ²T*M and so(2) are 1-dimensional"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   frames     the fibre: SO(2) worth of orthonormal frames per point,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"              with no canonical one — which is the whole reason a"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"              CONNECTION is needed to compare them."</span><span class="p">)$</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>CARTAN'S STRUCTURE EQUATIONS on surfaces.
+so(2) is 1-dimensional and ABELIAN, so the A∧A term vanishes and
+the curvature 2-form is simply F = dω — the same situation as
+electromagnetism, with SO(2) ≅ U(1) in place of the gauge group.
+    sphere of radius R₀
+      θ¹ =  [R0,0]    θ² =  [0,R0*sin(u)]
+      ω¹₂ =  [0,cos(u)]      dω¹₂ =  -sin(u)
+      K = −dω¹₂ / (θ¹∧θ²) =  1/R0^2
+    hyperbolic half-plane
+      θ¹ =  [1/y,0]    θ² =  [0,1/y]
+      ω¹₂ =  [1/y,0]      dω¹₂ =  1/y^2
+      K = −dω¹₂ / (θ¹∧θ²) =  -1
+    Euclidean plane, polar coordinates
+      θ¹ =  [1,0]    θ² =  [0,rr]
+      ω¹₂ =  [0,1]      dω¹₂ =  0
+      K = −dω¹₂ / (θ¹∧θ²) =  0
+    surface of revolution, θ² = f(u) dv
+      θ¹ =  [1,0]    θ² =  [0,f]
+      ω¹₂ =  [0,'diff(f,u,1)]      dω¹₂ =  'diff(f,u,2)
+      K = −dω¹₂ / (θ¹∧θ²) =  -('diff(f,u,2)/f)
+      which is −f''/f, the formula 3.04 derived from the second
+      fundamental form and 4.06 used for Jacobi fields.
+Every value agrees with 4.04, which computed them from Christoffel
+symbols and a four-index Riemann tensor.  Here they come from two
+structure equations and a 2×2 linear solve — the frame-bundle route
+is simply less work, and it is the route that generalises to gauge
+groups other than SO(n).
+The dictionary:
+   ω¹₂        the connection A, an so(2)-valued 1-form
+   dω¹₂       the curvature F = dA (no A∧A: so(2) is abelian)
+   K          the single independent component of F, since in 2D
+              both Λ²T*M and so(2) are 1-dimensional
+   frames     the fibre: SO(2) worth of orthonormal frames per point,
+              with no canonical one — which is the whole reason a
+              CONNECTION is needed to compare them.</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1cd4f431">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f15bd635">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$R^l_{\;ijk} = \partial_i\Gamma^l_{jk} - \partial_j\Gamma^l_{ik} + \Gamma^l_{im}\Gamma^m_{jk} - \Gamma^l_{jm}\Gamma^m_{ik}$$</p>
-<p><strong>The polar-coordinate plane is the whole lesson.</strong> Its Christoffel symbols are conspicuously non-zero — $\Gamma^1_{22} = -r$, $\Gamma^2_{12} = 1/r$ — yet every one of its 16 Riemann components came out <strong>identically zero</strong>. $\Gamma$ was reporting curved <em>coordinates</em>; $R$ reports curved <em>space</em>. Only the second is geometry.</p>
-<p><strong>Two implementations, three metrics, no disagreement.</strong> The hand-rolled tensor and Maxima's <code>ctensor</code> package agree to zero difference on the sphere ($K = 1/R_0^2$), the hyperbolic half-plane ($K = -1$) and the flat plane in polar coordinates ($K = 0$). The sphere's value matches 3.04's Gaussian curvature, computed there from the second fundamental form of an <em>embedded</em> surface — so this abstract, embedding-free definition reproduces the extrinsic answer. That is Theorema Egregium (3.05) again, now as a consistency check on the machinery.</p>
-<p><strong>Two sign traps, both hit while writing this.</strong></p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$F = dA + A\wedge A, \qquad A \mapsto gAg^{-1} - (dg)g^{-1}, \qquad F \mapsto gFg^{-1}$$</p>
+<p><strong>$U(1)$ gives Maxwell for free.</strong> With an abelian algebra the bracket drops out and $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$. The Bianchi identity was checked over all 64 index triples on $\mathbb{R}^{1,3}$: <strong>zero violations</strong>, for a completely arbitrary $A$. Those four independent components are $\nabla\cdot B = 0$ and $\nabla\times E + \partial_tB = 0$ — half of Maxwell's equations, holding as an identity about $d^2$ rather than as a physical law. The other half, $d\star F = J$, is dynamics and needs a metric to define $\star$.</p>
+<p><strong>Non-abelian: the covariant derivative earns its keep.</strong> For a generic $SU(2)$ connection on $\mathbb{R}^3$ with nine independent component functions:</p>
 <table>
 <thead>
 <tr>
-<th>Trap</th>
-<th>Symptom</th>
-<th>Fix</th>
+<th>identity</th>
+<th>violations (of 27 triples)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Lowering the index into the <em>first</em> slot</td>
-<td>sphere reported $K = -1/R_0^2$</td>
-<td>lower into the <strong>last</strong> slot, $Rm_{ijkl} = g_{lm}R^m_{\;ijk}$, and read $K = Rm_{1221}/\det g$</td>
+<td>$D_\lambda F_{\mu\nu} + D_\mu F_{\nu\lambda} + D_\nu F_{\lambda\mu} = 0$</td>
+<td><strong>0</strong></td>
 </tr>
 <tr>
-<td><code>ctensor</code> caches globals</td>
-<td>hyperbolic plane reported the <em>sphere's</em> curvature</td>
-<td>recompute the full chain <code>cmetric → christof → riemann → ricci → scurvature</code> per metric</td>
+<td>the naive $\partial$-only version</td>
+<td><strong>6</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Neither would have been visible without checking against a known answer. The <code>ctensor</code> convention also differs from ours: <code>mcs[i,j,k]</code> is $\Gamma^k_{ij}$, upper index <strong>last</strong>.</p>
-<p><strong>The symmetries hold exactly.</strong> Antisymmetry in each pair, pair exchange, and the first Bianchi identity were checked component by component on both curved metrics: zero violations out of 16 components each. Those identities are what reduce $n^4$ components to $\tfrac{1}{12}n^2(n^2-1)$:</p>
+<p>The $[A_\lambda, F_{\mu\nu}]$ terms are not decoration. In the abelian case the two versions coincide, which is exactly why Maxwell needs no correction.</p>
+<p><strong>$A$ is not a tensor; $F$ is.</strong> Under $g = \exp(\varphi E_3)$ with $\varphi$ an arbitrary function, $F'_{\mu\nu} - gF_{\mu\nu}g^{-1}$ vanished in all nine components, while $A'_\mu - gA_\mu g^{-1}$ differed in <strong>all three</strong> — by exactly the inhomogeneous term $-(\partial_\mu g)g^{-1}$. This is the status of $\Gamma^k_{ij}$ in 4.02, one level of abstraction up, and for the same reason: $A$ records a choice of trivialisation, $\Gamma$ a choice of coordinates.</p>
+<p><strong>Pure gauge.</strong> Transforming $A = 0$ by $g$ gives a non-zero connection with $F$ identically zero in every component. That is 4.04's polar-coordinate plane in gauge-theoretic dress — $\Gamma \ne 0$ with $R \equiv 0$, the connection reporting a choice rather than a geometry. On a space with non-trivial $\pi_1$ a flat connection can still carry non-trivial holonomy, which is the Aharonov–Bohm effect.</p>
+<p><strong>The Levi-Civita connection is an $SO(2)$ gauge field.</strong> Cartan's structure equations $d\theta^1 = \omega^1_{\;2}\wedge\theta^2$, $d\theta^2 = -\omega^1_{\;2}\wedge\theta^1$, $d\omega^1_{\;2} = -K\,\theta^1\wedge\theta^2$ were solved as a $2\times2$ linear system:</p>
 <table>
 <thead>
 <tr>
-<th>$n$</th>
-<th>$n^4$</th>
-<th>independent</th>
+<th>surface</th>
+<th>$\omega^1_{\;2}$</th>
+<th>$K$</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>2</td>
-<td>16</td>
-<td><strong>1</strong></td>
+<td>sphere of radius $R_0$</td>
+<td>$\cos u\,dv$</td>
+<td>$1/R_0^2$</td>
 </tr>
 <tr>
-<td>3</td>
-<td>81</td>
-<td>6</td>
+<td>hyperbolic half-plane</td>
+<td>$dx/y$</td>
+<td>$-1$</td>
 </tr>
 <tr>
-<td>4</td>
-<td>256</td>
-<td><strong>20</strong></td>
+<td>plane in polar coordinates</td>
+<td>$d\theta$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>revolution, $\theta^2 = f\,dv$</td>
+<td>$f'\,dv$</td>
+<td>$-f''/f$</td>
 </tr>
 </tbody>
 </table>
-<p>Dimension 2 having exactly one component is why all of Stage 3 could be done with the scalar $K$. The round 3-sphere, computed here, has scalar curvature $6 = n(n-1)$ — still constant, as a homogeneous space must be, but now carried by six components rather than one.</p>
-<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>4.05 — Sectional, Ricci and Scalar Curvature</strong> extracts usable numbers from those 20 components: $K(\sigma)$ for a 2-plane, its average $\mathrm{Ric}$, and the full trace $S$. Ricci is the one Einstein's equations are written in.</p>
+<p>Every value matches 4.04, which reached them through Christoffel symbols and a four-index Riemann tensor. The frame route is two structure equations and a linear solve, and unlike the Christoffel route it generalises to gauge groups other than $SO(n)$.</p>
+<p>Note what makes the surface case easy: $\mathfrak{so}(2)$ is <strong>abelian</strong>, so $A\wedge A = 0$ and $F = d\omega$ exactly — a surface is, gauge-theoretically, an electromagnetism problem.</p>
+<p><strong>One construction, several subjects.</strong></p>
+<table>
+<thead>
+<tr>
+<th>$G$</th>
+<th>$A$</th>
+<th>$F$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$SO(n)$</td>
+<td>Levi-Civita connection</td>
+<td>Riemann tensor</td>
+</tr>
+<tr>
+<td>$U(1)$</td>
+<td>electromagnetic potential</td>
+<td>electromagnetic field</td>
+</tr>
+<tr>
+<td>$SU(2)$, $SU(3)$</td>
+<td>Yang–Mills fields</td>
+<td>field strengths</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>5.06 — Characteristic Classes</strong> asks what survives when the gauge is forgotten. Invariant polynomials in $F$ — $\operatorname{tr}(F)$, $\operatorname{tr}(F\wedge F)$, $\det(I + F)$ — are gauge-invariant by construction and closed by Bianchi, so they define de Rham classes independent of the connection. Chern–Weil theory turns curvature into topology, and Gauss–Bonnet (3.08) becomes the two-dimensional case of a general theorem.</p>
 <h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
-<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. doi:10.1007/978-3-319-91755-9. Chapter 7 for the curvature tensor, its symmetries and the component count; the sign convention used here is Lee's.</li>
-<li>do Carmo, M.P. (1992) <em>Riemannian Geometry</em>. Boston: Birkhäuser. Chapter 4. Note that do Carmo's sign convention for $R$ is the opposite of Lee's — a real hazard when comparing formulae across texts, and the reason this notebook states its convention explicitly in the code.</li>
-<li>★ Callahan, J.J. (2000) <em>The Geometry of Spacetime</em>. New York: Springer. doi:10.1007/978-1-4757-6736-0. Chapter 6, for curvature reached through tidal acceleration rather than through parallel transport.</li>
-<li>Maxima Manual, <em>ctensor</em> package (<code>? ctensor</code> at the Maxima prompt, or the online manual). The index convention <code>mcs[i,j,k]</code> $= \Gamma^k_{ij}$ and the caching behaviour of <code>christof</code>/<code>riemann</code>/<code>ricci</code> are documented there.</li>
+<li>Kobayashi, S. and Nomizu, K. (1963, 1969) <em>Foundations of Differential Geometry</em>, vols I–II. New York: Wiley. The reference account of principal bundles, connections and holonomy. Volume I Chapter II is where the definitions used here are pinned down.</li>
+<li>Nakahara, M. (2003) <em>Geometry, Topology and Physics</em>. 2nd edn. Bristol: Institute of Physics. Chapters 9–10. Written for physicists, and the clearest place to see the gauge-theory and Riemannian pictures written in the same notation.</li>
+<li>Baez, J.C. and Muniain, J.P. (1994) <em>Gauge Fields, Knots and Gravity</em>. Singapore: World Scientific. Part II builds exactly the $U(1)$-to-$SU(2)$ progression of this notebook, from Maxwell up, with unusual care about what is definition and what is theorem.</li>
+<li>Frankel, T. (2011) <em>The Geometry of Physics: An Introduction</em>. 3rd edn. Cambridge: Cambridge University Press. Chapters 16–18, and the best treatment of Cartan's structure equations at the level used here.</li>
+<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. <a href="https://doi.org/10.1007/978-3-319-91755-9">doi:10.1007/978-3-319-91755-9</a>. Chapter 4 problems develop the frame formulation of the Levi-Civita connection as an alternative to the Christoffel computation.</li>
 </ul>
 <hr/>
-<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result. The two sign/caching errors described above were found by that execution, not by inspection — both produced confidently wrong output that looked plausible.</em></p>
+<p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell was executed. Maxima has no differential forms, so the toolkit in the first cell — $\mathfrak g$-valued 1-forms as lists of matrices, 2-forms as antisymmetric nested lists, and a separate 2-dimensional wedge for the frame computation — is hand-rolled and its correctness is only as good as the identities it reproduces. That is why the Bianchi and gauge-covariance checks are run over every index combination rather than a sample.</em></p>
 </div>
 </div>
 </div>

@@ -100,8 +100,8 @@ Symmetry groups become geometric objects in their own right, and curvature is re
 | 02 | [the-exponential-map-and-adjoint](notebooks/05-lie-groups-and-bundles/02-the-exponential-map-and-adjoint.macnb) | $\exp$ for matrix groups; one-parameter subgroups; $\mathrm{Ad}$ and $\mathrm{ad}$; the Baker–Campbell–Hausdorff formula |
 | 03 | [invariant-metrics-and-homogeneous-spaces](notebooks/05-lie-groups-and-bundles/03-invariant-metrics-and-homogeneous-spaces.macnb) | Left- and bi-invariant metrics; the Killing form; $G/H$ as a manifold; spheres, projective spaces and Grassmannians as homogeneous spaces |
 | 04 | [symmetric-spaces](notebooks/05-lie-groups-and-bundles/04-symmetric-spaces.macnb) | Geodesic symmetries; curvature from the Lie bracket alone; the compact/non-compact duality |
-| 05 | principal-bundles-and-connections | Principal $G$-bundles; connections as $\mathfrak g$-valued forms; curvature $F = dA + A \wedge A$; gauge transformations; the Levi-Civita connection as a special case |
-| 06 | characteristic-classes | Chern–Weil theory: invariant polynomials in the curvature give de Rham classes; Chern, Pontryagin and Euler classes; Gauss–Bonnet–Chern as the payoff |
+| 05 | [principal-bundles-and-connections](notebooks/05-lie-groups-and-bundles/05-principal-bundles-and-connections.macnb) | Principal $G$-bundles; connections as $\mathfrak g$-valued forms; curvature $F = dA + A \wedge A$; gauge transformations; the Levi-Civita connection as a special case |
+| 06 | [characteristic-classes](notebooks/05-lie-groups-and-bundles/06-characteristic-classes.macnb) | Chern–Weil theory: invariant polynomials in the curvature give de Rham classes; Chern, Pontryagin and Euler classes; Gauss–Bonnet–Chern as the payoff |
 
 ### Stage 6 — Geometry in the Wild
 
