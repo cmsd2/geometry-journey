@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>03-surfaces-and-the-first-fundamental-form</title>
+<title>00-manifolds-recap</title>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7771,52 +7771,68 @@ a.anchor-link {
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=739f7f42">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=beeac014">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="3.03-%E2%80%94-Surfaces-and-the-First-Fundamental-Form">3.03 — Surfaces and the First Fundamental Form<a class="anchor-link" href="#3.03-%E2%80%94-Surfaces-and-the-First-Fundamental-Form">¶</a></h1><p>A <strong>parametrised surface</strong> is a smooth map</p>
-<p>$$\sigma : U \to \mathbb R^3, \qquad U \subseteq \mathbb R^2 \text{ open},$$</p>
-<p>and it is <strong>regular</strong> when $\sigma_u \times \sigma_v \ne 0$ — the two partial derivatives are independent, so they span a genuine plane. That plane is the <strong>tangent plane</strong> $T_p S$, and the unit normal is</p>
-<p>$$n = \frac{\sigma_u \times \sigma_v}{|\sigma_u \times \sigma_v|}.$$</p>
-<p>Everything in this notebook comes from one construction. The surface sits in $\mathbb R^3$, which has a dot product; restricting that dot product to each tangent plane gives an inner product on $T_pS$, varying from point to point. In the basis $\{\sigma_u, \sigma_v\}$ it is the symmetric matrix</p>
-<p>$$\mathrm{I} = \begin{pmatrix} E &amp; F \\ F &amp; G \end{pmatrix}, \qquad E = \sigma_u\cdot\sigma_u, \quad F = \sigma_u\cdot\sigma_v, \quad G = \sigma_v\cdot\sigma_v,$$</p>
-<p>the <strong>first fundamental form</strong>, usually written</p>
-<p>$$ds^2 = E\,du^2 + 2F\,du\,dv + G\,dv^2 .$$</p>
-<p>The point of it is this:</p>
-<blockquote>
-<p><strong>Everything measurable <em>within</em> the surface — lengths of curves, angles between them, areas of regions — is computed from $E, F, G$ alone.</strong></p>
-</blockquote>
-<p>Such quantities are called <strong>intrinsic</strong>: an ant confined to the surface, with no access to the surrounding space, could measure them. Quantities that need the ambient $\mathbb R^3$ — how the surface bends, which way the normal tilts — are <strong>extrinsic</strong>, and belong to 3.04.</p>
-<p>The distinction looks pedantic and is not. In 3.06 we will find that Gaussian curvature, which is <em>defined</em> extrinsically from the way the surface curves in space, turns out to be computable from $E, F, G$ alone. That unexpected fact is Gauss's <em>Theorema Egregium</em>, and it is why this notebook must come first.</p>
+<h1 id="4.00-%E2%80%94-Manifolds:-A-Recap">4.00 — Manifolds: A Recap<a class="anchor-link" href="#4.00-%E2%80%94-Manifolds:-A-Recap">¶</a></h1><p><strong>This notebook is a bridge, not a development.</strong> It fixes notation and reminds you of four ideas that Stage 4 uses constantly. The full construction — with proofs, pathologies and the point-set care they need — is in <a href="https://github.com/cmsd2/topology-journey">topology-journey Stage 3</a>, and this notebook cross-references it rather than repeating it.</p>
+<table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>Full treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>charts, atlases, topological manifolds</td>
+<td>topology-journey <strong>3.01</strong></td>
+</tr>
+<tr>
+<td>smooth structures, smooth maps</td>
+<td>topology-journey <strong>3.02</strong></td>
+</tr>
+<tr>
+<td>tangent vectors as derivations, $TM$, $T^*M$</td>
+<td>topology-journey <strong>3.03</strong></td>
+</tr>
+<tr>
+<td>differential forms, wedge, $d$</td>
+<td>topology-journey <strong>3.04</strong></td>
+</tr>
+</tbody>
+</table>
+<p>If those are fresh, skim this and move to 4.01.</p>
+<h2 id="Why-Stage-4-needs-them">Why Stage 4 needs them<a class="anchor-link" href="#Why-Stage-4-needs-them">¶</a></h2><p>Stage 3 did all its geometry on surfaces <strong>sitting in $\mathbb R^3$</strong>. Every construction leaned on the ambient space: the normal $n$, the second fundamental form, the Gauss map. Then 3.06 proved the Theorema Egregium — $K$ is computable from $E, F, G$ alone — and the ambient space turned out to be scaffolding for the one quantity that mattered most.</p>
+<p>Riemann's move, in his 1854 lecture, is to <strong>remove the scaffolding entirely</strong>. Specify a space and a metric on it; ask for no surrounding space at all. To do that you need somewhere for the metric to live, and that is what a manifold provides:</p>
+<p>$$\text{manifold} = \text{a space that looks locally like } \mathbb R^n, \text{ consistently.}$$</p>
+<p>Two payoffs justify the abstraction:</p>
+<ul>
+<li><strong>Dimension stops mattering.</strong> Surfaces were $n = 2$ because we could only embed so much in $\mathbb R^3$. Manifolds work in any dimension, which is required for the 4-dimensional spacetime of 6.02.</li>
+<li><strong>Spaces with no natural embedding become available.</strong> The hyperbolic plane, which by Hilbert's theorem (3.05) does <em>not</em> embed completely in $\mathbb R^3$, is a perfectly ordinary Riemannian manifold. So is $SO(3)$, and so is the space of all lines through the origin.</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fcdec77d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dc24ecd1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-What-the-first-fundamental-form-computes">1. What the first fundamental form computes<a class="anchor-link" href="#1.-What-the-first-fundamental-form-computes">¶</a></h2><p><strong>Length of a curve on the surface.</strong> A curve in the parameter domain, $t \mapsto (u(t), v(t))$, becomes a curve $\gamma(t) = \sigma(u(t), v(t))$ on the surface. By the chain rule $\gamma' = u'\sigma_u + v'\sigma_v$, so</p>
-<p>$$|\gamma'|^2 = E u'^2 + 2F u'v' + G v'^2,$$</p>
-<p>and the length is $\displaystyle \int \sqrt{E u'^2 + 2Fu'v' + Gv'^2}\;dt$. No $\sigma$ appears — only $E, F, G$.</p>
-<p><strong>Angle between curves.</strong> If two curves cross with parameter-velocities $(u_1', v_1')$ and $(u_2', v_2')$,</p>
-<p>$$\cos\theta = \frac{E u_1'u_2' + F(u_1'v_2' + u_2'v_1') + G v_1'v_2'}{\sqrt{\cdots}\sqrt{\cdots}}.$$</p>
-<p>In particular the coordinate curves are orthogonal exactly when $F = 0$ — which is why textbook parametrisations so often arrange for that.</p>
-<p><strong>Area.</strong> The parallelogram spanned by $\sigma_u\,du$ and $\sigma_v\,dv$ has area $|\sigma_u \times \sigma_v|\,du\,dv$, and by Lagrange's identity from 1.01,</p>
-<p>$$|\sigma_u\times\sigma_v|^2 = |\sigma_u|^2|\sigma_v|^2 - (\sigma_u\cdot\sigma_v)^2 = EG - F^2,$$</p>
-<p>so</p>
-<p>$$\text{Area} = \iint \sqrt{EG - F^2}\;du\,dv .$$</p>
-<p>That $\sqrt{EG-F^2} = \sqrt{\det \mathrm{I}}$ is the determinant-is-a-volume theme from 1.01 once more, and it is the two-dimensional case of the Riemannian volume element $\sqrt{\det g}$ that Stage 4 uses throughout. Regularity guarantees $EG - F^2 &gt; 0$.</p>
-<p><strong>Isometries.</strong> Two surfaces are <strong>locally isometric</strong> if they can be parametrised so that their first fundamental forms agree. Then every intrinsic measurement matches — the ant cannot tell them apart. The classic surprise is that a <strong>cylinder is locally isometric to a plane</strong> despite looking curved: rolling a sheet of paper into a tube changes nothing an ant could detect. A sphere, by contrast, is <em>not</em> locally isometric to a plane, which is why every flat map of the Earth distorts something.</p>
+<h2 id="1.-Charts,-and-why-more-than-one-is-needed">1. Charts, and why more than one is needed<a class="anchor-link" href="#1.-Charts,-and-why-more-than-one-is-needed">¶</a></h2><p>A <strong>chart</strong> is a homeomorphism $\varphi : U \to \tilde U \subseteq \mathbb R^n$ from an open piece of the space to an open piece of $\mathbb R^n$ — a coordinate system valid on part of the manifold. An <strong>atlas</strong> is a collection of charts covering everything, and the manifold is <strong>smooth</strong> when all transition maps</p>
+<p>$$\varphi_\beta \circ \varphi_\alpha^{-1}$$</p>
+<p>are smooth where defined. That compatibility condition is the whole definition: the charts must agree about what "smooth" means on their overlap.</p>
+<p><strong>One chart is rarely enough</strong>, and the sphere is the standard example: no single chart covers $S^2$, because $S^2$ is compact and $\mathbb R^2$ is not. Spherical coordinates fail at the poles — 3.07 met this as the geodesic equation's $\cot u$ blowing up at $u = 0$ and $u = \pi$, which is a defect of the chart and not of the sphere.</p>
+<p>Two <strong>stereographic</strong> charts do cover it. Projecting from the north pole gives coordinates on $S^2\setminus\{N\}$, from the south pole on $S^2\setminus\{S\}$, and together they miss nothing. We met the north-pole projection in 2.05, where it identified $S^2$ with $\hat{\mathbb C}$; here it is doing a different job, as one chart of an atlas.</p>
+<p>The transition map between them turns out to be inversion, $z \mapsto 1/\bar z$ in complex notation — smooth on the overlap $S^2 \setminus \{N, S\}$, which is exactly what the smooth-structure condition demands. Let us check it.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=87d2d5ce">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ed407567">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7829,35 +7845,38 @@ a.anchor-link {
 <span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
 <span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
 
-<span class="nf">cross3</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="nv">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="nv">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nv">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="nv">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="nv">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]]$</span>
-<span class="nf">pd</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">var</span><span class="p">)</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">e</span><span class="p">],</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">e</span><span class="p">,</span><span class="w"> </span><span class="nv">var</span><span class="p">)),</span><span class="w"> </span><span class="nv">s</span><span class="p">)$</span>
+<span class="cm">/* Two stereographic charts on the unit sphere X² + Y² + Z² = 1.</span>
+<span class="cm">   From the north pole N = (0,0,1), and from the south pole S = (0,0,−1). */</span>
+<span class="nf">phiN</span><span class="p">(</span><span class="nv">X_</span><span class="p">,</span><span class="nv">Y_</span><span class="p">,</span><span class="nv">Z_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nv">X_</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Z_</span><span class="p">),</span><span class="w"> </span><span class="nv">Y_</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Z_</span><span class="p">)</span><span class="w"> </span><span class="p">]$</span><span class="w">      </span><span class="cm">/* undefined at N */</span>
+<span class="nf">phiS</span><span class="p">(</span><span class="nv">X_</span><span class="p">,</span><span class="nv">Y_</span><span class="p">,</span><span class="nv">Z_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nv">X_</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Z_</span><span class="p">),</span><span class="w"> </span><span class="nv">Y_</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Z_</span><span class="p">)</span><span class="w"> </span><span class="p">]$</span><span class="w">      </span><span class="cm">/* undefined at S */</span>
 
-<span class="cm">/* The first fundamental form of a parametrised surface */</span>
-<span class="nf">FFF</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">su</span><span class="p">,</span><span class="w"> </span><span class="nv">sv</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">su</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">pd</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="p">),</span><span class="w">  </span><span class="nv">sv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">pd</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">matrix</span><span class="p">([</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">su</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">su</span><span class="p">),</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">su</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">sv</span><span class="p">)</span><span class="w"> </span><span class="p">],</span>
-<span class="w">         </span><span class="p">[</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">su</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">sv</span><span class="p">),</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">sv</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">sv</span><span class="p">)</span><span class="w"> </span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* Their inverses, back onto the sphere */</span>
+<span class="nf">invN</span><span class="p">(</span><span class="nv">a_</span><span class="p">,</span><span class="nv">b_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">d</span><span class="p">],</span><span class="w"> </span><span class="nv">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">a_</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b_</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">a_</span><span class="o">/</span><span class="nv">d</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">b_</span><span class="o">/</span><span class="nv">d</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nv">a_</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b_</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nv">d</span><span class="w"> </span><span class="p">])$</span>
 
-<span class="nf">unitnormal</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n</span><span class="p">],</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">cross3</span><span class="p">(</span><span class="nf">pd</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="nv">u_</span><span class="p">),</span><span class="w"> </span><span class="nf">pd</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="nv">v_</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">trigsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">n</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">n</span><span class="p">))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"check: φ_N ∘ φ_N⁻¹ = identity"</span><span class="p">)$</span>
+<span class="nv">pt</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">invN</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   φ_N⁻¹(a,b) on the sphere? |p|² = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   φ_N(φ_N⁻¹(a,b)) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">phiN</span><span class="p">(</span><span class="nv">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"> </span><span class="p">))$</span>
 
-<span class="cm">/* --- Four surfaces --- */</span>
-<span class="nf">assume</span><span class="p">(</span><span class="nv">R</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">cc</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
-
-<span class="nv">plane</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]$</span>
-<span class="nv">cylinder</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">R</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">]$</span>
-<span class="nv">sphere</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">)]$</span><span class="w">   </span><span class="cm">/* u = colatitude */</span>
-<span class="k">to</span><span class="nv">rus</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="p">[(</span><span class="nv">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">))</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">))</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)]$</span>
-
-<span class="k">for</span><span class="w"> </span><span class="nv">su</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="s">"plane   "</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s">"cylinder"</span><span class="p">,</span><span class="w"> </span><span class="nv">cylinder</span><span class="p">],</span>
-<span class="w">           </span><span class="p">[</span><span class="s">"sphere  "</span><span class="p">,</span><span class="w"> </span><span class="nv">sphere</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s">"torus   "</span><span class="p">,</span><span class="w"> </span><span class="k">to</span><span class="nv">rus</span><span class="p">]]</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">I1</span><span class="p">,</span><span class="w"> </span><span class="nv">d</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">I1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">FFF</span><span class="p">(</span><span class="nv">su</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">),</span>
-<span class="w">  </span><span class="nv">d</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">I1</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="nv">su</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">"  I = "</span><span class="p">,</span><span class="w"> </span><span class="nv">I1</span><span class="p">,</span><span class="w"> </span><span class="s">"     EG − F² = "</span><span class="p">,</span><span class="w"> </span><span class="nv">d</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-
+<span class="cm">/* The transition map φ_S ∘ φ_N⁻¹ */</span>
+<span class="nv">trans</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">phiS</span><span class="p">(</span><span class="nv">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">pt</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"note F = 0 in every case: these parametrisations use orthogonal"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"coordinate curves, which is why the matrices are diagonal."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"transition map φ_S ∘ φ_N⁻¹ (a,b) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">trans</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   i.e. (a,b) ↦ (a, b)/(a² + b²) — inversion in the unit circle"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   (2.05 met this as z ↦ 1/z̄ )"</span><span class="p">)$</span>
+
+<span class="cm">/* It is smooth wherever it is defined: the only bad point is a = b = 0,</span>
+<span class="cm">   which is the image of the SOUTH pole, excluded from the overlap. */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"its Jacobian:"</span><span class="p">)$</span>
+<span class="nv">J</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">diff</span><span class="p">(</span><span class="nv">trans</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nv">a</span><span class="p">),</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">trans</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nv">b</span><span class="p">)],</span>
+<span class="w">           </span><span class="p">[</span><span class="nf">diff</span><span class="p">(</span><span class="nv">trans</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="nv">a</span><span class="p">),</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">trans</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="nv">b</span><span class="p">)])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   J = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">J</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   det J = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">J</span><span class="p">)))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   nonzero except at a = b = 0 — the south pole, not in the overlap."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   So the two charts are smoothly compatible, and S² is a smooth manifold."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7870,18 +7889,46 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>plane      I =  matrix([1,0],[0,1])      EG − F² =  1
-cylinder   I =  matrix([R^2,0],[0,1])      EG − F² =  R^2
-sphere     I =  matrix([R^2,0],[0,R^2*sin(u)^2])      EG − F² =  R^4*sin(u)^2
-torus      I =  matrix([b^2,0],[0,b^2*cos(u)^2+2*a*b*cos(u)+a^2])
-             EG − F² =  b^4*cos(u)^2+2*a*b^3*cos(u)+a^2*b^2
-note F = 0 in every case: these parametrisations use orthogonal
-coordinate curves, which is why the matrices are diagonal.</pre>
+<pre>check: φ_N ∘ φ_N⁻¹ = identity
+   φ_N⁻¹(a,b) on the sphere? |p|² =  1
+   φ_N(φ_N⁻¹(a,b)) =  [a,b]
+transition map φ_S ∘ φ_N⁻¹ (a,b) =  [a/(b^2+a^2),b/(b^2+a^2)]
+   i.e. (a,b) ↦ (a, b)/(a² + b²) — inversion in the unit circle
+   (2.05 met this as z ↦ 1/z̄ )
+its Jacobian:
+   J =
+       matrix([(b^2-a^2)/(b^4+2*a^2*b^2+a^4),-((2*a*b)/(b^4+2*a^2*b^2+a^4))],
+              [-((2*a*b)/(b^4+2*a^2*b^2+a^4)),
+               -((b^2-a^2)/(b^4+2*a^2*b^2+a^4))])
+   det J =  -(1/(b^4+2*a^2*b^2+a^4))
+   nonzero except at a = b = 0 — the south pole, not in the overlap.
+   So the two charts are smoothly compatible, and S² is a smooth manifold.</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=87cfe9d6">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6c8b6d18">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><em>(Aside: $\det J &lt; 0$, so the two standard stereographic charts induce <strong>opposite</strong> orientations. To orient $S^2$ one composes one of them with a reflection, e.g. $(a,b)\mapsto(a,-b)$. Orientability is exactly the question of whether such a consistent choice exists across a whole atlas — it does for $S^2$, and does not for $\mathbb{RP}^2$, as 2.02 noted.)</em></p>
+<h2 id="2.-Tangent-vectors,-without-arrows">2. Tangent vectors, without arrows<a class="anchor-link" href="#2.-Tangent-vectors,-without-arrows">¶</a></h2><p>On a surface in $\mathbb R^3$ a tangent vector was an arrow in the ambient space, lying in the tangent plane. With the ambient space gone, that definition is unavailable — and the replacement is the one genuinely unintuitive step in the whole subject.</p>
+<p><strong>A tangent vector at $p$ is a derivation</strong>: a linear map $v$ on smooth functions near $p$ satisfying the Leibniz rule</p>
+<p>$$v(fg) = v(f)\,g(p) + f(p)\,v(g).$$</p>
+<p>The motivation: an arrow's only geometric job is to differentiate functions along itself. Directional derivative $\mapsto$ arrow is a bijection in $\mathbb R^n$, so we keep the derivative and discard the arrow. Everything an arrow could do, a derivation does.</p>
+<p><strong>The coordinate basis.</strong> In a chart $(x^1,\dots,x^n)$ the partial derivatives</p>
+<p>$$\frac{\partial}{\partial x^1}\bigg|_p,\;\dots,\;\frac{\partial}{\partial x^n}\bigg|_p$$</p>
+<p>form a basis of $T_pM$, so $\dim T_pM = n$ and a tangent vector is $v = v^i\,\partial_i$ as usual. What is <em>not</em> as usual: the components $v^i$ depend on the chart, and under a change of coordinates they transform by the Jacobian,</p>
+<p>$$\tilde v^j = \frac{\partial \tilde x^j}{\partial x^i}\,v^i .$$</p>
+<p>This is the origin of the index gymnastics of Stage 4. A "vector" is not a list of numbers; it is a list of numbers <em>together with a rule for how they change when the chart changes</em>. Objects transforming that way are called <strong>contravariant</strong>; those transforming by the inverse Jacobian — like the components of $df$ — are <strong>covariant</strong>, and live in the cotangent space $T_p^*M$.</p>
+<p>The metric $g_{ij}$ of 4.01 will be doubly covariant, which is why the line element $g_{ij}dx^idx^j$ comes out chart-independent even though every symbol in it is chart-dependent.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f6e19b48">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7889,46 +7936,46 @@ coordinate curves, which is why the matrices are diagonal.</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The cylinder is locally isometric to the plane --- */</span>
-<span class="cm">/* Reparametrise by arc length around the circumference: ũ = R u. */</span>
-<span class="nv">cyl_arc</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">R</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">w</span><span class="o">/</span><span class="nv">R</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">w</span><span class="o">/</span><span class="nv">R</span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">]$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"cylinder in arc-length coordinates (w = Ru):"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   I = "</span><span class="p">,</span><span class="w"> </span><span class="nf">FFF</span><span class="p">(</span><span class="nv">cyl_arc</span><span class="p">,</span><span class="w"> </span><span class="nv">w</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="s">"   — identical to the plane's ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"so every intrinsic measurement agrees: a sheet of paper rolled into"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"a tube is unchanged as far as any measurement inside it can tell."</span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Derivations satisfy Leibniz --- */</span>
+<span class="nf">depends</span><span class="p">([</span><span class="nv">ff</span><span class="p">,</span><span class="w"> </span><span class="nv">gg</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">])$</span>
+<span class="nf">v</span><span class="p">(</span><span class="nv">h</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nv">aa</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">h</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">bb</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">h</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)$</span><span class="w">        </span><span class="cm">/* a general tangent vector at a point */</span>
 
-<span class="cm">/* --- Lengths on the sphere: a parallel versus a great circle --- */</span>
-<span class="cm">/* On the unit sphere, u = colatitude, v = longitude. */</span>
-<span class="nv">sph1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">subst</span><span class="p">(</span><span class="nv">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">sphere</span><span class="p">)$</span>
-<span class="nv">I_sph</span><span class="o">:</span><span class="w"> </span><span class="nf">FFF</span><span class="p">(</span><span class="nv">sph1</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"unit sphere: I = "</span><span class="p">,</span><span class="w"> </span><span class="nv">I_sph</span><span class="p">,</span><span class="w"> </span><span class="s">"   so ds² = du² + sin²u dv²"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Leibniz rule for v = a ∂/∂x + b ∂/∂y:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   v(fg) − [v(f)·g + f·v(g)] = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">v</span><span class="p">(</span><span class="nv">ff</span><span class="o">*</span><span class="nv">gg</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="p">(</span><span class="nv">ff</span><span class="p">)</span><span class="o">*</span><span class="nv">gg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">ff</span><span class="o">*</span><span class="nf">v</span><span class="p">(</span><span class="nv">gg</span><span class="p">))</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ✓ — so v is a derivation, and that is all a tangent vector is"</span><span class="p">)$</span>
 
-<span class="cm">/* the parallel at colatitude u0, all the way round: u' = 0, v' = 1 */</span>
-<span class="nf">len_parallel</span><span class="p">(</span><span class="nv">u0</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="w"> </span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">u0</span><span class="p">,</span><span class="w"> </span><span class="nv">I_sph</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"length of the parallel at colatitude u₀ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">len_parallel</span><span class="p">(</span><span class="nv">u0</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   at the equator u₀ = π/2 : "</span><span class="p">,</span><span class="w"> </span><span class="nf">len_parallel</span><span class="p">(</span><span class="no">%pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="s">" = 2π ✓"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   at u₀ = π/6             : "</span><span class="p">,</span><span class="w"> </span><span class="nf">len_parallel</span><span class="p">(</span><span class="no">%pi</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="s">" = π  (a small circle)"</span><span class="p">)$</span>
+<span class="cm">/* Linearity too */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   v(αf + βg) − [αv(f) + βv(g)] = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">v</span><span class="p">(</span><span class="nv">al</span><span class="o">*</span><span class="nv">ff</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">be</span><span class="o">*</span><span class="nv">gg</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="nv">al</span><span class="o">*</span><span class="nf">v</span><span class="p">(</span><span class="nv">ff</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">be</span><span class="o">*</span><span class="nf">v</span><span class="p">(</span><span class="nv">gg</span><span class="p">))</span><span class="w"> </span><span class="p">))$</span>
 
-<span class="cm">/* the meridian from pole to pole: u' = 1, v' = 0 */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   length of a meridian    = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">I_sph</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">" = π ✓"</span><span class="p">)$</span>
-
-<span class="cm">/* --- Area of the sphere --- */</span>
-<span class="nf">areaform</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nf">FFF</span><span class="p">(</span><span class="nv">s</span><span class="p">,</span><span class="nv">u_</span><span class="p">,</span><span class="nv">v_</span><span class="p">)))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* --- Components transform by the Jacobian --- */</span>
+<span class="cm">/* Polar coordinates as a second chart on (part of) the plane. */</span>
+<span class="nf">remove</span><span class="p">([</span><span class="nv">ff</span><span class="p">,</span><span class="nv">gg</span><span class="p">],</span><span class="w"> </span><span class="nv">dependency</span><span class="p">)$</span>
+<span class="nv">xofr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">r</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">th</span><span class="p">)$</span><span class="w">   </span><span class="nv">yofr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">r</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">th</span><span class="p">)$</span>
+<span class="nv">Jac</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">diff</span><span class="p">(</span><span class="nv">xofr</span><span class="p">,</span><span class="nv">r</span><span class="p">),</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">xofr</span><span class="p">,</span><span class="nv">th</span><span class="p">)],</span>
+<span class="w">             </span><span class="p">[</span><span class="nf">diff</span><span class="p">(</span><span class="nv">yofr</span><span class="p">,</span><span class="nv">r</span><span class="p">),</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">yofr</span><span class="p">,</span><span class="nv">th</span><span class="p">)])$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"area element of the sphere: √(EG−F²) = "</span><span class="p">,</span><span class="w"> </span><span class="nf">areaform</span><span class="p">(</span><span class="nv">sphere</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"total area = "</span><span class="p">,</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nv">R</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">),</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span>
-<span class="w">      </span><span class="s">"   = 4πR² ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"chart change (r,θ) → (x,y):  ∂(x,y)/∂(r,θ) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Jac</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   det = "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">Jac</span><span class="p">)),</span><span class="w"> </span><span class="s">"  — the familiar polar area factor"</span><span class="p">)$</span>
 
-<span class="cm">/* --- Area of the torus --- */</span>
+<span class="cm">/* Take the vector field ∂/∂θ and express it in Cartesian components. */</span>
+<span class="cm">/* ∂/∂θ = (∂x/∂θ) ∂/∂x + (∂y/∂θ) ∂/∂y */</span>
+<span class="nv">dth_x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">xofr</span><span class="p">,</span><span class="w"> </span><span class="nv">th</span><span class="p">)$</span><span class="w">  </span><span class="nv">dth_y</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">yofr</span><span class="p">,</span><span class="w"> </span><span class="nv">th</span><span class="p">)$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"torus area element = "</span><span class="p">,</span><span class="w"> </span><span class="nf">areaform</span><span class="p">(</span><span class="k">to</span><span class="nv">rus</span><span class="p">,</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"total area = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">)),</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span>
-<span class="w">      </span><span class="s">"   = (2πa)(2πb) — Pappus' theorem ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"the field ∂/∂θ in Cartesian components:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ∂/∂θ = "</span><span class="p">,</span><span class="w"> </span><span class="nv">dth_x</span><span class="p">,</span><span class="w"> </span><span class="s">" ∂/∂x + "</span><span class="p">,</span><span class="w"> </span><span class="nv">dth_y</span><span class="p">,</span><span class="w"> </span><span class="s">" ∂/∂y"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"        = −y ∂/∂x + x ∂/∂y   (substituting x = r cos θ, y = r sin θ)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   — the rotation field, which 1.03 met as the generator of SO(2)"</span><span class="p">)$</span>
+
+<span class="cm">/* Verify by applying both forms to a test function */</span>
+<span class="nv">f_test</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="nv">y</span><span class="p">$</span>
+<span class="nv">lhs_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="w"> </span><span class="nf">subst</span><span class="p">([</span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">xofr</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">yofr</span><span class="p">],</span><span class="w"> </span><span class="nv">f_test</span><span class="p">),</span><span class="w"> </span><span class="nv">th</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nv">rhs_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">subst</span><span class="p">([</span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">xofr</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">yofr</span><span class="p">],</span><span class="w"> </span><span class="o">-</span><span class="nv">y</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">f_test</span><span class="p">,</span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">x</span><span class="o">*</span><span class="nf">diff</span><span class="p">(</span><span class="nv">f_test</span><span class="p">,</span><span class="nv">y</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"acting on f = x² + 3y:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ∂/∂θ in polar   : "</span><span class="p">,</span><span class="w"> </span><span class="nv">lhs_</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   (−y∂ₓ + x∂_y) f : "</span><span class="p">,</span><span class="w"> </span><span class="nv">rhs_</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   difference      : "</span><span class="p">,</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">lhs_</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">rhs_</span><span class="p">),</span><span class="w"> </span><span class="s">"  ✓ same derivation, two charts"</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7941,96 +7988,81 @@ coordinate curves, which is why the matrices are diagonal.</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>cylinder in arc-length coordinates (w = Ru):
-   I =  matrix([1,0],[0,1])    — identical to the plane's ✓
-so every intrinsic measurement agrees: a sheet of paper rolled into
-a tube is unchanged as far as any measurement inside it can tell.
-unit sphere: I =  matrix([1,0],[0,sin(u)^2])    so ds² = du² + sin²u dv²
-length of the parallel at colatitude u₀ =  2*%pi*abs(sin(u0))
-   at the equator u₀ = π/2 :  2*%pi  = 2π ✓
-   at u₀ = π/6             :  %pi  = π  (a small circle)
-   length of a meridian    =  %pi  = π ✓
-area element of the sphere: √(EG−F²) =  R^2*abs(sin(u))
-total area =  4*%pi*R^2    = 4πR² ✓
-torus area element =  sqrt(b^4*cos(u)^2+2*a*b^3*cos(u)+a^2*b^2)
-total area =  4*%pi^2*a*b    = (2πa)(2πb) — Pappus' theorem ✓</pre>
+<pre>Leibniz rule for v = a ∂/∂x + b ∂/∂y:
+   v(fg) − [v(f)·g + f·v(g)] =  0
+   ✓ — so v is a derivation, and that is all a tangent vector is
+   v(αf + βg) − [αv(f) + βv(g)] =  0
+chart change (r,θ) → (x,y):  ∂(x,y)/∂(r,θ) =
+  matrix([cos(th),-(r*sin(th))],[sin(th),r*cos(th)])
+   det =  r   — the familiar polar area factor
+the field ∂/∂θ in Cartesian components:
+   ∂/∂θ =  -(r*sin(th))  ∂/∂x +  r*cos(th)  ∂/∂y
+        = −y ∂/∂x + x ∂/∂y   (substituting x = r cos θ, y = r sin θ)
+   — the rotation field, which 1.03 met as the generator of SO(2)
+acting on f = x² + 3y:
+   ∂/∂θ in polar   :  3*r*cos(th)-2*r^2*cos(th)*sin(th)
+   (−y∂ₓ + x∂_y) f :  3*r*cos(th)-2*r^2*cos(th)*sin(th)
+   difference      :  0   ✓ same derivation, two charts</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f7ecc3ea">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c9e727ad">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Conformal-is-not-isometric:-why-maps-of-the-Earth-lie">2. Conformal is not isometric: why maps of the Earth lie<a class="anchor-link" href="#2.-Conformal-is-not-isometric:-why-maps-of-the-Earth-lie">¶</a></h2><p>The sphere is <em>not</em> locally isometric to the plane. Proving that needs the Theorema Egregium (3.06), so we take it on trust for one more notebook. But it is worth seeing exactly how close one can get, because the near-miss is what cartography lives on.</p>
-<p>Start from the sphere's form $ds^2 = du^2 + \sin^2\!u\;dv^2$ and change the colatitude coordinate to</p>
-<p>$$w = \ln \tan\frac u2, \qquad\text{so}\qquad du = \sin u\,dw .$$</p>
-<p>Substituting,</p>
-<p>$$ds^2 = \sin^2\!u\,\bigl(dw^2 + dv^2\bigr).$$</p>
-<p>The first fundamental form has become a <strong>scalar multiple of the flat one</strong>. A form $\lambda(u,v)^2(dw^2+dv^2)$ is called <strong>conformally flat</strong>, and because angles depend only on ratios in the formula of §1, the scalar cancels:</p>
-<blockquote>
-<p><strong>Mercator's projection preserves angles exactly, and distances not at all.</strong></p>
-</blockquote>
-<p>That is precisely what a navigator wants — a constant compass bearing is a straight line on the chart — and precisely what a geographer does not, since the area scale factor is $\sin^2 u$, growing without bound towards the poles. Greenland is not the size of Africa.</p>
-<p>The obstruction is genuine: no substitution can make the factor $1$, because a conformal factor cannot be removed when the curvature is nonzero. Compare 2.05, where the Möbius maps were conformal for the same underlying reason — holomorphic maps scale the metric without twisting it — and 2.06, where the hyperbolic models were conformal so that <em>drawn</em> angles were correct while drawn distances were not. Every model of a curved geometry in a flat picture makes this trade.</p>
+<h2 id="3.-Covectors-and-forms,-in-one-page">3. Covectors and forms, in one page<a class="anchor-link" href="#3.-Covectors-and-forms,-in-one-page">¶</a></h2><p>Dual to $T_pM$ is the <strong>cotangent space</strong> $T_p^*M$, spanned by $dx^1,\dots,dx^n$ with $dx^i(\partial_j) = \delta^i_j$. The differential of a function,</p>
+<p>$$df = \frac{\partial f}{\partial x^i}\,dx^i,$$</p>
+<p>is the model covector: it eats a tangent vector and returns the derivative of $f$ along it, $df(v) = v(f)$.</p>
+<p><strong>Forms</strong> are the alternating multilinear generalisation. A $k$-form is built with the wedge product, which is associative, bilinear and <strong>anticommuting</strong>:</p>
+<p>$$dx \wedge dy = -\,dy\wedge dx, \qquad dx\wedge dx = 0 .$$</p>
+<p>This is the honest version of the cross product from 1.01 — as warned there, what generalises is $\Lambda^k$, and in $\mathbb R^3$ the coincidence $\binom32 = 3$ let a 2-form masquerade as a vector.</p>
+<p>The <strong>exterior derivative</strong> $d$ takes $k$-forms to $(k{+}1)$-forms, agrees with $df$ on functions, and satisfies</p>
+<p>$$d^2 = 0,$$</p>
+<p>which is just equality of mixed partials in disguise. Stokes' theorem, $\int_M d\omega = \int_{\partial M}\omega$, unifies the classical Green/Gauss/Stokes theorems, and de Rham cohomology measures the failure of closed forms ($d\omega = 0$) to be exact ($\omega = d\eta$).</p>
+<p><strong>All of this is developed properly in <a href="https://github.com/cmsd2/topology-journey">topology-journey 3.04–3.06</a>.</strong> Stage 4 uses forms lightly — the volume form $\sqrt{\det g}\,dx^1\wedge\cdots\wedge dx^n$, and the curvature 2-form in 5.05 — so the summary above plus the cross-reference is deliberately all that is offered here.</p>
+<p>One check is worth doing, because $d^2 = 0$ is the engine of everything downstream.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=095d25d7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=25d33f2a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Angles from the first fundamental form --- */</span>
-<span class="cm">/* cos θ between parameter-velocities p and q, using I */</span>
-<span class="nf">angle_I</span><span class="p">(</span><span class="nv">I1</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="nv">q</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">num</span><span class="p">,</span><span class="w"> </span><span class="nv">n1</span><span class="p">,</span><span class="w"> </span><span class="nv">n2</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">num</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="nv">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">n1</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nv">n2</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nv">I1</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">I1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nv">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nf">trigsimp</span><span class="p">(</span><span class="w"> </span><span class="nv">num</span><span class="o">/</span><span class="p">(</span><span class="nv">n1</span><span class="o">*</span><span class="nv">n2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- d² = 0 is equality of mixed partials --- */</span>
+<span class="cm">/* Represent a 1-form ω = P dx + Q dy by its coefficient list [P, Q].</span>
+<span class="cm">   Then dω = (∂Q/∂x − ∂P/∂y) dx∧dy, a single coefficient. */</span>
+<span class="nf">depends</span><span class="p">([</span><span class="nv">P</span><span class="p">,</span><span class="w"> </span><span class="nv">Q</span><span class="p">,</span><span class="w"> </span><span class="nv">F</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">])$</span>
 
-<span class="nf">print</span><span class="p">(</span><span class="s">"on the sphere, the coordinate curves meet at cos θ = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">angle_I</span><span class="p">(</span><span class="nv">I_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="w"> </span><span class="s">"  — orthogonal, since F = 0"</span><span class="p">)$</span>
+<span class="nf">d0</span><span class="p">(</span><span class="nv">f_</span><span class="p">)</span><span class="w">     </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">f_</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">),</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">f_</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="p">]$</span><span class="w">          </span><span class="cm">/* function → 1-form  */</span>
+<span class="nf">d1</span><span class="p">(</span><span class="nv">om</span><span class="p">)</span><span class="w">     </span><span class="o">:=</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">om</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">om</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">y</span><span class="p">)$</span><span class="w">        </span><span class="cm">/* 1-form  → 2-form  */</span>
 
-<span class="cm">/* A curve crossing a meridian at 45° in parameter space is NOT at 45° on</span>
-<span class="cm">   the surface, because E ≠ G. */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"parameter direction (1,1) against the meridian (1,0):"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   cos θ = "</span><span class="p">,</span><span class="w"> </span><span class="nf">angle_I</span><span class="p">(</span><span class="nv">I_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   at colatitude u = π/2 : θ = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">float</span><span class="p">(</span><span class="w"> </span><span class="nf">acos</span><span class="p">(</span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="no">%pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nf">angle_I</span><span class="p">(</span><span class="nv">I_sph</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="o">/</span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"°"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   at colatitude u = π/6 : θ = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">float</span><span class="p">(</span><span class="w"> </span><span class="nf">acos</span><span class="p">(</span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="no">%pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="nf">angle_I</span><span class="p">(</span><span class="nv">I_sph</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="o">/</span><span class="no">%pi</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s">"°"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   — the same parameter direction, different true angles"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"for a function F:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   dF        = "</span><span class="p">,</span><span class="w"> </span><span class="nf">d0</span><span class="p">(</span><span class="nv">F</span><span class="p">),</span><span class="w"> </span><span class="s">"  (as coefficients of dx, dy)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   d(dF)     = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">d1</span><span class="p">(</span><span class="nf">d0</span><span class="p">(</span><span class="nv">F</span><span class="p">))</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   — zero because ∂²F/∂x∂y = ∂²F/∂y∂x.  That is all d² = 0 says."</span><span class="p">)$</span>
 
-<span class="cm">/* --- The Mercator substitution makes I conformally flat --- */</span>
-<span class="cm">/* w = ln tan(u/2)  ⟹  u = 2 atan(e^w),  and we need du/dw = sin u.</span>
-<span class="cm">   trigsimp alone will not reduce sin(2 atan x); expand it first. */</span>
-<span class="nv">u_of_w</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nf">atan</span><span class="p">(</span><span class="nf">exp</span><span class="p">(</span><span class="nv">w</span><span class="p">))$</span>
-<span class="nv">lhs_du</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">u_of_w</span><span class="p">,</span><span class="w"> </span><span class="nv">w</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-<span class="nv">rhs_su</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">trigexpand</span><span class="p">(</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">u_of_w</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* A concrete closed-but-not-exact form: the angle form on the punctured plane */</span>
+<span class="nv">om_theta</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="nv">y</span><span class="o">/</span><span class="p">(</span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="nv">x</span><span class="o">/</span><span class="p">(</span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">]$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Mercator: u = 2 arctan(e^w)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   du/dw            = "</span><span class="p">,</span><span class="w"> </span><span class="nv">lhs_du</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   sin(u), expanded = "</span><span class="p">,</span><span class="w"> </span><span class="nv">rhs_su</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   residual         = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">lhs_du</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">rhs_su</span><span class="p">),</span><span class="w"> </span><span class="s">"   — equal ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"the angle form ω = (−y dx + x dy)/(x² + y²):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   dω = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">om_theta</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">om_theta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="s">"   — closed"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   but ∮ω around the unit circle = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">subst</span><span class="p">([</span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span><span class="nv">t</span><span class="p">),</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="nv">t</span><span class="p">)],</span>
+<span class="w">        </span><span class="nv">om_theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="nf">sin</span><span class="p">(</span><span class="nv">t</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">om_theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">t</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   nonzero, so ω is NOT exact: no F on the punctured plane has dF = ω."</span><span class="p">)$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"so ds² = du² + sin²u dv² = sin²u (dw² + dv²): conformally flat,"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"with conformal factor λ = sin u, and area scaled by sin²u."</span><span class="p">)$</span>
-
-<span class="cm">/* Area distortion at various latitudes */</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   latitude    colatitude u    inflation 1/sin²u"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">lat</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span><span class="w"> </span><span class="mi">85</span><span class="p">]</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">uu</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">uu</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">float</span><span class="p">((</span><span class="mi">90</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">lat</span><span class="p">)</span><span class="o">*</span><span class="no">%pi</span><span class="o">/</span><span class="mi">180</span><span class="p">),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="s">"°          "</span><span class="p">,</span><span class="w"> </span><span class="nv">uu</span><span class="p">,</span><span class="w"> </span><span class="s">"        "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nf">sin</span><span class="p">(</span><span class="nv">uu</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   — how much a region is INFLATED on the Mercator chart"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Closed but not exact — the failure is measured by de Rham cohomology,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"and it detects the hole. This is the same information the Umlaufsatz"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"(3.01) and Gauss–Bonnet (3.08) were reporting, in the language forms use."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -8043,138 +8075,86 @@ total area =  4*%pi^2*a*b    = (2πa)(2πb) — Pappus' theorem ✓</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>on the sphere, the coordinate curves meet at cos θ =
-  0   — orthogonal, since F = 0
-parameter direction (1,1) against the meridian (1,0):
-   cos θ =  1/sqrt(sin(u)^2+1)
-   at colatitude u = π/2 : θ =  45.0 °
-   at colatitude u = π/6 : θ =  26.565051177077994 °
-   — the same parameter direction, different true angles
-Mercator: u = 2 arctan(e^w)
-   du/dw            =  (2*%e^w)/(%e^(2*w)+1)
-   sin(u), expanded =  (2*%e^w)/(%e^(2*w)+1)
-   residual         =  0    — equal ✓
-so ds² = du² + sin²u dv² = sin²u (dw² + dv²): conformally flat,
-with conformal factor λ = sin u, and area scaled by sin²u.
-   latitude    colatitude u    inflation 1/sin²u
-    0 °           1.5707963267948966          1.0
-    30 °           1.0471975511965976          1.3333333333333335
-    45 °           0.7853981633974483          2.0000000000000004
-    60 °           0.5235987755982988          4.000000000000001
-    75 °           0.2617993877991494          14.928203230275512
-    85 °           0.08726646259971647          131.6460956438599
-   — how much a region is INFLATED on the Mercator chart</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8e9b56d3">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* Mercator area inflation as a function of latitude, with some landmarks */</span>
-<span class="nv">lats</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="nv">k</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">84</span><span class="p">)$</span>
-<span class="no">inf</span><span class="nf">l</span><span class="p">(</span><span class="nv">lat</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nf">sin</span><span class="p">((</span><span class="mi">90</span><span class="o">-</span><span class="nv">lat</span><span class="p">)</span><span class="o">*</span><span class="no">%pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"Greenland sits near 72°N, the Democratic Republic of the Congo near 0°."</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   inflation at 72° = "</span><span class="p">,</span><span class="w"> </span><span class="no">inf</span><span class="nf">l</span><span class="p">(</span><span class="mi">72</span><span class="p">),</span><span class="w"> </span><span class="s">"     at 0° = "</span><span class="p">,</span><span class="w"> </span><span class="no">inf</span><span class="nf">l</span><span class="p">(</span><span class="mi">0</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   ratio            = "</span><span class="p">,</span><span class="w"> </span><span class="no">inf</span><span class="nf">l</span><span class="p">(</span><span class="mi">72</span><span class="p">)</span><span class="o">/</span><span class="no">inf</span><span class="nf">l</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-<span class="w">      </span><span class="s">"  — which is why Greenland looks continent-sized"</span><span class="p">)$</span>
-
-<span class="nf">plot2d</span><span class="p">([</span><span class="w"> </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nv">lats</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="no">inf</span><span class="nv">l</span><span class="p">,</span><span class="w"> </span><span class="nv">lats</span><span class="p">)],</span>
-<span class="w">         </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">84.0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]]</span><span class="w"> </span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">85</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">style</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">legend</span><span class="p">,</span><span class="w"> </span><span class="s">"area inflation 1/sin²u"</span><span class="p">,</span><span class="w"> </span><span class="s">"true scale"</span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">xlabel</span><span class="p">,</span><span class="w"> </span><span class="s">"latitude (degrees)"</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">ylabel</span><span class="p">,</span><span class="w"> </span><span class="s">"area magnification"</span><span class="p">],</span>
-<span class="w">       </span><span class="p">[</span><span class="nv">title</span><span class="p">,</span><span class="w"> </span><span class="s">"Mercator preserves every angle and almost no area"</span><span class="p">])$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Greenland sits near 72°N, the Democratic Republic of the Congo near 0°.
-   inflation at 72° =  10.472135954999581      at 0° =  1.0
-   ratio            =  10.472135954999581
-                        — which is why Greenland looks continent-sized</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedSVG jp-OutputArea-output" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiICBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIAogd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiCiB2aWV3Qm94PSIwIDAgNjAwIDQ4MCIKIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgo+Cgo8dGl0bGU+R251cGxvdDwvdGl0bGU+CjxkZXNjPlByb2R1Y2VkIGJ5IEdOVVBMT1QgNi4wIHBhdGNobGV2ZWwgNCA8L2Rlc2M+Cgo8ZyBpZD0iZ251cGxvdF9jYW52YXMiPgoKPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiIGZpbGw9Im5vbmUiLz4KPGRlZnM+CgoJPGNpcmNsZSBpZD0nZ3BEb3QnIHI9JzAuNScgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZT0nY3VycmVudENvbG9yJy8+Cgk8cGF0aCBpZD0nZ3BQdDAnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNLTEsMCBoMiBNMCwtMSB2MicvPgoJPHBhdGggaWQ9J2dwUHQxJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgZD0nTS0xLC0xIEwxLDEgTTEsLTEgTC0xLDEnLz4KCTxwYXRoIGlkPSdncFB0Micgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00tMSwwIEwxLDAgTTAsLTEgTDAsMSBNLTEsLTEgTDEsMSBNLTEsMSBMMSwtMScvPgoJPHJlY3QgaWQ9J2dwUHQzJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgeD0nLTEnIHk9Jy0xJyB3aWR0aD0nMicgaGVpZ2h0PScyJy8+Cgk8cmVjdCBpZD0nZ3BQdDQnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBmaWxsPSdjdXJyZW50Q29sb3InIHg9Jy0xJyB5PSctMScgd2lkdGg9JzInIGhlaWdodD0nMicvPgoJPGNpcmNsZSBpZD0nZ3BQdDUnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBjeD0nMCcgY3k9JzAnIHI9JzEnLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ1JyBpZD0nZ3BQdDYnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8cGF0aCBpZD0nZ3BQdDcnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNMCwtMS4zMyBMLTEuMzMsMC42NyBMMS4zMywwLjY3IHonLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ3JyBpZD0nZ3BQdDgnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0NycgaWQ9J2dwUHQ5JyBzdHJva2U9J2N1cnJlbnRDb2xvcicgdHJhbnNmb3JtPSdyb3RhdGUoMTgwKScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDknIGlkPSdncFB0MTAnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0MycgaWQ9J2dwUHQxMScgc3Ryb2tlPSdjdXJyZW50Q29sb3InIHRyYW5zZm9ybT0ncm90YXRlKDQ1KScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDExJyBpZD0nZ3BQdDEyJyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPHBhdGggaWQ9J2dwUHQxMycgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00wLDEuMzMwIEwxLjI2NSwwLjQxMSBMMC43ODIsLTEuMDY3IEwtMC43ODIsLTEuMDc2IEwtMS4yNjUsMC40MTEgeicvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDEzJyBpZD0nZ3BQdDE0JyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPGZpbHRlciBpZD0ndGV4dGJveCcgZmlsdGVyVW5pdHM9J29iamVjdEJvdW5kaW5nQm94JyB4PScwJyB5PScwJyBoZWlnaHQ9JzEnIHdpZHRoPScxJz4KCSAgPGZlRmxvb2QgZmxvb2QtY29sb3I9J3doaXRlJyBmbG9vZC1vcGFjaXR5PScxJyByZXN1bHQ9J2JnbmQnLz4KCSAgPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2JnbmQnIG9wZXJhdG9yPSdhdG9wJy8+Cgk8L2ZpbHRlcj4KCTxmaWx0ZXIgaWQ9J2dyZXlib3gnIGZpbHRlclVuaXRzPSdvYmplY3RCb3VuZGluZ0JveCcgeD0nMCcgeT0nMCcgaGVpZ2h0PScxJyB3aWR0aD0nMSc+CgkgIDxmZUZsb29kIGZsb29kLWNvbG9yPSdsaWdodGdyZXknIGZsb29kLW9wYWNpdHk9JzEnIHJlc3VsdD0nZ3JleScvPgoJICA8ZmVDb21wb3NpdGUgaW49J1NvdXJjZUdyYXBoaWMnIGluMj0nZ3JleScgb3BlcmF0b3I9J2F0b3AnLz4KCTwvZmlsdGVyPgo8L2RlZnM+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNNzMuODksNDIyLjQwIEw1NjUuMDcsNDIyLjQwICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNNzMuODksNDIyLjQwIEw3My44OSw1NC4wMSAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksNTQuMDEgTDczLjg5LDQyMi40MCBMNTY1LjA3LDQyMi40MCBMNTY1LjA3LDU0LjAxIEw3My44OSw1NC4wMSBaICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzEiID48dGl0bGU+YXJlYSBpbmZsYXRpb24gMS9zaW7CsnU8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0id2hpdGUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMy4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMy4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDk3LjM0LDc1LjkxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPmFyZWEgaW5mbGF0aW9uIDEvc2luwrJ1PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIzLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsICAgMCwgMjU1KScgIGQ9J001MDUuNzMsNzIuMDEgTDU0OC4yOSw3Mi4wMSBNNzMuODksNDEzLjE5IEw3OS42Nyw0MTMuMTkgTDg1LjQ1LDQxMy4xOCBMOTEuMjMsNDEzLjE2IEw5Ny4wMCw0MTMuMTUgTDEwMi43OCw0MTMuMTIKCQlMMTA4LjU2LDQxMy4wOSBMMTE0LjM0LDQxMy4wNSBMMTIwLjEyLDQxMy4wMSBMMTI1LjkwLDQxMi45NiBMMTMxLjY4LDQxMi45MCBMMTM3LjQ1LDQxMi44NCBMMTQzLjIzLDQxMi43NyBMMTQ5LjAxLDQxMi43MAoJCUwxNTQuNzksNDEyLjYyIEwxNjAuNTcsNDEyLjUzIEwxNjYuMzUsNDEyLjQzIEwxNzIuMTMsNDEyLjMzIEwxNzcuOTAsNDEyLjIyIEwxODMuNjgsNDEyLjEwIEwxODkuNDYsNDExLjk3IEwxOTUuMjQsNDExLjgzCgkJTDIwMS4wMiw0MTEuNjkgTDIwNi44MCw0MTEuNTMgTDIxMi41OCw0MTEuMzYgTDIxOC4zNSw0MTEuMTkgTDIyNC4xMyw0MTEuMDAgTDIyOS45MSw0MTAuODAgTDIzNS42OSw0MTAuNTkgTDI0MS40Nyw0MTAuMzYKCQlMMjQ3LjI1LDQxMC4xMiBMMjUzLjAzLDQwOS44NyBMMjU4LjgwLDQwOS41OSBMMjY0LjU4LDQwOS4zMSBMMjcwLjM2LDQwOS4wMCBMMjc2LjE0LDQwOC42NyBMMjgxLjkyLDQwOC4zMyBMMjg3LjcwLDQwNy45NgoJCUwyOTMuNDgsNDA3LjU3IEwyOTkuMjUsNDA3LjE1IEwzMDUuMDMsNDA2LjcxIEwzMTAuODEsNDA2LjIzIEwzMTYuNTksNDA1LjcyIEwzMjIuMzcsNDA1LjE4IEwzMjguMTUsNDA0LjYwIEwzMzMuOTMsNDAzLjk4CgkJTDMzOS43MSw0MDMuMzEgTDM0NS40OCw0MDIuNjAgTDM1MS4yNiw0MDEuODMgTDM1Ny4wNCw0MDEuMDAgTDM2Mi44Miw0MDAuMTEgTDM2OC42MCwzOTkuMTUgTDM3NC4zOCwzOTguMTAgTDM4MC4xNiwzOTYuOTcKCQlMMzg1LjkzLDM5NS43NCBMMzkxLjcxLDM5NC40MSBMMzk3LjQ5LDM5Mi45NSBMNDAzLjI3LDM5MS4zNSBMNDA5LjA1LDM4OS42MCBMNDE0LjgzLDM4Ny42OCBMNDIwLjYxLDM4NS41NiBMNDI2LjM4LDM4My4yMgoJCUw0MzIuMTYsMzgwLjYxIEw0MzcuOTQsMzc3LjcyIEw0NDMuNzIsMzc0LjQ3IEw0NDkuNTAsMzcwLjg0IEw0NTUuMjgsMzY2LjczIEw0NjEuMDYsMzYyLjA4IEw0NjYuODMsMzU2Ljc3IEw0NzIuNjEsMzUwLjY5CgkJTDQ3OC4zOSwzNDMuNjcgTDQ4NC4xNywzMzUuNTEgTDQ4OS45NSwzMjUuOTUgTDQ5NS43MywzMTQuNjYgTDUwMS41MSwzMDEuMTggTDUwNy4yOCwyODQuOTEgTDUxMy4wNiwyNjUuMDQgTDUxOC44NCwyNDAuNDAKCQlMNTI0LjYyLDIwOS4zNSBMNTMwLjQwLDE2OS40NCBMNTM2LjE4LDExNi45NyBMNTQxLjMxLDU0LjAxICAnLz48L2c+Cgk8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzIiID48dGl0bGU+dHJ1ZSBzY2FsZTwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJyZ2IoICAwLCAgIDAsIDI1NSkiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDk3LjM0LDkzLjkxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPnRydWUgc2NhbGU8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKDI1NSwgICAwLCAgIDApJyAgZD0nTTUwNS43Myw5MC4wMSBMNTQ4LjI5LDkwLjAxIE03My44OSw0MTMuMTkgTDU1OS4yOSw0MTMuMTkgICcvPjwvZz4KCTwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDQyMi40MCBMODIuODksNDIyLjQwIE01NjUuMDcsNDIyLjQwIEw1NTYuMDcsNDIyLjQwICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsNDI2LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDM3Ni4zNSBMODIuODksMzc2LjM1IE01NjUuMDcsMzc2LjM1IEw1NTYuMDcsMzc2LjM1ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsMzgwLjI1KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA1PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDMzMC4zMCBMODIuODksMzMwLjMwIE01NjUuMDcsMzMwLjMwIEw1NTYuMDcsMzMwLjMwICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsMzM0LjIwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAxMDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSwyODQuMjUgTDgyLjg5LDI4NC4yNSBNNTY1LjA3LDI4NC4yNSBMNTU2LjA3LDI4NC4yNSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1LjUwLDI4OC4xNSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMTU8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksMjM4LjIwIEw4Mi44OSwyMzguMjAgTTU2NS4wNywyMzguMjAgTDU1Ni4wNywyMzguMjAgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCwyNDIuMTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDIwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDE5Mi4xNiBMODIuODksMTkyLjE2IE01NjUuMDcsMTkyLjE2IEw1NTYuMDcsMTkyLjE2ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsMTk2LjA2KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAyNTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSwxNDYuMTEgTDgyLjg5LDE0Ni4xMSBNNTY1LjA3LDE0Ni4xMSBMNTU2LjA3LDE0Ni4xMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1LjUwLDE1MC4wMSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMzA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksMTAwLjA2IEw4Mi44OSwxMDAuMDYgTTU2NS4wNywxMDAuMDYgTDU1Ni4wNywxMDAuMDYgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCwxMDMuOTYpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDM1PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDU0LjAxIEw4Mi44OSw1NC4wMSBNNTY1LjA3LDU0LjAxIEw1NTYuMDcsNTQuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCw1Ny45MSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gNDA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksNDIyLjQwIEw3My44OSw0MTMuNDAgTTczLjg5LDU0LjAxIEw3My44OSw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDczLjg5LDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00xMzEuNjgsNDIyLjQwIEwxMzEuNjgsNDEzLjQwIE0xMzEuNjgsNTQuMDEgTDEzMS42OCw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzMS42OCw0NDQuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDEwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTE4OS40Niw0MjIuNDAgTDE4OS40Niw0MTMuNDAgTTE4OS40Niw1NC4wMSBMMTg5LjQ2LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTg5LjQ2LDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMjA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMjQ3LjI1LDQyMi40MCBMMjQ3LjI1LDQxMy40MCBNMjQ3LjI1LDU0LjAxIEwyNDcuMjUsNjMuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDcuMjUsNDQ0LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAzMDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00zMDUuMDMsNDIyLjQwIEwzMDUuMDMsNDEzLjQwIE0zMDUuMDMsNTQuMDEgTDMwNS4wMyw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwNS4wMyw0NDQuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDQwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM2Mi44Miw0MjIuNDAgTDM2Mi44Miw0MTMuNDAgTTM2Mi44Miw1NC4wMSBMMzYyLjgyLDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzYyLjgyLDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gNTA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNDIwLjYxLDQyMi40MCBMNDIwLjYxLDQxMy40MCBNNDIwLjYxLDU0LjAxIEw0MjAuNjEsNjMuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MjAuNjEsNDQ0LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA2MDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J000NzguMzksNDIyLjQwIEw0NzguMzksNDEzLjQwIE00NzguMzksNTQuMDEgTDQ3OC4zOSw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ3OC4zOSw0NDQuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDcwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTUzNi4xOCw0MjIuNDAgTDUzNi4xOCw0MTMuNDAgTTUzNi4xOCw1NC4wMSBMNTM2LjE4LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTM2LjE4LDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gODA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTczLjg5LDQyMi40MCBMNTY1LjA3LDQyMi40MCAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTczLjg5LDQyMi40MCBMNzMuODksNTQuMDEgICcvPjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImdyYXkiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMi4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMi4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDU0LjAxIEw3My44OSw0MjIuNDAgTDU2NS4wNyw0MjIuNDAgTDU2NS4wNyw1NC4wMSBMNzMuODksNTQuMDEgWiAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4LjkzLDIzOC4yMSkgcm90YXRlKDI3MC4wMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID5hcmVhIG1hZ25pZmljYXRpb248L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxOS40OCw0NzEuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+bGF0aXR1ZGUgKGRlZ3JlZXMpPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTkuNDgsMzAuOTEpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+TWVyY2F0b3IgcHJlc2VydmVzIGV2ZXJ5IGFuZ2xlIGFuZCBhbG1vc3Qgbm8gYXJlYTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjwvZz4KPC9zdmc+Cgo="/>
+<pre>for a function F:
+   dF        =  ['diff(F,x,1),'diff(F,y,1)]   (as coefficients of dx, dy)
+   d(dF)     =  0
+   — zero because ∂²F/∂x∂y = ∂²F/∂y∂x.  That is all d² = 0 says.
+the angle form ω = (−y dx + x dy)/(x² + y²):
+   dω =  0    — closed
+   but ∮ω around the unit circle =  2*%pi
+   nonzero, so ω is NOT exact: no F on the punctured plane has dF = ω.
+Closed but not exact — the failure is measured by de Rham cohomology,
+and it detects the hole. This is the same information the Umlaufsatz
+(3.01) and Gauss–Bonnet (3.08) were reporting, in the language forms use.</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d38e9fa7">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b504523a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><table>
+<h2 id="Summary-%E2%80%94-the-vocabulary-Stage-4-assumes">Summary — the vocabulary Stage 4 assumes<a class="anchor-link" href="#Summary-%E2%80%94-the-vocabulary-Stage-4-assumes">¶</a></h2><table>
 <thead>
 <tr>
-<th>Surface</th>
-<th>$\mathrm{I} = \begin{pmatrix}E&amp;F\\F&amp;G\end{pmatrix}$</th>
-<th>$EG-F^2$</th>
+<th>Object</th>
+<th>Is</th>
+<th>Transforms</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>plane</td>
-<td>$\mathrm{diag}(1,1)$</td>
-<td>$1$</td>
+<td>chart $\varphi: U \to \mathbb R^n$</td>
+<td>local coordinates</td>
+<td>—</td>
 </tr>
 <tr>
-<td>cylinder radius $R$</td>
-<td>$\mathrm{diag}(R^2,1)$</td>
-<td>$R^2$</td>
+<td>smooth structure</td>
+<td>atlas with smooth transitions</td>
+<td>—</td>
 </tr>
 <tr>
-<td>cylinder, arc-length coords</td>
-<td>$\mathrm{diag}(1,1)$</td>
-<td>$1$</td>
+<td>tangent vector $v \in T_pM$</td>
+<td>a <strong>derivation</strong>: linear, Leibniz</td>
+<td>by the Jacobian (contravariant)</td>
 </tr>
 <tr>
-<td>sphere radius $R$</td>
-<td>$\mathrm{diag}(R^2,\,R^2\sin^2 u)$</td>
-<td>$R^4\sin^2 u$</td>
+<td>$\partial_1,\dots,\partial_n$</td>
+<td>basis of $T_pM$</td>
+<td>—</td>
 </tr>
 <tr>
-<td>torus $(a,b)$</td>
-<td>$\mathrm{diag}(b^2,\,(a+b\cos u)^2)$</td>
-<td>$b^2(a+b\cos u)^2$</td>
+<td>covector $\in T_p^*M$</td>
+<td>linear functional on $T_pM$</td>
+<td>by the inverse Jacobian (covariant)</td>
+</tr>
+<tr>
+<td>$k$-form</td>
+<td>alternating, built with $\wedge$</td>
+<td>—</td>
+</tr>
+<tr>
+<td>$d$</td>
+<td>exterior derivative, $d^2 = 0$</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
-<p>Computed from these alone: lengths of parallels ($2\pi\sin u_0$) and meridians ($\pi$) on the unit sphere; the area of the sphere ($4\pi R^2$) and of the torus ($4\pi^2ab$, Pappus's theorem); angles, which vary with position even for a fixed parameter direction; and the fact that a suitable change of coordinates makes the cylinder's form <strong>literally identical</strong> to the plane's.</p>
-<h2 id="The-idea-to-hold-on-to">The idea to hold on to<a class="anchor-link" href="#The-idea-to-hold-on-to">¶</a></h2><p><strong>Intrinsic versus extrinsic.</strong> The first fundamental form is the complete record of what can be measured <em>inside</em> a surface. The cylinder demonstrates that this is strictly less than what can be seen from outside: it is visibly curved in $\mathbb R^3$, yet intrinsically indistinguishable from a flat plane. Rolling paper is an isometry; crumpling it is not.</p>
-<p>The sphere is the opposite case — no reparametrisation flattens it, and the best available compromise is <em>conformal</em>: Mercator gets every angle right and inflates area by $1/\sin^2 u$, a factor of about $10.5$ at Greenland's latitude. That trade-off is unavoidable, and its unavoidability is a theorem about curvature rather than a failure of cartographic ingenuity.</p>
-<p><strong>Where this goes.</strong> The pattern</p>
-<p>$$\text{restrict the ambient inner product to each tangent space}$$</p>
-<p>is the entire definition of a <strong>Riemannian metric</strong>, and Stage 4 simply drops the ambient space, keeping the varying inner product as the primitive object. Then $E, F, G$ become $g_{ij}$, $\sqrt{EG-F^2}$ becomes $\sqrt{\det g}$, and everything computed in this notebook has a verbatim counterpart. The surfaces here are the case $n = 2$ with the metric inherited rather than postulated.</p>
-<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>3.04 — The Gauss Map and Second Fundamental Form</strong> turns to the extrinsic side: how the unit normal $n$ tilts as you move across the surface. Its derivative is the shape operator, a <em>symmetric</em> linear map on each tangent plane — so by 1.06 it can be diagonalised, and its eigenvalues are the principal curvatures.</p>
-<h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
-<li>do Carmo, M.P. (1976) <em>Differential Geometry of Curves and Surfaces</em>. Englewood Cliffs: Prentice-Hall. §2-5 for the first fundamental form; §4-2 for isometries and the cylinder example.</li>
-<li>Pressley, A. (2010) <em>Elementary Differential Geometry</em>. 2nd edn. Springer Undergraduate Mathematics Series. London: Springer. Chapters 4–6, with many worked first fundamental forms.</li>
-<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. doi:10.1007/978-3-319-91755-9. Chapter 2 introduces Riemannian metrics as exactly this construction with the ambient space removed.</li>
-<li>★ Callahan, J.J. (2000) <em>The Geometry of Spacetime</em>. New York: Springer. doi:10.1007/978-1-4757-6736-0. Chapter 5 for the metric on a surface and the transition to the general case.</li>
+<p>Checked here: the two stereographic charts on $S^2$ are smoothly compatible, with transition map the inversion $(a,b)\mapsto(a,b)/(a^2+b^2)$ and $\det J = -1/(a^2+b^2)^2$ — nonzero on the overlap, and negative, so the charts are oppositely oriented. A general $v = a\partial_x + b\partial_y$ satisfies Leibniz identically. The field $\partial/\partial\theta$ equals $-y\partial_x + x\partial_y$, verified by applying both to a test function. And $d^2 = 0$ reduces to equality of mixed partials, while the angle form is closed with $\oint\omega = 2\pi$ — closed but not exact, detecting the puncture.</p>
+<h2 id="The-one-thing-to-carry-forward">The one thing to carry forward<a class="anchor-link" href="#The-one-thing-to-carry-forward">¶</a></h2><p><strong>A "vector" is components plus a transformation rule.</strong> Nothing in Stage 4 is a bare list of numbers. $g_{ij}$, $\Gamma^k_{ij}$, $R^l_{ijk}$ all carry indices whose position records how they respond to a change of chart, and the whole point of the formalism is that the <em>geometry</em> — lengths, angles, curvature — comes out chart-independent even though every component is chart-dependent.</p>
+<p>The Christoffel symbols are the instructive exception: they carry indices but are <strong>not</strong> a tensor. They transform with an extra inhomogeneous term, which is precisely why they can be made to vanish at a point (normal coordinates, 3.07) — and why curvature, which <em>is</em> a tensor, cannot.</p>
+<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>4.01 — Riemannian Metrics</strong> puts an inner product on each tangent space and lets it vary smoothly. Everything from 3.03 returns with the ambient space deleted: $E,F,G$ become $g_{ij}$, lengths and areas are computed from $g$ alone, and the sphere, the flat torus and the hyperbolic plane appear as metrics rather than as surfaces in space.</p>
+<h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><p>The full development of everything above:</p>
+<ul>
+<li>★ Lee, J.M. (2011) <em>Introduction to Topological Manifolds</em>. 2nd edn. New York: Springer. Chapters 2–4 for charts, atlases and the topological prerequisites.</li>
+<li>★ Lee, J.M. (2013) <em>Introduction to Smooth Manifolds</em>. 2nd edn. New York: Springer. The standard reference: Chapter 1 (smooth structures), Chapter 3 (tangent vectors as derivations), Chapter 11 (cotangent bundle), Chapter 14 (forms), Chapter 16 (Stokes).</li>
+<li><a href="https://github.com/cmsd2/topology-journey">topology-journey</a> Stage 3 — 3.01 topological manifolds, 3.02 smooth structures, 3.03 tangent and cotangent bundles, 3.04 differential forms, 3.05 de Rham cohomology, 3.06 Stokes' theorem. <strong>This is the companion treatment</strong>; the present notebook exists only to fix notation.</li>
+<li>★ Naber, G.L. (1997) <em>Topology, Geometry, and Gauge Fields</em>. New York: Springer. doi:10.1007/978-1-4757-2742-5. Chapters 1–2, with the physics motivation running alongside.</li>
 </ul>
-<p>On map projections and the impossibility of a distortion-free chart, see Snyder, J.P. (1987) <em>Map Projections: A Working Manual</em>. USGS Professional Paper 1395.</p>
+<p>Riemann, B. (1854) <em>Über die Hypothesen, welche der Geometrie zu Grunde liegen</em> is the origin of the whole programme; the manifold concept took another seventy years to reach its modern form, largely through Weyl and Whitney.</p>
 <hr/>
 <p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result; the prose is written from knowledge and checked against these sources where they cover the material.</em></p>
 </div>

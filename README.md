@@ -81,7 +81,7 @@ Curvature without an ambient space. Everything in Stage 3 was measured from outs
 
 | # | Notebook | Idea |
 |---|----------|------|
-| 00 | manifolds-recap | The minimum needed: charts, tangent vectors as derivations, vector fields, forms. A recap and a map — the full development is in [topology-journey Stage 3](https://github.com/cmsd2/topology-journey) |
+| 00 | [manifolds-recap](notebooks/04-riemannian-geometry/00-manifolds-recap.macnb) | The minimum needed: charts, tangent vectors as derivations, vector fields, forms. A recap and a map — the full development is in [topology-journey Stage 3](https://github.com/cmsd2/topology-journey) |
 | 01 | riemannian-metrics | Metrics as smoothly varying inner products; length, distance and volume; the round sphere, the hyperbolic plane and flat tori as running examples |
 | 02 | connections-and-covariant-differentiation | Why $\partial_i V^j$ is not a tensor; affine connections; parallel transport; the Levi-Civita connection and its Christoffel symbols, derived symbolically |
 | 03 | geodesics-and-the-exponential-map | Geodesics as straightest and as shortest; the exponential map; normal coordinates; geodesic completeness and Hopf–Rinow |
