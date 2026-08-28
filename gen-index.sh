@@ -53,7 +53,9 @@ prettify() {
       -e 's/Frenet Serret/Frenet–Serret/' \
       -e 's/Gauss Bonnet/Gauss–Bonnet/' \
       -e 's/Cross Ratio/Cross-Ratio/' \
-      -e 's/Arclength/Arc Length/'
+      -e 's/Arclength/Arc Length/' \
+      -e 's/Kahler/Kähler/' \
+      -e 's/Tests Of Gr$/Tests Of GR/'
 }
 
 humanise() {
