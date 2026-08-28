@@ -96,8 +96,8 @@ Symmetry groups become geometric objects in their own right, and curvature is re
 
 | # | Notebook | Idea |
 |---|----------|------|
-| 01 | matrix-lie-groups-and-lie-algebras | $GL_n$, $SO(n)$, $SU(n)$, $Sp(n)$ as manifolds; the Lie algebra as the tangent space at the identity; the bracket |
-| 02 | the-exponential-map-and-adjoint | $\exp$ for matrix groups; one-parameter subgroups; $\mathrm{Ad}$ and $\mathrm{ad}$; the Baker–Campbell–Hausdorff formula |
+| 01 | [matrix-lie-groups-and-lie-algebras](notebooks/05-lie-groups-and-bundles/01-matrix-lie-groups-and-lie-algebras.macnb) | $GL_n$, $SO(n)$, $SU(n)$, $Sp(n)$ as manifolds; the Lie algebra as the tangent space at the identity; the bracket |
+| 02 | [the-exponential-map-and-adjoint](notebooks/05-lie-groups-and-bundles/02-the-exponential-map-and-adjoint.macnb) | $\exp$ for matrix groups; one-parameter subgroups; $\mathrm{Ad}$ and $\mathrm{ad}$; the Baker–Campbell–Hausdorff formula |
 | 03 | invariant-metrics-and-homogeneous-spaces | Left- and bi-invariant metrics; the Killing form; $G/H$ as a manifold; spheres, projective spaces and Grassmannians as homogeneous spaces |
 | 04 | symmetric-spaces | Geodesic symmetries; curvature from the Lie bracket alone; the compact/non-compact duality |
 | 05 | principal-bundles-and-connections | Principal $G$-bundles; connections as $\mathfrak g$-valued forms; curvature $F = dA + A \wedge A$; gauge transformations; the Levi-Civita connection as a special case |
