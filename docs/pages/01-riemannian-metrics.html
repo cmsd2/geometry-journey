@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>04-symmetry-groups</title>
+<title>01-riemannian-metrics</title>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7771,67 +7771,53 @@ a.anchor-link {
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c617703">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9a6282ec">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="1.04-%E2%80%94-Symmetry-Groups">1.04 — Symmetry Groups<a class="anchor-link" href="#1.04-%E2%80%94-Symmetry-Groups">¶</a></h1><p>So far we have studied the <em>whole</em> isometry group. Now we look at its <strong>finite subgroups</strong> — the symmetry groups of actual objects.</p>
-<p>The question "what are the possible symmetry groups?" has a genuinely surprising answer: the list is short, it can be written down completely, and it explains several facts that look unrelated.</p>
+<h1 id="4.01-%E2%80%94-Riemannian-Metrics">4.01 — Riemannian Metrics<a class="anchor-link" href="#4.01-%E2%80%94-Riemannian-Metrics">¶</a></h1><p>A <strong>Riemannian metric</strong> on a manifold $M$ is a smoothly varying inner product on each tangent space:</p>
+<p>$$g_p : T_pM \times T_pM \to \mathbb R, \qquad \text{symmetric, positive definite, smooth in } p.$$</p>
+<p>In a chart it is a matrix of functions $g_{ij}(x)$, and the notation everyone actually uses is the <strong>line element</strong></p>
+<p>$$ds^2 = g_{ij}\,dx^i dx^j .$$</p>
+<p>That is the entire definition, and it is deliberately spare. Compare 3.03, where the first fundamental form was <em>inherited</em> — obtained by restricting the dot product of $\mathbb R^3$ to each tangent plane. Here nothing is inherited. The metric is <strong>postulated</strong>, and there is no ambient space for it to come from.</p>
 <table>
 <thead>
 <tr>
-<th>Setting</th>
-<th>Finite subgroups</th>
-<th>Consequence</th>
+<th>Stage 3 (surface in $\mathbb R^3$)</th>
+<th>Stage 4 (abstract manifold)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$SO(2)$</td>
-<td>cyclic $C_n$ only</td>
-<td>a rotationally symmetric plane figure has one rotation order</td>
+<td>$E, F, G$</td>
+<td>$g_{ij}$</td>
 </tr>
 <tr>
-<td>$O(2)$</td>
-<td>$C_n$ and dihedral $D_n$</td>
-<td>adding mirrors doubles the group and nothing else appears</td>
+<td>$\sqrt{EG-F^2}$</td>
+<td>$\sqrt{\det g}$</td>
 </tr>
 <tr>
-<td>$SO(3)$</td>
-<td>$C_n$, $D_n$, $T$, $O$, $I$</td>
-<td><strong>there are exactly five Platonic solids</strong></td>
+<td>inherited from $\mathbb R^3$</td>
+<td>postulated</td>
 </tr>
 <tr>
-<td>$E(2)$, discrete with translations</td>
-<td>7 frieze, 17 wallpaper groups</td>
-<td>there are exactly 17 kinds of repeating wallpaper pattern</td>
+<td>$n = 2$ only</td>
+<td>any $n$</td>
 </tr>
 </tbody>
 </table>
-<p>The third line is the striking one. The classification of finite rotation groups is a fact about $SO(3)$, proved by counting, with no polyhedra in it anywhere — and yet it forces the number of regular solids to be five. Euclid's Book XIII, which closes the <em>Elements</em> with that result, is really a theorem about a group.</p>
-<p>This notebook proves the $SO(3)$ classification by the counting argument, then builds the rotation group of the cube explicitly as $24$ matrices and identifies it with $S_4$.</p>
+<p>Everything computable from $\mathrm{I}$ alone in 3.03 — lengths, angles, areas — carries over verbatim, because those computations never used the ambient space in the first place. The Theorema Egregium (3.06) is the licence: it showed that even curvature survives the amputation.</p>
+<p><strong>What the abstraction buys.</strong> Two things this notebook demonstrates concretely:</p>
+<ul>
+<li><strong>Dimension is unrestricted.</strong> Nothing above mentions $2$ or $3$. Stage 6 needs $n = 4$ with a sign flipped.</li>
+<li><strong>Spaces with no isometric embedding become ordinary.</strong> The <strong>flat torus</strong> — genuinely flat, $K \equiv 0$, and compact — cannot sit isometrically in $\mathbb R^3$, yet is perfectly well defined as a manifold with a metric. The embedded torus of 3.04 was a <em>different</em> geometric object that merely happened to share its topology.</li>
+</ul>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=646337e0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-The-plane:-only-cyclic-and-dihedral">1. The plane: only cyclic and dihedral<a class="anchor-link" href="#1.-The-plane:-only-cyclic-and-dihedral">¶</a></h2><p>Start with $SO(2)$. A finite subgroup $G$ consists of rotations by angles forming a finite set closed under addition mod $2\pi$. Let $\theta_0$ be the smallest positive angle in $G$. Any other $\theta \in G$ can be written $\theta = k\theta_0 + r$ with $0 \le r &lt; \theta_0$, and $r = \theta - k\theta_0 \in G$ — so $r = 0$ by minimality. Hence $G = \{0, \theta_0, 2\theta_0, \ldots\}$ and closure forces $\theta_0 = 2\pi/n$:</p>
-<p>$$G = C_n, \quad\text{the cyclic group of order } n.$$</p>
-<p>This is the same division algorithm that proves every subgroup of $\mathbb Z$ is $n\mathbb Z$, and it is worth noticing that "discrete subgroup of a circle" and "subgroup of the integers" are the same problem.</p>
-<p>Now allow reflections, $G \le O(2)$. The rotations in $G$ form a subgroup $G^+ = C_n$ of index at most $2$. If $G$ contains no reflection, $G = C_n$. If it contains one, say $F_\alpha$, then every reflection in $G$ is $F_\alpha$ composed with a rotation of $G^+$, so there are exactly $n$ of them, evenly spaced at angles $\pi/n$ apart:</p>
-<p>$$G = D_n, \quad\text{the dihedral group of order } 2n.$$</p>
-<p><strong>That is the entire list for the plane.</strong> $C_n$ and $D_n$, nothing else — and it is why the symmetry of any finite plane figure can be summarised by a single integer plus a yes/no.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c88f4199">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ff948808">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7843,40 +7829,35 @@ a.anchor-link {
 <span class="nf">load</span><span class="p">(</span><span class="s">"ax-plots"</span><span class="p">)$</span>
 <span class="nf">load</span><span class="p">(</span><span class="s">"linearalgebra"</span><span class="p">)$</span>
 <span class="nv">ratprint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="no">false</span><span class="p">$</span>
+<span class="nf">ts</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">trigsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">)$</span>
 
-<span class="nf">cvec</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="nv">v</span><span class="p">))$</span>
-<span class="nf">tsimp</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nf">matrixp</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nf">matrixmap</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">z</span><span class="p">],</span><span class="w"> </span><span class="nf">trigrat</span><span class="p">(</span><span class="nv">z</span><span class="p">)),</span><span class="w"> </span><span class="nv">e</span><span class="p">)</span>
-<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nf">listp</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">z</span><span class="p">],</span><span class="w"> </span><span class="nf">trigrat</span><span class="p">(</span><span class="nv">z</span><span class="p">)),</span><span class="w"> </span><span class="nv">e</span><span class="p">)</span>
-<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="nf">trigrat</span><span class="p">(</span><span class="nv">e</span><span class="p">)$</span>
+<span class="cm">/* A metric is just a symmetric positive-definite matrix of functions. */</span>
+<span class="cm">/* Length of a curve, and the volume element, from g alone. */</span>
+<span class="nf">curve_length</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">,</span><span class="w"> </span><span class="nv">curve</span><span class="p">,</span><span class="w"> </span><span class="nv">prm</span><span class="p">,</span><span class="w"> </span><span class="nv">t0</span><span class="p">,</span><span class="w"> </span><span class="nv">t1</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">sub</span><span class="p">,</span><span class="w"> </span><span class="nv">vel</span><span class="p">,</span><span class="w"> </span><span class="nv">integrand</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">sub</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">k</span><span class="p">],</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">curve</span><span class="p">[</span><span class="nv">k</span><span class="p">]),</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="nv">k</span><span class="p">,</span><span class="nv">k</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">))),</span>
+<span class="w">  </span><span class="nv">vel</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">c</span><span class="p">],</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">c</span><span class="p">,</span><span class="w"> </span><span class="nv">prm</span><span class="p">)),</span><span class="w"> </span><span class="nv">curve</span><span class="p">),</span>
+<span class="w">  </span><span class="nv">integrand</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="nf">subst</span><span class="p">(</span><span class="nv">sub</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="nv">i</span><span class="p">][</span><span class="nv">j</span><span class="p">])</span><span class="o">*</span><span class="nv">vel</span><span class="p">[</span><span class="nv">i</span><span class="p">]</span><span class="o">*</span><span class="nv">vel</span><span class="p">[</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nv">j</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">)),</span>
+<span class="w">                   </span><span class="nv">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">)),</span>
+<span class="w">  </span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">integrand</span><span class="p">)),</span><span class="w"> </span><span class="nv">prm</span><span class="p">,</span><span class="w"> </span><span class="nv">t0</span><span class="p">,</span><span class="w"> </span><span class="nv">t1</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">Rot</span><span class="p">(</span>θ<span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">cos</span><span class="p">(</span>θ<span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="nf">sin</span><span class="p">(</span>θ<span class="p">)],</span><span class="w"> </span><span class="p">[</span><span class="nf">sin</span><span class="p">(</span>θ<span class="p">),</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span>θ<span class="p">)])$</span>
-<span class="nf">Ref</span><span class="p">(</span>α<span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nf">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>α<span class="p">),</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>α<span class="p">)],</span><span class="w"> </span><span class="p">[</span><span class="nf">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>α<span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="nf">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>α<span class="p">)])$</span>
+<span class="nf">vol_element</span><span class="p">(</span><span class="nv">g</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">g</span><span class="p">))</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="cm">/* Generate a matrix group by closing a set of generators under multiplication.</span>
-<span class="cm">   Exact arithmetic means we can compare matrices for equality directly. */</span>
-<span class="nf">close_group</span><span class="p">(</span><span class="nv">gens</span><span class="p">,</span><span class="w"> </span><span class="nv">maxsize</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">G</span><span class="p">,</span><span class="w"> </span><span class="nv">frontier</span><span class="p">,</span><span class="w"> </span><span class="nv">newones</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">h</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="nf">ident</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nv">gens</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="w"> </span><span class="p">],</span>
-<span class="w">  </span><span class="nv">frontier</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">G</span><span class="p">,</span>
-<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">frontier</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">G</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nv">maxsize</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="nv">newones</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">frontier</span><span class="w"> </span><span class="k">do</span>
-<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="nv">h</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">gens</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="nv">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">tsimp</span><span class="p">(</span><span class="nv">g</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">h</span><span class="p">),</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nf">member</span><span class="p">(</span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="nv">G</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nf">member</span><span class="p">(</span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="nv">newones</span><span class="p">)</span>
-<span class="w">          </span><span class="k">then</span><span class="w"> </span><span class="nv">newones</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">cons</span><span class="p">(</span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="nv">newones</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
-<span class="w">    </span><span class="nv">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="nv">G</span><span class="p">,</span><span class="w"> </span><span class="nv">newones</span><span class="p">),</span>
-<span class="w">    </span><span class="nv">frontier</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">newones</span><span class="w"> </span><span class="p">),</span>
-<span class="w">  </span><span class="nv">G</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* ---------------- four metrics ---------------- */</span>
+<span class="nf">assume</span><span class="p">(</span><span class="nv">R</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)$</span>
 
-<span class="cm">/* C6 and D6 in the plane */</span>
-<span class="nv">C6</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">close_group</span><span class="p">([</span><span class="w"> </span><span class="nf">Rot</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>π<span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="mi">100</span><span class="p">)$</span>
-<span class="nv">D6</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">close_group</span><span class="p">([</span><span class="w"> </span><span class="nf">Rot</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>π<span class="o">/</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="nf">Ref</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="mi">100</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"|C6| = "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">C6</span><span class="p">),</span><span class="w"> </span><span class="s">"    |D6| = "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">D6</span><span class="p">))$</span>
+<span class="nv">g_flat</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span><span class="w">                       </span><span class="cm">/* Euclidean plane        */</span>
+<span class="nv">g_sph</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="nv">R</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="nv">R</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span><span class="w">          </span><span class="cm">/* round sphere, radius R */</span>
+<span class="nv">g_hyp</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span><span class="w">               </span><span class="cm">/* hyperbolic half-plane  */</span>
+<span class="nv">g_ftor</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span><span class="w">                       </span><span class="cm">/* flat torus (see below) */</span>
 
-<span class="cm">/* Every element of D6 has determinant ±1, half of each */</span>
-<span class="nv">dets</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">tsimp</span><span class="p">(</span><span class="nf">determinant</span><span class="p">(</span><span class="nv">M</span><span class="p">))),</span><span class="w"> </span><span class="nv">D6</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"determinants in D6: "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">sublist</span><span class="p">(</span><span class="nv">dets</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">d</span><span class="p">],</span><span class="w"> </span><span class="nv">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">))),</span><span class="w"> </span><span class="s">" rotations, "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">length</span><span class="p">(</span><span class="nf">sublist</span><span class="p">(</span><span class="nv">dets</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">d</span><span class="p">],</span><span class="w"> </span><span class="nv">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">))),</span><span class="w"> </span><span class="s">" reflections"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   metric                  g                          √det g"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   Euclidean plane   "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_flat</span><span class="p">,</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nf">vol_element</span><span class="p">(</span><span class="nv">g_flat</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   round sphere      "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_sph</span><span class="p">,</span><span class="w">  </span><span class="s">"  "</span><span class="p">,</span><span class="w"> </span><span class="nf">vol_element</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   hyperbolic plane  "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_hyp</span><span class="p">,</span><span class="w">  </span><span class="s">"        "</span><span class="p">,</span><span class="w"> </span><span class="nf">vol_element</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The hyperbolic metric is ds² = (dx² + dy²)/y², i.e. |dz|/Im z —"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"exactly what 2.06 derived by demanding PSL(2,R) invariance."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"There it was justified by a group; here it is simply written down."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -7889,142 +7870,18 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>|C6| =  6     |D6| =  12
-determinants in D6:  6  rotations,  6  reflections</pre>
+<pre>   metric                  g                          √det g
+   Euclidean plane    matrix([1,0],[0,1])        1
+   round sphere       matrix([R^2,0],[0,R^2*sin(u)^2])    R^2*abs(sin(u))
+   hyperbolic plane   matrix([1/y^2,0],[0,1/y^2])          1/y^2
+The hyperbolic metric is ds² = (dx² + dy²)/y², i.e. |dz|/Im z —
+exactly what 2.06 derived by demanding PSL(2,R) invariance.
+There it was justified by a group; here it is simply written down.</pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ba682747">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Space:-the-classification-of-finite-rotation-groups">2. Space: the classification of finite rotation groups<a class="anchor-link" href="#2.-Space:-the-classification-of-finite-rotation-groups">¶</a></h2><blockquote>
-<p><strong>Theorem.</strong> Every finite subgroup of $SO(3)$ is one of: $C_n$, $D_n$, $T \cong A_4$ (order 12), $O \cong S_4$ (order 24), $I \cong A_5$ (order 60).</p>
-</blockquote>
-<p>The proof counts <strong>poles</strong>. Let $G \le SO(3)$ be finite of order $N &gt; 1$. By Euler's theorem (1.03), every $g \ne e$ fixes an axis, which meets the unit sphere in two points. Call all such points poles, and let $P$ be the set of them.</p>
-<p><strong>Count the incidences.</strong> Consider pairs $(g, p)$ with $g \ne e$ and $gp = p$.</p>
-<ul>
-<li>Counting by $g$: each of the $N - 1$ non-identity elements has exactly $2$ poles, giving $2(N-1)$.</li>
-<li>Counting by $p$: the stabiliser $G_p$ is a finite group of rotations about one axis, hence cyclic of some order $n_p \ge 2$, contributing $n_p - 1$ non-identity elements.</li>
-</ul>
-<p>So $\displaystyle 2(N-1) = \sum_{p \in P}(n_p - 1)$.</p>
-<p><strong>Group the poles into orbits.</strong> $G$ permutes $P$. Stabiliser orders are constant on an orbit, so with orbits $O_1, \dots, O_k$ of stabiliser orders $n_1, \dots, n_k$, the orbit–stabiliser theorem gives $|O_i| = N/n_i$ and</p>
-<p>$$2(N-1) = \sum_{i=1}^k \frac{N}{n_i}\,(n_i - 1) \quad\Longrightarrow\quad 2 - \frac{2}{N} = \sum_{i=1}^k\left(1 - \frac{1}{n_i}\right).$$</p>
-<p><strong>Now just bound things.</strong> For $N \ge 2$ the left side lies in $[1, 2)$. Each right-hand term lies in $[\tfrac12, 1)$. So $k$ cannot be $1$ (too small) and cannot be $4$ or more (too big): $k \in \{2, 3\}$.</p>
-<ul>
-<li><strong>$k = 2$:</strong> the equation reduces to $n_1 = n_2 = N$, two poles fixed by everything — a single axis. This is $C_N$.</li>
-<li><strong>$k = 3$:</strong> rearranged, $\frac{1}{n_1} + \frac{1}{n_2} + \frac{1}{n_3} = 1 + \frac{2}{N} &gt; 1$, a Diophantine condition with very few solutions.</li>
-</ul>
-<p>Let Maxima find them all.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4bbb9134">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* Solve  1/n1 + 1/n2 + 1/n3 = 1 + 2/N  with 2 ≤ n1 ≤ n2 ≤ n3,</span>
-<span class="cm">   i.e. find all triples whose reciprocal sum exceeds 1, and read off N. */</span>
-<span class="nv">sols</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[]$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">n1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">n2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">n1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">n3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">n2</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">s</span><span class="p">],</span>
-<span class="w">      </span><span class="nv">s</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">n1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">n2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nv">n3</span><span class="p">,</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">sols</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">cons</span><span class="p">([</span><span class="w"> </span><span class="p">[</span><span class="nv">n1</span><span class="p">,</span><span class="nv">n2</span><span class="p">,</span><span class="nv">n3</span><span class="p">],</span><span class="w"> </span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="nv">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="nv">sols</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
-<span class="nv">sols</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">reverse</span><span class="p">(</span><span class="nv">sols</span><span class="p">)$</span>
-
-<span class="cm">/* The (2,2,n) solutions form one infinite family; everything else is sporadic */</span>
-<span class="nv">family</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="nf">sublist</span><span class="p">(</span><span class="nv">sols</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">s</span><span class="p">],</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">))$</span>
-<span class="nv">sporadic</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">sublist</span><span class="p">(</span><span class="nv">sols</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">s</span><span class="p">],</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="p">(</span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">)))$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"infinite family: (2, 2, n) → N = 2n, for n = "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">s</span><span class="p">],</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]),</span><span class="w"> </span><span class="nf">rest</span><span class="p">(</span><span class="nv">family</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nv">family</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">))),</span><span class="w"> </span><span class="s">"..."</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   these are the dihedral groups D_n"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"sporadic solutions — the whole rest of the list:"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">sporadic</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="s">"   (n1,n2,n3) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">"   N = "</span><span class="p">,</span><span class="w"> </span><span class="nv">s</span><span class="p">[</span><span class="mi">2</span><span class="p">])$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"nothing else exists, for any search bound."</span><span class="p">)$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>infinite family: (2, 2, n) → N = 2n, for n =  [2,3,4,5,6] ...
-   these are the dihedral groups D_n
-sporadic solutions — the whole rest of the list:
-   (n1,n2,n3) =  [2,3,3]    N =  12
-   (n1,n2,n3) =  [2,3,4]    N =  24
-   (n1,n2,n3) =  [2,3,5]    N =  60
-nothing else exists, for any search bound.</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dca4106c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Why-exactly-five-Platonic-solids">Why exactly five Platonic solids<a class="anchor-link" href="#Why-exactly-five-Platonic-solids">¶</a></h3><p>The three sporadic triples are the whole content of Euclid Book XIII. Each corresponds to a rotation group, and each rotation group is the symmetry group of a regular solid:</p>
-<table>
-<thead>
-<tr>
-<th>Triple</th>
-<th>$N$</th>
-<th>Group</th>
-<th>Solid(s)</th>
-<th>Pole orbits are…</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$(2,3,3)$</td>
-<td>$12$</td>
-<td>$T \cong A_4$</td>
-<td>tetrahedron</td>
-<td>edge-centres, vertices, face-centres</td>
-</tr>
-<tr>
-<td>$(2,3,4)$</td>
-<td>$24$</td>
-<td>$O \cong S_4$</td>
-<td>cube, octahedron</td>
-<td>edge-centres, vertices, face-centres</td>
-</tr>
-<tr>
-<td>$(2,3,5)$</td>
-<td>$60$</td>
-<td>$I \cong A_5$</td>
-<td>dodecahedron, icosahedron</td>
-<td>edge-centres, vertices, face-centres</td>
-</tr>
-</tbody>
-</table>
-<p>The three stabiliser orders $(n_1, n_2, n_3)$ are exactly the rotational orders of an edge axis, a vertex axis and a face axis. For the cube: $2$-fold through edge midpoints, $3$-fold through opposite vertices, $4$-fold through opposite face centres — the triple $(2,3,4)$ read off the solid.</p>
-<p><strong>Five solids, three groups.</strong> The mismatch is <strong>duality</strong>: swapping vertices and face centres turns a cube into an octahedron and a dodecahedron into an icosahedron, without changing the symmetry group. The tetrahedron is self-dual. So $3$ groups produce $3 + 2 = 5$ solids.</p>
-<p>The order of things is worth appreciating. We did not assume any polyhedra existed. We counted fixed points of a finite group of rotations, found that a Diophantine inequality has three solutions, and the solids followed. The reason there is no regular solid with hexagonal faces is that $\tfrac12 + \tfrac13 + \tfrac16 = 1$ exactly — it fails the strict inequality, and lands instead on the flat hexagonal tiling of the plane. Curvature, in a sense we will make precise at Gauss–Bonnet (3.08), is what the excess $\sum 1/n_i - 1 = 2/N$ measures.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=180f4a39">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6d518bb8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8032,35 +7889,46 @@ nothing else exists, for any search bound.</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The rotation group of the cube, built explicitly --- */</span>
-<span class="cm">/* Quarter turns about the z- and x-axes, as exact integer matrices */</span>
-<span class="nv">Qz</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])$</span>
-<span class="nv">Qx</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Everything 2.06 computed, recovered from g alone --- */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"hyperbolic half-plane, ds² = (dx² + dy²)/y²"</span><span class="p">)$</span>
 
-<span class="nv">Ocube</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">close_group</span><span class="p">([</span><span class="nv">Qz</span><span class="p">,</span><span class="w"> </span><span class="nv">Qx</span><span class="p">],</span><span class="w"> </span><span class="mi">200</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"|rotation group of the cube| = "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">))$</span>
+<span class="cm">/* the vertical segment from i to 4i */</span>
+<span class="nv">L1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">curve_length</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">t</span><span class="p">],</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   length of the segment i → 4i : "</span><span class="p">,</span><span class="w"> </span><span class="nv">L1</span><span class="p">,</span><span class="w"> </span><span class="s">" = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">L1</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   2.06 got d(i,4i) = ln 4 = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span><span class="w"> </span><span class="s">" ✓"</span><span class="p">)$</span>
 
-<span class="cm">/* Classify elements by trace, using tr R = 1 + 2cos θ */</span>
-<span class="nv">counts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[]$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="nv">counts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">cons</span><span class="p">([</span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">sublist</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">t</span><span class="p">)))],</span><span class="w"> </span><span class="nv">counts</span><span class="p">)$</span>
-<span class="nv">counts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">reverse</span><span class="p">(</span><span class="nv">counts</span><span class="p">)$</span>
-
+<span class="cm">/* the boundary is infinitely far: length of εi → i is −log ε */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"  trace   angle    count   axis type"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"     3      0°        "</span><span class="p">,</span><span class="w"> </span><span class="nv">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     identity"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"     1     90°        "</span><span class="p">,</span><span class="w"> </span><span class="nv">counts</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     through face centres (3 axes × 2)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"     0    120°        "</span><span class="p">,</span><span class="w"> </span><span class="nv">counts</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     through vertices (4 axes × 2)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"    -1    180°        "</span><span class="p">,</span><span class="w"> </span><span class="nv">counts</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"     3 face axes + 6 edge axes"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"                     ---"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"                      "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   length of the segment εi → i (numerically):"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">ee</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">10000</span><span class="p">]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      ε = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">ee</span><span class="p">),</span><span class="w"> </span><span class="s">"   length = "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">float</span><span class="p">(</span><span class="w"> </span><span class="nf">curve_length</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">t</span><span class="p">],</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="nv">ee</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">),</span>
+<span class="w">        </span><span class="s">"     −log ε = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="o">-</span><span class="nf">log</span><span class="p">(</span><span class="nv">ee</span><span class="p">)))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   — diverging, so y = 0 is infinitely far away ✓"</span><span class="p">)$</span>
 
-<span class="cm">/* Every element is a genuine rotation */</span>
+<span class="cm">/* a horizontal segment high up is short; low down it is long */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"all determinants = 1? "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">every</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">determinant</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nv">Ocube</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"all orthogonal?     "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">every</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">transpose</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ident</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span><span class="w"> </span><span class="nv">Ocube</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   horizontal segment from (0,h) to (1,h), for various heights h:"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">hh</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"      h = "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="nv">hh</span><span class="p">),</span><span class="w"> </span><span class="s">"   length = "</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">float</span><span class="p">(</span><span class="w"> </span><span class="nf">curve_length</span><span class="p">(</span><span class="nv">g_hyp</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="nv">hh</span><span class="p">],</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   — the same Euclidean segment costs more the closer it lies to y = 0"</span><span class="p">)$</span>
+
+<span class="cm">/* Area of the ideal triangle, from √det g = 1/y² */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nv">inner</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nv">yv</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">yv</span><span class="p">,</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nv">xv</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="no">inf</span><span class="p">)$</span>
+<span class="nv">A_ideal</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="nv">inner</span><span class="p">,</span><span class="w"> </span><span class="nv">xv</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   area of the ideal triangle (|x| ≤ 1, above the unit circle) = "</span><span class="p">,</span><span class="w"> </span><span class="nv">A_ideal</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   2.06 got π, and Gauss–Bonnet predicts π − (0+0+0) = π ✓"</span><span class="p">)$</span>
+
+<span class="cm">/* --- The sphere, likewise --- */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"round sphere of radius R:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   meridian from pole to pole = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">curve_length</span><span class="p">(</span><span class="nv">g_sph</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">%pi</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   equator                    = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">curve_length</span><span class="p">(</span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="no">%pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">g_sph</span><span class="p">),</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="no">%pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">t</span><span class="p">],</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   total area = "</span><span class="p">,</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="nf">integrate</span><span class="p">(</span><span class="nv">R</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">),</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">%pi</span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="p">))$</span>
 </pre></div>
 </div>
 </div>
@@ -8073,36 +7941,85 @@ nothing else exists, for any search bound.</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>|rotation group of the cube| =  24
-  trace   angle    count   axis type
-     3      0°         1      identity
-     1     90°         6      through face centres (3 axes × 2)
-     0    120°         8      through vertices (4 axes × 2)
-    -1    180°         9      3 face axes + 6 edge axes
-                     ---
-                       24
-all determinants = 1?  true
-all orthogonal?      true</pre>
+<pre>hyperbolic half-plane, ds² = (dx² + dy²)/y²
+   length of the segment i → 4i :  log(4)  =  1.3862943611198906
+   2.06 got d(i,4i) = ln 4 =  1.3862943611198906  ✓
+   length of the segment εi → i (numerically):
+      ε =  0.1    length =  2.302585092994046      −log ε =  2.302585092994046
+      ε =  0.01    length =  4.605170185988092      −log ε =
+          4.605170185988092
+      ε =  0.001    length =  6.907755278982137      −log ε =
+          6.907755278982137
+      ε =  1.0e-4    length =  9.210340371976184      −log ε =
+          9.210340371976184
+   — diverging, so y = 0 is infinitely far away ✓
+   horizontal segment from (0,h) to (1,h), for various heights h:
+      h =  4.0    length =  0.25
+      h =  2.0    length =  0.5
+      h =  1.0    length =  1.0
+      h =  0.5    length =  2.0
+      h =  0.1    length =  10.0
+   — the same Euclidean segment costs more the closer it lies to y = 0
+   area of the ideal triangle (|x| ≤ 1, above the unit circle) =  %pi
+   2.06 got π, and Gauss–Bonnet predicts π − (0+0+0) = π ✓
+round sphere of radius R:
+   meridian from pole to pole =  %pi*R
+   equator                    =  2*%pi*R
+   total area =  4*%pi*R^2</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a7e0ac1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=08b113a1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="The-cube's-rotation-group-is-$S_4$">The cube's rotation group <em>is</em> $S_4$<a class="anchor-link" href="#The-cube's-rotation-group-is-$S_4$">¶</a></h3><p>A cube has four <strong>space diagonals</strong>, joining opposite vertices. Every rotational symmetry permutes them, giving a homomorphism</p>
-<p>$$\Phi : O \longrightarrow S_4 .$$</p>
-<p>Both groups have order $24$, so it suffices to show $\Phi$ is injective — or, equivalently and more easily checked, that its image has all $24$ elements.</p>
-<p>Injectivity is believable: a rotation fixing all four diagonals as <em>sets</em> must fix or negate each diagonal direction, and a rotation cannot negate one without moving others. Rather than argue it, we can simply compute the image and count.</p>
-<p>Note that the diagonals are unordered pairs $\{v, -v\}$, so the permutation must be read up to sign — a rotation may reverse a diagonal while still preserving it. That subtlety is exactly why the map lands in $S_4$ rather than in a group of signed permutations.</p>
+<h2 id="The-flat-torus:-a-metric-with-no-home-in-$%5Cmathbb-R%5E3$">The flat torus: a metric with no home in $\mathbb R^3$<a class="anchor-link" href="#The-flat-torus:-a-metric-with-no-home-in-$%5Cmathbb-R%5E3$">¶</a></h2><p>Take the square $[0,1]^2$, glue left edge to right and top to bottom, and give it the metric</p>
+<p>$$ds^2 = dx^2 + dy^2 .$$</p>
+<p>Formally: $T^2 = \mathbb R^2/\mathbb Z^2$ with the metric descending from the Euclidean plane, which works because translations are isometries. The result is the <strong>flat torus</strong>:</p>
+<ul>
+<li><strong>compact</strong>, with no boundary;</li>
+<li><strong>flat</strong>: $g_{ij} = \delta_{ij}$ in every chart, so $\Gamma^k_{ij} = 0$ and $K \equiv 0$ <em>pointwise</em>;</li>
+<li>total area $1$;</li>
+<li>$\chi = 0$, consistent with Gauss–Bonnet since $\iint K\,dA = 0$ trivially.</li>
+</ul>
+<p><strong>Now compare it with the torus of 3.04</strong>, the doughnut sitting in $\mathbb R^3$. Both are topologically $T^2$. Both satisfy $\iint K\,dA = 0$. But for entirely different reasons:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>flat torus</th>
+<th>embedded torus (3.04)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$K$ at a point</td>
+<td>$0$ everywhere</td>
+<td>varies: $+$ outside, $-$ inside</td>
+</tr>
+<tr>
+<td>$\iint K\,dA$</td>
+<td>$0$ because the integrand vanishes</td>
+<td>$0$ by <strong>cancellation</strong> ($+4\pi$ and $-4\pi$)</td>
+</tr>
+<tr>
+<td>lives in</td>
+<td>no ambient space needed</td>
+<td>$\mathbb R^3$</td>
+</tr>
+</tbody>
+</table>
+<p>They are different <strong>geometric</strong> objects with the same topology. Gauss–Bonnet constrains only the total, and both meet the constraint their own way.</p>
+<p><strong>And the flat torus cannot be fixed by embedding it better.</strong> A compact surface in $\mathbb R^3$ must have a point of <em>positive</em> curvature: take the point farthest from the origin, at distance $R$; the surface lies inside the sphere of radius $R$ and touches it there, so it is at least as curved, giving $K \ge 1/R^2 &gt; 0$. A surface with $K \equiv 0$ can therefore never be compact in $\mathbb R^3$.</p>
+<p><em>(A genuine subtlety: this rules out $C^2$ embeddings. The Nash–Kuiper theorem gives $C^1$ isometric embeddings of the flat torus — so bizarre that one was not visualised until 2012, by the Hévéa project. $C^1$ is too weak for curvature to be defined, which is why there is no contradiction.)</em></p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5602decd">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d53657a0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8110,34 +8027,47 @@ all orthogonal?      true</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* The four space diagonals, as representative direction vectors */</span>
-<span class="nv">diags</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">]$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- Flat torus versus embedded torus: same topology, different geometry --- */</span>
 
-<span class="cm">/* Which diagonal does M send diagonal i to?  (compare up to sign) */</span>
-<span class="nf">diag_image</span><span class="p">(</span><span class="nv">M</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">w</span><span class="p">,</span><span class="w"> </span><span class="nv">j</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">w</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">args</span><span class="p">(</span><span class="nf">transpose</span><span class="p">(</span><span class="nv">M</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nf">cvec</span><span class="p">(</span><span class="nv">v</span><span class="p">)))[</span><span class="mi">1</span><span class="p">],</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">diags</span><span class="p">[</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="nv">diags</span><span class="p">[</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nf">return</span><span class="p">(</span><span class="nv">j</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="cm">/* Intrinsic K from the metric, for an orthogonal g (the 3.06 formula). */</span>
+<span class="nf">K_from_metric</span><span class="p">(</span><span class="nv">g</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">E_</span><span class="p">,</span><span class="w"> </span><span class="nv">G_</span><span class="p">,</span><span class="w"> </span><span class="nv">W</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">u_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">v_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="nv">g</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="s">"this formula assumes g₁₂ = 0"</span><span class="p">),</span>
+<span class="w">  </span><span class="nv">E_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">G_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">g</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nv">W</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">E_</span><span class="o">*</span><span class="nv">G_</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nv">W</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">G_</span><span class="p">,</span><span class="nv">u_</span><span class="p">)</span><span class="o">/</span><span class="nv">W</span><span class="p">,</span><span class="w"> </span><span class="nv">u_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">E_</span><span class="p">,</span><span class="nv">v_</span><span class="p">)</span><span class="o">/</span><span class="nv">W</span><span class="p">,</span><span class="w"> </span><span class="nv">v_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="nf">perm_of</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="nf">diag_image</span><span class="p">(</span><span class="nv">M</span><span class="p">,</span><span class="w"> </span><span class="nv">diags</span><span class="p">[</span><span class="nv">i</span><span class="p">]),</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"FLAT TORUS  R²/Z²,  g = diag(1,1):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">K_from_metric</span><span class="p">(</span><span class="nv">g_ftor</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">]),</span><span class="w"> </span><span class="s">"   everywhere"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   area = "</span><span class="p">,</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="nf">integrate</span><span class="p">(</span><span class="nf">vol_element</span><span class="p">(</span><span class="nv">g_ftor</span><span class="p">),</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ∫∫K dA = 0 because the integrand is identically zero"</span><span class="p">)$</span>
 
-<span class="nv">perms</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nv">perm_of</span><span class="p">,</span><span class="w"> </span><span class="nv">Ocube</span><span class="p">)$</span>
-<span class="nv">uniq</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="nv">perms</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"distinct permutations of the four diagonals: "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">uniq</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"|S4| = 24, so Φ is a bijection — the cube group IS S4"</span><span class="p">)$</span>
-
-<span class="cm">/* A couple of elements, named */</span>
+<span class="cm">/* The embedded torus of 3.04, for contrast */</span>
+<span class="nv">g_etor</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span><span class="w">    </span><span class="cm">/* a = 3, b = 1 */</span>
+<span class="nv">Ke</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">K_from_metric</span><span class="p">(</span><span class="nv">g_etor</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">])$</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Qz (90° about a face axis) ↦ "</span><span class="p">,</span><span class="w"> </span><span class="nf">perm_of</span><span class="p">(</span><span class="nv">Qz</span><span class="p">),</span><span class="w"> </span><span class="s">"  — a 4-cycle"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Qz² (180° about a face axis) ↦ "</span><span class="p">,</span><span class="w"> </span><span class="nf">perm_of</span><span class="p">(</span><span class="nf">tsimp</span><span class="p">(</span><span class="nv">Qz</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">Qz</span><span class="p">)),</span>
-<span class="w">      </span><span class="s">"  — a product of two transpositions"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"EMBEDDED TORUS (a=3, b=1),  g = diag(1, (3+cos u)²):"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K = "</span><span class="p">,</span><span class="w"> </span><span class="nv">Ke</span><span class="p">,</span><span class="w"> </span><span class="s">"   — varies with u"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K at the outer equator (u=0)  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">Ke</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K at the inner equator (u=π)  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="no">%pi</span><span class="p">,</span><span class="w"> </span><span class="nv">Ke</span><span class="p">))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   ∫∫K dA = "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">integrate</span><span class="p">(</span><span class="nf">integrate</span><span class="p">(</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nv">Ke</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">+</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">))),</span><span class="w"> </span><span class="nv">u</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="p">),</span><span class="w"> </span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="p">),</span>
+<span class="w">      </span><span class="s">"  — zero by cancellation, not pointwise"</span><span class="p">)$</span>
 
-<span class="cm">/* The 8 vertex rotations are exactly the 3-cycles (order 3, trace 0) */</span>
-<span class="nv">threes</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">sublist</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">))$</span>
+<span class="cm">/* Same K as computed extrinsically in 3.04? */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"the 8 elements of trace 0 give permutations: "</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nv">perm_of</span><span class="p">,</span><span class="w"> </span><span class="nv">threes</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"— all 3-cycles, fixing exactly one diagonal, as a 120° vertex rotation must"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   (3.04 computed K = cos(u)/(cos(u)+3) extrinsically from II;"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"    the intrinsic formula above gives "</span><span class="p">,</span><span class="w"> </span><span class="nv">Ke</span><span class="p">,</span><span class="w"> </span><span class="s">" — the same,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"    which is the Theorema Egregium doing its job.)"</span><span class="p">)$</span>
+
+<span class="cm">/* The obstruction, made concrete */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"why the flat torus cannot be a surface in R³:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   a compact surface has a farthest point, at distance R from the origin;"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   there it is at least as curved as the sphere of radius R, so K ≥ 1/R²."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   The embedded torus obeys this — its maximum K is "</span><span class="p">,</span>
+<span class="w">      </span><span class="nf">float</span><span class="p">(</span><span class="nf">subst</span><span class="p">(</span><span class="nv">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">Ke</span><span class="p">)),</span><span class="w"> </span><span class="s">" &gt; 0."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   The flat torus has K ≡ 0, so no such point exists, so it is not"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   a C² surface in R³ at all — though it is a perfectly good manifold."</span><span class="p">)$</span>
 </pre></div>
 </div>
 </div>
@@ -8150,42 +8080,105 @@ all orthogonal?      true</pre>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>distinct permutations of the four diagonals:  24
-|S4| = 24, so Φ is a bijection — the cube group IS S4
-Qz (90° about a face axis) ↦  [4,3,1,2]   — a 4-cycle
-Qz² (180° about a face axis) ↦  [2,1,4,3]   — a product of two transpositions
-the 8 elements of trace 0 give permutations:
-      [1,4,2,3]
-      [2,4,3,1]
-      [3,2,4,1]
-      [2,3,1,4]
-      [1,3,4,2]
-      [4,1,3,2]
-      [3,1,2,4]
-      [4,2,1,3]
-— all 3-cycles, fixing exactly one diagonal, as a 120° vertex rotation must</pre>
+<pre>FLAT TORUS  R²/Z²,  g = diag(1,1):
+   K =  0    everywhere
+   area =  1
+   ∫∫K dA = 0 because the integrand is identically zero
+EMBEDDED TORUS (a=3, b=1),  g = diag(1, (3+cos u)²):
+   K =  cos(u)/(cos(u)+3)    — varies with u
+   K at the outer equator (u=0)  =  1/4
+   K at the inner equator (u=π)  =  -(1/2)
+   ∫∫K dA =  0   — zero by cancellation, not pointwise
+   (3.04 computed K = cos(u)/(cos(u)+3) extrinsically from II;
+    the intrinsic formula above gives  cos(u)/(cos(u)+3)  — the same,
+    which is the Theorema Egregium doing its job.)
+why the flat torus cannot be a surface in R³:
+   a compact surface has a farthest point, at distance R from the origin;
+   there it is at least as curved as the sphere of radius R, so K ≥ 1/R².
+   The embedded torus obeys this — its maximum K is  0.25  &gt; 0.
+   The flat torus has K ≡ 0, so no such point exists, so it is not
+   a C² surface in R³ at all — though it is a perfectly good manifold.</pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cbbc5824">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9e2b747c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-Two-subgroups-worth-naming,-and-one-restriction">3. Two subgroups worth naming, and one restriction<a class="anchor-link" href="#3.-Two-subgroups-worth-naming,-and-one-restriction">¶</a></h2><p><strong>The tetrahedral group.</strong> Inscribe a regular tetrahedron in the cube by taking alternate vertices. The rotations preserving it are those inducing <em>even</em> permutations of the diagonals, so $T \cong A_4$, of order 12 — index 2 in $O$, matching the $(2,3,3)$ line of the table.</p>
-<p><strong>The crystallographic restriction.</strong> When a symmetry group also contains translations — a wallpaper pattern rather than a finite figure — the possible rotation orders collapse dramatically. Suppose a rotation of order $n$ preserves a lattice $L$. In a basis of $L$ the rotation matrix has <em>integer</em> entries, so its trace is an integer. But in an orthonormal basis the same rotation has trace $2\cos(2\pi/n)$, and trace is basis-independent. Hence</p>
-<p>$$2\cos(2\pi/n) \in \mathbb Z,$$</p>
-<p>which allows only $2\cos(2\pi/n) \in \{-2,-1,0,1,2\}$ and therefore</p>
-<p>$$n \in \{1, 2, 3, 4, 6\}.$$</p>
-<p><strong>There is no $5$-fold wallpaper pattern</strong>, and none of order $7$ or higher. This is why floor tiles come in triangles, squares and hexagons but never regular pentagons, and it is the fact that made the discovery of quasicrystals — which show sharp $5$-fold diffraction — so startling when Shechtman observed one in 1982 (published 1984).</p>
-<p>From this restriction the full classifications follow, though the case analysis is long: <strong>7 frieze groups</strong> (one direction of translation) and <strong>17 wallpaper groups</strong> (two independent directions).</p>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The first fundamental form IS a pullback metric --- */</span>
+<span class="cm">/* Given F : M → R³, the pullback F*δ has components  g_ij = ∂F/∂xⁱ · ∂F/∂xʲ.</span>
+<span class="cm">   That is exactly the definition of E, F, G from 3.03. */</span>
+<span class="nf">pullback</span><span class="p">(</span><span class="nv">F_</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">d</span><span class="p">],</span>
+<span class="w">  </span><span class="nv">n_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">vars</span><span class="p">),</span>
+<span class="w">  </span><span class="nv">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">e</span><span class="p">],</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="nv">e</span><span class="p">,</span><span class="w"> </span><span class="nv">vars</span><span class="p">[</span><span class="nv">k</span><span class="p">])),</span><span class="w"> </span><span class="nv">F_</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">genmatrix</span><span class="p">(</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">i</span><span class="p">,</span><span class="nv">j</span><span class="p">],</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nv">d</span><span class="p">[</span><span class="nv">i</span><span class="p">]</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">d</span><span class="p">[</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="p">)),</span><span class="w"> </span><span class="nv">n_</span><span class="p">,</span><span class="w"> </span><span class="nv">n_</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+
+<span class="nv">sphere_emb</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">u</span><span class="p">)</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">v</span><span class="p">),</span><span class="w"> </span><span class="nv">R</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="nv">u</span><span class="p">)]$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"embedding F(u,v) = (R sin u cos v, R sin u sin v, R cos u)"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   pullback F*δ  = "</span><span class="p">,</span><span class="w"> </span><span class="nf">pullback</span><span class="p">(</span><span class="nv">sphere_emb</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">u</span><span class="p">,</span><span class="nv">v</span><span class="p">]))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   the round metric g_sph = "</span><span class="p">,</span><span class="w"> </span><span class="nv">g_sph</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   identical ⟹ 3.03's first fundamental form was a pullback metric,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   and Stage 3 was doing Riemannian geometry without saying so."</span><span class="p">)$</span>
+
+<span class="cm">/* --- Isometries preserve g; conformal maps rescale it --- */</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"ISOMETRY: a map φ with φ*g = g."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   for the hyperbolic half-plane, PSL(2,R) acts by isometries (2.06),"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   which is what singled out ds² = (dx²+dy²)/y² in the first place."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"CONFORMAL: φ*g = λ² g for a positive function λ."</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   angles preserved, lengths scaled. 3.03 met this as Mercator,"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   where the sphere became sin²u (dw² + dv²) — conformally flat"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   but not flat, because λ cannot be removed when K ≠ 0."</span><span class="p">)$</span>
+
+<span class="cm">/* A conformal metric on the disc: the Poincaré disc model of 2.06 */</span>
+<span class="nv">g_disc</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nv">x</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="nv">y</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Poincaré disc metric g = 4(dx²+dy²)/(1−x²−y²)²:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   √det g = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="nf">vol_element</span><span class="p">(</span><span class="nv">g_disc</span><span class="p">)))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   K = "</span><span class="p">,</span><span class="w"> </span><span class="nf">ratsimp</span><span class="p">(</span><span class="w"> </span><span class="nf">K_from_metric</span><span class="p">(</span><span class="nv">g_disc</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="nv">y</span><span class="p">])</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="s">"   — constant −1, the hyperbolic plane again ✓"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   (2.06 reached this model via the Cayley transform; here it is"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"    simply another metric, and the curvature confirms they agree.)"</span><span class="p">)$</span>
+</pre></div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bb85a0c0">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>embedding F(u,v) = (R sin u cos v, R sin u sin v, R cos u)
+   pullback F*δ  =  matrix([R^2,0],[0,R^2*sin(u)^2])
+   the round metric g_sph =  matrix([R^2,0],[0,R^2*sin(u)^2])
+   identical ⟹ 3.03's first fundamental form was a pullback metric,
+   and Stage 3 was doing Riemannian geometry without saying so.
+ISOMETRY: a map φ with φ*g = g.
+   for the hyperbolic half-plane, PSL(2,R) acts by isometries (2.06),
+   which is what singled out ds² = (dx²+dy²)/y² in the first place.
+CONFORMAL: φ*g = λ² g for a positive function λ.
+   angles preserved, lengths scaled. 3.03 met this as Mercator,
+   where the sphere became sin²u (dw² + dv²) — conformally flat
+   but not flat, because λ cannot be removed when K ≠ 0.
+Poincaré disc metric g = 4(dx²+dy²)/(1−x²−y²)²:
+   √det g =  4/(y^4+(2*x^2-2)*y^2+x^4-2*x^2+1)
+   K =  -1    — constant −1, the hyperbolic plane again ✓
+   (2.06 reached this model via the Cayley transform; here it is
+    simply another metric, and the curvature confirms they agree.)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a2ba5047">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8193,30 +8186,44 @@ the 8 elements of trace 0 give permutations:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The tetrahedral subgroup: even permutations of the diagonals --- */</span>
-<span class="nf">psign</span><span class="p">(</span><span class="nv">p</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">s</span><span class="p">],</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">p</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nv">j</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nv">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">p</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="nv">p</span><span class="p">[</span><span class="nv">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">p</span><span class="p">[</span><span class="nv">j</span><span class="p">]</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="nv">s</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">s</span><span class="w"> </span><span class="p">)$</span>
+<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* --- The three model spaces in geodesic polar coordinates --- */</span>
+<span class="cm">/* ds² = dr² + f(r)² dθ², where r is distance from a chosen point. */</span>
+<span class="nf">g_polar</span><span class="p">(</span><span class="nv">f_</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">f_</span><span class="o">^</span><span class="mi">2</span><span class="p">])$</span>
 
-<span class="nv">Tetra</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">sublist</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">,</span><span class="w"> </span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">psign</span><span class="p">(</span><span class="nf">perm_of</span><span class="p">(</span><span class="nv">M</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"|T| = "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">Tetra</span><span class="p">),</span><span class="w"> </span><span class="s">"   (index "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">Ocube</span><span class="p">)</span><span class="o">/</span><span class="nf">length</span><span class="p">(</span><span class="nv">Tetra</span><span class="p">),</span><span class="w"> </span><span class="s">" in O — this is A4)"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"element orders present: "</span><span class="p">,</span>
-<span class="w">      </span><span class="nf">unique</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">                             </span><span class="k">elseif</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">                             </span><span class="k">elseif</span><span class="w"> </span><span class="nf">mat_trace</span><span class="p">(</span><span class="nv">M</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="nv">Tetra</span><span class="p">)))$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"— orders 1, 2, 3 only: no 4-fold rotation survives, as A4 has no element of order 4"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   f(r)        metric                      K            circumference 2π f(r)"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">m</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[[</span><span class="nf">sin</span><span class="p">(</span><span class="nv">rr</span><span class="p">),</span><span class="w">  </span><span class="s">"sin r "</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="w"> </span><span class="s">"r     "</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nf">sinh</span><span class="p">(</span><span class="nv">rr</span><span class="p">),</span><span class="w"> </span><span class="s">"sinh r"</span><span class="p">]]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">block</span><span class="p">([</span><span class="nv">gm</span><span class="p">,</span><span class="w"> </span><span class="nv">Km</span><span class="p">],</span>
+<span class="w">    </span><span class="nv">gm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">g_polar</span><span class="p">(</span><span class="nv">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<span class="w">    </span><span class="nv">Km</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">ts</span><span class="p">(</span><span class="w"> </span><span class="nf">K_from_metric</span><span class="p">(</span><span class="nv">gm</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">rr</span><span class="p">,</span><span class="w"> </span><span class="nv">th</span><span class="p">])</span><span class="w"> </span><span class="p">),</span>
+<span class="w">    </span><span class="nf">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">gm</span><span class="p">,</span><span class="w"> </span><span class="s">"   "</span><span class="p">,</span><span class="w"> </span><span class="nv">Km</span><span class="p">,</span><span class="w"> </span><span class="s">"        2π·"</span><span class="p">,</span><span class="w"> </span><span class="nv">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">)$</span>
 
-<span class="cm">/* --- The crystallographic restriction: 2cos(2π/n) must be an integer --- */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"   n     2cos(2π/n)      lattice-compatible?"</span><span class="p">)$</span>
-<span class="k">for</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">thru</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nf">block</span><span class="p">([</span><span class="nv">t</span><span class="p">],</span>
-<span class="w">  </span><span class="nv">t</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nf">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span>π<span class="o">/</span><span class="nv">n</span><span class="p">)),</span>
-<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">,</span><span class="w"> </span><span class="s">"      "</span><span class="p">,</span><span class="w"> </span><span class="nv">t</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="nv">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nv">t</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1e-12</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s">"yes  ←"</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s">"no"</span><span class="p">)</span><span class="w"> </span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"K = −f''/f, exactly the surface-of-revolution formula from 3.05:"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   f = sin r  → f'' = −f → K = +1"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   f = r      → f'' = 0  → K =  0"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   f = sinh r → f'' = +f → K = −1"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"The same ODE that produced the sphere and the pseudosphere."</span><span class="p">)$</span>
+
+<span class="cm">/* Circumference and area of a geodesic disc of radius r */</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"only n = 1, 2, 3, 4, 6 survive — no 5-fold or 7-fold wallpaper"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"   r      C(r) spherical   C(r) flat    C(r) hyperbolic"</span><span class="p">)$</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">rv</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">]</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nf">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">,</span><span class="w"> </span><span class="nv">rv</span><span class="p">,</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">rv</span><span class="p">)),</span><span class="w"> </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nv">rv</span><span class="p">),</span>
+<span class="w">        </span><span class="s">"     "</span><span class="p">,</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nf">sinh</span><span class="p">(</span><span class="nv">rv</span><span class="p">)))$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">""</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Positive curvature makes circles SHORTER than 2πr, negative curvature"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"longer — and in the hyperbolic case exponentially so. That comparison"</span><span class="p">)$</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"is the whole content of the theorems in 4.06."</span><span class="p">)$</span>
+
+<span class="nv">rs</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nf">makelist</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="nv">k</span><span class="o">/</span><span class="mi">100</span><span class="p">),</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">)$</span>
+<span class="nf">plot2d</span><span class="p">([</span><span class="w"> </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nv">rs</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">r_</span><span class="p">],</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nf">sin</span><span class="p">(</span><span class="nv">r_</span><span class="p">))),</span><span class="w"> </span><span class="nv">rs</span><span class="p">)],</span>
+<span class="w">         </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nv">rs</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">r_</span><span class="p">],</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nv">r_</span><span class="p">)),</span><span class="w"> </span><span class="nv">rs</span><span class="p">)],</span>
+<span class="w">         </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nv">rs</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">r_</span><span class="p">],</span><span class="w"> </span><span class="nf">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="no">%pi</span><span class="o">*</span><span class="nf">sinh</span><span class="p">(</span><span class="nv">r_</span><span class="p">))),</span><span class="w"> </span><span class="nv">rs</span><span class="p">)]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="nv">style</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="nv">lines</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span>
+<span class="w">       </span><span class="p">[</span><span class="nv">legend</span><span class="p">,</span><span class="w"> </span><span class="s">"K = +1 : 2π sin r"</span><span class="p">,</span><span class="w"> </span><span class="s">"K = 0 : 2πr"</span><span class="p">,</span><span class="w"> </span><span class="s">"K = −1 : 2π sinh r"</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="nv">xlabel</span><span class="p">,</span><span class="w"> </span><span class="s">"geodesic radius r"</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">ylabel</span><span class="p">,</span><span class="w"> </span><span class="s">"circumference"</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="nv">title</span><span class="p">,</span><span class="w"> </span><span class="s">"curvature is what circles measure"</span><span class="p">])$</span>
 </pre></div>
 </div>
 </div>
@@ -8229,186 +8236,96 @@ the 8 elements of trace 0 give permutations:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>|T| =  12    (index  2  in O — this is A4)
-element orders present:  [1,2,3]
-— orders 1, 2, 3 only: no 4-fold rotation survives, as A4 has no element of order 4
-   n     2cos(2π/n)      lattice-compatible?
-   1        2.0       yes  ←
-   2        -2.0       yes  ←
-   3        -1.0       yes  ←
-   4        0.0       yes  ←
-   5        0.6180339887498949       no
-   6        1.0       yes  ←
-   7        1.2469796037174672       no
-   8        1.4142135623730951       no
-   9        1.532088886237956       no
-   10        1.618033988749895       no
-   11        1.6825070656623624       no
-   12        1.7320508075688772       no
-only n = 1, 2, 3, 4, 6 survive — no 5-fold or 7-fold wallpaper</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ee28c885">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Seeing-$C_6$-against-$D_6$">Seeing $C_6$ against $D_6$<a class="anchor-link" href="#Seeing-$C_6$-against-$D_6$">¶</a></h3><p>The difference between a cyclic and a dihedral group is invisible in a symmetric motif and obvious in an asymmetric one. Below, the same deliberately handed shape is placed under both groups: $C_6$ produces six copies all with the same handedness (a pinwheel), while $D_6$ produces twelve, alternating handedness (a rosette).</p>
-<p>The mirror images are the elements of determinant $-1$ — the six reflections we counted earlier.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1917ff8a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-maxima"><pre><span></span><span class="cm">/* An asymmetric motif, sitting away from the centre */</span>
-<span class="nv">motif</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">17</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">17</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]]$</span>
-
-<span class="nf">apply2</span><span class="p">(</span><span class="nv">M</span><span class="p">,</span><span class="w"> </span><span class="nv">pts</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">v</span><span class="p">],</span><span class="w"> </span><span class="nf">args</span><span class="p">(</span><span class="nf">transpose</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="nv">M</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nf">cvec</span><span class="p">(</span><span class="nv">v</span><span class="p">))))[</span><span class="mi">1</span><span class="p">]),</span><span class="w"> </span><span class="nv">pts</span><span class="p">)$</span>
-<span class="nf">as_curve</span><span class="p">(</span><span class="nv">pts</span><span class="p">)</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="nv">discrete</span><span class="p">,</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nv">first</span><span class="p">,</span><span class="w"> </span><span class="nv">pts</span><span class="p">),</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nv">second</span><span class="p">,</span><span class="w"> </span><span class="nv">pts</span><span class="p">)]$</span>
-
-<span class="nf">rosette</span><span class="p">(</span><span class="nv">G</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="nf">lambda</span><span class="p">([</span><span class="nv">M</span><span class="p">],</span><span class="w"> </span><span class="nf">as_curve</span><span class="p">(</span><span class="nf">apply2</span><span class="p">(</span><span class="nv">M</span><span class="p">,</span><span class="w"> </span><span class="nv">motif</span><span class="p">))),</span><span class="w"> </span><span class="nv">G</span><span class="p">)$</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="s">"C6 gives "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">C6</span><span class="p">),</span><span class="w"> </span><span class="s">" copies (all same handedness);"</span><span class="p">)$</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"D6 gives "</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nv">D6</span><span class="p">),</span><span class="w"> </span><span class="s">" copies (6 of each handedness)"</span><span class="p">)$</span>
-
-<span class="cm">/* C6 ⊂ D6, so the D6 picture contains the C6 one: the six extra copies</span>
-<span class="cm">   are the mirror images contributed by the reflections. */</span>
-<span class="nf">plot2d</span><span class="p">(</span><span class="w"> </span><span class="nf">rosette</span><span class="p">(</span><span class="nv">D6</span><span class="p">),</span>
-<span class="w">        </span><span class="p">[</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="nv">legend</span><span class="p">,</span><span class="w"> </span><span class="no">false</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="nv">same_xy</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">],</span>
-<span class="w">        </span><span class="p">[</span><span class="nv">title</span><span class="p">,</span><span class="w"> </span><span class="s">"D6 rosette: 12 copies, alternating handedness"</span><span class="p">])$</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>C6 gives  6  copies (all same handedness);
-D6 gives  12  copies (6 of each handedness)</pre>
+<pre>   f(r)        metric                      K            circumference 2π f(r)
+    sin r      matrix([1,0],[0,sin(rr)^2])     1         2π· sin(rr)
+    r          matrix([1,0],[0,rr^2])     0         2π· rr
+    sinh r     matrix([1,0],[0,sinh(rr)^2])     -1         2π· sinh(rr)
+K = −f''/f, exactly the surface-of-revolution formula from 3.05:
+   f = sin r  → f'' = −f → K = +1
+   f = r      → f'' = 0  → K =  0
+   f = sinh r → f'' = +f → K = −1
+The same ODE that produced the sphere and the pseudosphere.
+   r      C(r) spherical   C(r) flat    C(r) hyperbolic
+   0.5       3.0123195000445877       3.141592653589793
+  3.2741383671185713
+   1.0       5.287118128162912       6.283185307179586       7.384006872882645
+   1.5       6.267445843815893       9.42477796076938       13.378657387131112
+   2.0       5.713284232087328       12.566370614359172
+  22.78823602577575
+   3.0       0.8866831611908225       18.84955592153876
+  62.94416455306467
+Positive curvature makes circles SHORTER than 2πr, negative curvature
+longer — and in the hyperbolic case exponentially so. That comparison
+is the whole content of the theorems in 4.06.</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedSVG jp-OutputArea-output" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiICBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIAogd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiCiB2aWV3Qm94PSIwIDAgNjAwIDQ4MCIKIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgo+Cgo8dGl0bGU+R251cGxvdDwvdGl0bGU+CjxkZXNjPlByb2R1Y2VkIGJ5IEdOVVBMT1QgNi4wIHBhdGNobGV2ZWwgNCA8L2Rlc2M+Cgo8ZyBpZD0iZ251cGxvdF9jYW52YXMiPgoKPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiIGZpbGw9Im5vbmUiLz4KPGRlZnM+CgoJPGNpcmNsZSBpZD0nZ3BEb3QnIHI9JzAuNScgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZT0nY3VycmVudENvbG9yJy8+Cgk8cGF0aCBpZD0nZ3BQdDAnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNLTEsMCBoMiBNMCwtMSB2MicvPgoJPHBhdGggaWQ9J2dwUHQxJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgZD0nTS0xLC0xIEwxLDEgTTEsLTEgTC0xLDEnLz4KCTxwYXRoIGlkPSdncFB0Micgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00tMSwwIEwxLDAgTTAsLTEgTDAsMSBNLTEsLTEgTDEsMSBNLTEsMSBMMSwtMScvPgoJPHJlY3QgaWQ9J2dwUHQzJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgeD0nLTEnIHk9Jy0xJyB3aWR0aD0nMicgaGVpZ2h0PScyJy8+Cgk8cmVjdCBpZD0nZ3BQdDQnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBmaWxsPSdjdXJyZW50Q29sb3InIHg9Jy0xJyB5PSctMScgd2lkdGg9JzInIGhlaWdodD0nMicvPgoJPGNpcmNsZSBpZD0nZ3BQdDUnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBjeD0nMCcgY3k9JzAnIHI9JzEnLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ1JyBpZD0nZ3BQdDYnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8cGF0aCBpZD0nZ3BQdDcnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNMCwtMS4zMyBMLTEuMzMsMC42NyBMMS4zMywwLjY3IHonLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ3JyBpZD0nZ3BQdDgnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0NycgaWQ9J2dwUHQ5JyBzdHJva2U9J2N1cnJlbnRDb2xvcicgdHJhbnNmb3JtPSdyb3RhdGUoMTgwKScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDknIGlkPSdncFB0MTAnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0MycgaWQ9J2dwUHQxMScgc3Ryb2tlPSdjdXJyZW50Q29sb3InIHRyYW5zZm9ybT0ncm90YXRlKDQ1KScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDExJyBpZD0nZ3BQdDEyJyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPHBhdGggaWQ9J2dwUHQxMycgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00wLDEuMzMwIEwxLjI2NSwwLjQxMSBMMC43ODIsLTEuMDY3IEwtMC43ODIsLTEuMDc2IEwtMS4yNjUsMC40MTEgeicvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDEzJyBpZD0nZ3BQdDE0JyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPGZpbHRlciBpZD0ndGV4dGJveCcgZmlsdGVyVW5pdHM9J29iamVjdEJvdW5kaW5nQm94JyB4PScwJyB5PScwJyBoZWlnaHQ9JzEnIHdpZHRoPScxJz4KCSAgPGZlRmxvb2QgZmxvb2QtY29sb3I9J3doaXRlJyBmbG9vZC1vcGFjaXR5PScxJyByZXN1bHQ9J2JnbmQnLz4KCSAgPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2JnbmQnIG9wZXJhdG9yPSdhdG9wJy8+Cgk8L2ZpbHRlcj4KCTxmaWx0ZXIgaWQ9J2dyZXlib3gnIGZpbHRlclVuaXRzPSdvYmplY3RCb3VuZGluZ0JveCcgeD0nMCcgeT0nMCcgaGVpZ2h0PScxJyB3aWR0aD0nMSc+CgkgIDxmZUZsb29kIGZsb29kLWNvbG9yPSdsaWdodGdyZXknIGZsb29kLW9wYWNpdHk9JzEnIHJlc3VsdD0nZ3JleScvPgoJICA8ZmVDb21wb3NpdGUgaW49J1NvdXJjZUdyYXBoaWMnIGluMj0nZ3JleScgb3BlcmF0b3I9J2F0b3AnLz4KCTwvZmlsdGVyPgo8L2RlZnM+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNMTExLjI5LDI0OS4wMCBMNTAxLjI4LDI0OS4wMCAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTMwNi4yOSw0NDQuMDAgTDMwNi4yOSw1NC4wMSAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDU0LjAxIEwxMTEuMjksNDQ0LjAwIEw1MDEuMjgsNDQ0LjAwIEw1MDEuMjgsNTQuMDEgTDExMS4yOSw1NC4wMSBaICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzEiICBmaWxsPSJub25lIj48dGl0bGU+Z251cGxvdF9wbG90XzE8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKCAgMCwgICAwLCAyNTUpJyAgZD0nTTM4NC4yOCwyNDkuMDAgTDQ2Mi4yOCwyNDkuMDAgTDQ2Mi4yOCwyMTAuMDEgTDQzOC44OCwyMTAuMDEgTDQzOC44OCwyMzMuNDEgTDM4NC4yOCwyMzMuNDEgTDM4NC4yOCwyNDkuMDAgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMiIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfMjwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoMjU1LCAgIDAsICAgMCknICBkPSdNMzg0LjI4LDI0OS4wMCBMNDYyLjI4LDI0OS4wMCBMNDYyLjI4LDI4OC4wMCBMNDM4Ljg4LDI4OC4wMCBMNDM4Ljg4LDI2NC42MCBMMzg0LjI4LDI2NC42MCBMMzg0LjI4LDI0OS4wMCAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF8zIiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF8zPC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsIDI1NSwgICAwKScgIGQ9J00zNDUuMjgsMTgxLjQ2IEwzODQuMjgsMTEzLjkxIEwzNTAuNTEsOTQuNDEgTDMzOC44MSwxMTQuNjcgTDM1OS4wNywxMjYuMzcgTDMzMS43NywxNzMuNjYgTDM0NS4yOCwxODEuNDYgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfNCIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfNDwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoMjU1LCAgIDAsIDI1NSknICBkPSdNMzQ1LjI4LDE4MS40NiBMMzg0LjI4LDExMy45MSBMNDE4LjA2LDEzMy40MSBMNDA2LjM2LDE1My42NyBMMzg2LjA5LDE0MS45NyBMMzU4Ljc5LDE4OS4yNiBMMzQ1LjI4LDE4MS40NiAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF81IiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF81PC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsICAgMCwgICAwKScgIGQ9J00yNjcuMjksMTgxLjQ2IEwyMjguMjksMTEzLjkxIEwxOTQuNTEsMTMzLjQxIEwyMDYuMjEsMTUzLjY3IEwyMjYuNDgsMTQxLjk3IEwyNTMuNzgsMTg5LjI2IEwyNjcuMjksMTgxLjQ2ICAnLz48L2c+Cgk8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzYiICBmaWxsPSJub25lIj48dGl0bGU+Z251cGxvdF9wbG90XzY8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKCAgMCwgMjU1LCAyNTUpJyAgZD0nTTM0NS4yOCwzMTYuNTUgTDM4NC4yOCwzODQuMTAgTDM1MC41MSw0MDMuNjAgTDMzOC44MSwzODMuMzQgTDM1OS4wNywzNzEuNjQgTDMzMS43NywzMjQuMzUgTDM0NS4yOCwzMTYuNTUgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfNyIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfNzwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoICAwLCAgIDAsIDI1NSknICBkPSdNMzQ1LjI4LDMxNi41NSBMMzg0LjI4LDM4NC4xMCBMNDE4LjA2LDM2NC42MCBMNDA2LjM2LDM0NC4zNCBMMzg2LjA5LDM1Ni4wNCBMMzU4Ljc5LDMwOC43NSBMMzQ1LjI4LDMxNi41NSAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF84IiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF84PC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYigyNTUsICAgMCwgICAwKScgIGQ9J00yNjcuMjksMzE2LjU1IEwyMjguMjksMzg0LjEwIEwxOTQuNTEsMzY0LjYwIEwyMDYuMjEsMzQ0LjM0IEwyMjYuNDgsMzU2LjA0IEwyNTMuNzgsMzA4Ljc1IEwyNjcuMjksMzE2LjU1ICAnLz48L2c+Cgk8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzkiICBmaWxsPSJub25lIj48dGl0bGU+Z251cGxvdF9wbG90Xzk8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKCAgMCwgMjU1LCAgIDApJyAgZD0nTTI2Ny4yOSwxODEuNDYgTDIyOC4yOSwxMTMuOTEgTDI2Mi4wNiw5NC40MSBMMjczLjc2LDExNC42NyBMMjUzLjUwLDEyNi4zNyBMMjgwLjgwLDE3My42NiBMMjY3LjI5LDE4MS40NiAgJy8+PC9nPgoJPC9nPgoJPGcgaWQ9ImdudXBsb3RfcGxvdF8xMCIgIGZpbGw9Im5vbmUiPjx0aXRsZT5nbnVwbG90X3Bsb3RfMTA8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKDI1NSwgICAwLCAyNTUpJyAgZD0nTTIyOC4yOSwyNDkuMDAgTDE1MC4yOSwyNDkuMDAgTDE1MC4yOSwyODguMDAgTDE3My42OSwyODguMDAgTDE3My42OSwyNjQuNjAgTDIyOC4yOSwyNjQuNjAgTDIyOC4yOSwyNDkuMDAgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMTEiICBmaWxsPSJub25lIj48dGl0bGU+Z251cGxvdF9wbG90XzExPC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsICAgMCwgICAwKScgIGQ9J00yNjcuMjksMzE2LjU1IEwyMjguMjksMzg0LjEwIEwyNjIuMDYsNDAzLjYwIEwyNzMuNzYsMzgzLjM0IEwyNTMuNTAsMzcxLjY0IEwyODAuODAsMzI0LjM1IEwyNjcuMjksMzE2LjU1ICAnLz48L2c+Cgk8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzEyIiAgZmlsbD0ibm9uZSI+PHRpdGxlPmdudXBsb3RfcGxvdF8xMjwvdGl0bGU+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdyZ2IoICAwLCAyNTUsIDI1NSknICBkPSdNMjI4LjI5LDI0OS4wMCBMMTUwLjI5LDI0OS4wMCBMMTUwLjI5LDIxMC4wMSBMMTczLjY5LDIxMC4wMSBMMTczLjY5LDIzMy40MSBMMjI4LjI5LDIzMy40MSBMMjI4LjI5LDI0OS4wMCAgJy8+PC9nPgoJPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDQwNS4wMCBMMTIwLjI5LDQwNS4wMCBNNTAxLjI4LDQwNS4wMCBMNDkyLjI4LDQwNS4wMCAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi45MCw0MDguOTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+LTI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDMyNy4wMCBMMTIwLjI5LDMyNy4wMCBNNTAxLjI4LDMyNy4wMCBMNDkyLjI4LDMyNy4wMCAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi45MCwzMzAuOTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+LTE8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDI0OS4wMCBMMTIwLjI5LDI0OS4wMCBNNTAxLjI4LDI0OS4wMCBMNDkyLjI4LDI0OS4wMCAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi45MCwyNTIuOTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDE3MS4wMSBMMTIwLjI5LDE3MS4wMSBNNTAxLjI4LDE3MS4wMSBMNDkyLjI4LDE3MS4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi45MCwxNzQuOTEpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDE8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMTExLjI5LDkzLjAxIEwxMjAuMjksOTMuMDEgTTUwMS4yOCw5My4wMSBMNDkyLjI4LDkzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAyLjkwLDk2LjkxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAyPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTE1MC4yOSw0NDQuMDAgTDE1MC4yOSw0MzUuMDAgTTE1MC4yOSw1NC4wMSBMMTUwLjI5LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLjI5LDQ2NS45MCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4tMjwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00yMjguMjksNDQ0LjAwIEwyMjguMjksNDM1LjAwIE0yMjguMjksNTQuMDEgTDIyOC4yOSw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyOC4yOSw0NjUuOTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+LTE8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNMzA2LjI5LDQ0NC4wMCBMMzA2LjI5LDQzNS4wMCBNMzA2LjI5LDU0LjAxIEwzMDYuMjksNjMuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDYuMjksNDY1LjkwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTM4NC4yOCw0NDQuMDAgTDM4NC4yOCw0MzUuMDAgTTM4NC4yOCw1NC4wMSBMMzg0LjI4LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzg0LjI4LDQ2NS45MCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J000NjIuMjgsNDQ0LjAwIEw0NjIuMjgsNDM1LjAwIE00NjIuMjgsNTQuMDEgTDQ2Mi4yOCw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2Mi4yOCw0NjUuOTApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iZ3JheSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgc3Ryb2tlLWRhc2hhcnJheT0nMiw0JyAgZD0nTTExMS4yOSwyNDkuMDAgTDUwMS4yOCwyNDkuMDAgICcvPjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImdyYXkiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snIHN0cm9rZS1kYXNoYXJyYXk9JzIsNCcgIGQ9J00zMDYuMjksNDQ0LjAwIEwzMDYuMjksNTQuMDEgICcvPjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImdyYXkiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMi4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMi4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTExMS4yOSw1NC4wMSBMMTExLjI5LDQ0NC4wMCBMNTAxLjI4LDQ0NC4wMCBMNTAxLjI4LDU0LjAxIEwxMTEuMjksNTQuMDEgWiAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwNi4yOCwzMC45MSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID5ENiByb3NldHRlOiAxMiBjb3BpZXMsIGFsdGVybmF0aW5nIGhhbmRlZG5lc3M8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8L2c+Cjwvc3ZnPgoK"/>
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiICBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIAogd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiCiB2aWV3Qm94PSIwIDAgNjAwIDQ4MCIKIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgo+Cgo8dGl0bGU+R251cGxvdDwvdGl0bGU+CjxkZXNjPlByb2R1Y2VkIGJ5IEdOVVBMT1QgNi4wIHBhdGNobGV2ZWwgNCA8L2Rlc2M+Cgo8ZyBpZD0iZ251cGxvdF9jYW52YXMiPgoKPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0ODAiIGZpbGw9Im5vbmUiLz4KPGRlZnM+CgoJPGNpcmNsZSBpZD0nZ3BEb3QnIHI9JzAuNScgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZT0nY3VycmVudENvbG9yJy8+Cgk8cGF0aCBpZD0nZ3BQdDAnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNLTEsMCBoMiBNMCwtMSB2MicvPgoJPHBhdGggaWQ9J2dwUHQxJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgZD0nTS0xLC0xIEwxLDEgTTEsLTEgTC0xLDEnLz4KCTxwYXRoIGlkPSdncFB0Micgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00tMSwwIEwxLDAgTTAsLTEgTDAsMSBNLTEsLTEgTDEsMSBNLTEsMSBMMSwtMScvPgoJPHJlY3QgaWQ9J2dwUHQzJyBzdHJva2Utd2lkdGg9JzAuMjIyJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgeD0nLTEnIHk9Jy0xJyB3aWR0aD0nMicgaGVpZ2h0PScyJy8+Cgk8cmVjdCBpZD0nZ3BQdDQnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBmaWxsPSdjdXJyZW50Q29sb3InIHg9Jy0xJyB5PSctMScgd2lkdGg9JzInIGhlaWdodD0nMicvPgoJPGNpcmNsZSBpZD0nZ3BQdDUnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBjeD0nMCcgY3k9JzAnIHI9JzEnLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ1JyBpZD0nZ3BQdDYnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8cGF0aCBpZD0nZ3BQdDcnIHN0cm9rZS13aWR0aD0nMC4yMjInIHN0cm9rZT0nY3VycmVudENvbG9yJyBkPSdNMCwtMS4zMyBMLTEuMzMsMC42NyBMMS4zMywwLjY3IHonLz4KCTx1c2UgeGxpbms6aHJlZj0nI2dwUHQ3JyBpZD0nZ3BQdDgnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0NycgaWQ9J2dwUHQ5JyBzdHJva2U9J2N1cnJlbnRDb2xvcicgdHJhbnNmb3JtPSdyb3RhdGUoMTgwKScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDknIGlkPSdncFB0MTAnIGZpbGw9J2N1cnJlbnRDb2xvcicgc3Ryb2tlPSdub25lJy8+Cgk8dXNlIHhsaW5rOmhyZWY9JyNncFB0MycgaWQ9J2dwUHQxMScgc3Ryb2tlPSdjdXJyZW50Q29sb3InIHRyYW5zZm9ybT0ncm90YXRlKDQ1KScvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDExJyBpZD0nZ3BQdDEyJyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPHBhdGggaWQ9J2dwUHQxMycgc3Ryb2tlLXdpZHRoPScwLjIyMicgc3Ryb2tlPSdjdXJyZW50Q29sb3InIGQ9J00wLDEuMzMwIEwxLjI2NSwwLjQxMSBMMC43ODIsLTEuMDY3IEwtMC43ODIsLTEuMDc2IEwtMS4yNjUsMC40MTEgeicvPgoJPHVzZSB4bGluazpocmVmPScjZ3BQdDEzJyBpZD0nZ3BQdDE0JyBmaWxsPSdjdXJyZW50Q29sb3InIHN0cm9rZT0nbm9uZScvPgoJPGZpbHRlciBpZD0ndGV4dGJveCcgZmlsdGVyVW5pdHM9J29iamVjdEJvdW5kaW5nQm94JyB4PScwJyB5PScwJyBoZWlnaHQ9JzEnIHdpZHRoPScxJz4KCSAgPGZlRmxvb2QgZmxvb2QtY29sb3I9J3doaXRlJyBmbG9vZC1vcGFjaXR5PScxJyByZXN1bHQ9J2JnbmQnLz4KCSAgPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2JnbmQnIG9wZXJhdG9yPSdhdG9wJy8+Cgk8L2ZpbHRlcj4KCTxmaWx0ZXIgaWQ9J2dyZXlib3gnIGZpbHRlclVuaXRzPSdvYmplY3RCb3VuZGluZ0JveCcgeD0nMCcgeT0nMCcgaGVpZ2h0PScxJyB3aWR0aD0nMSc+CgkgIDxmZUZsb29kIGZsb29kLWNvbG9yPSdsaWdodGdyZXknIGZsb29kLW9wYWNpdHk9JzEnIHJlc3VsdD0nZ3JleScvPgoJICA8ZmVDb21wb3NpdGUgaW49J1NvdXJjZUdyYXBoaWMnIGluMj0nZ3JleScgb3BlcmF0b3I9J2F0b3AnLz4KCTwvZmlsdGVyPgo8L2RlZnM+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNNzMuODksNDIyLjQwIEw1NjUuMDcsNDIyLjQwICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyBzdHJva2UtZGFzaGFycmF5PScyLDQnICBkPSdNNzMuODksNDIyLjQwIEw3My44OSw1NC4wMSAgJy8+PC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksNTQuMDEgTDczLjg5LDQyMi40MCBMNTY1LjA3LDQyMi40MCBMNTY1LjA3LDU0LjAxIEw3My44OSw1NC4wMSBaICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+Cgk8ZyBpZD0iZ251cGxvdF9wbG90XzEiID48dGl0bGU+SyA9ICsxIDogMs+AIHNpbiByPC90aXRsZT4KPGcgZmlsbD0ibm9uZSIgY29sb3I9IndoaXRlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ5Ny4zNCw3NS45MSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID5LID0gKzEgOiAyz4Agc2luIHI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKCAgMCwgICAwLCAyNTUpJyAgZD0nTTUwNS43Myw3Mi4wMSBMNTQ4LjI5LDcyLjAxIE03NS41Myw0MjEuODIgTDc3LjE2LDQyMS4yNCBMNzguODAsNDIwLjY2IEw4MC40NCw0MjAuMDkgTDgyLjA4LDQxOS41MSBMODMuNzEsNDE4LjkzCgkJTDg1LjM1LDQxOC4zNSBMODYuOTksNDE3Ljc4IEw4OC42Myw0MTcuMjAgTDkwLjI2LDQxNi42MiBMOTEuOTAsNDE2LjA1IEw5My41NCw0MTUuNDcgTDk1LjE3LDQxNC45MCBMOTYuODEsNDE0LjMzCgkJTDk4LjQ1LDQxMy43NSBMMTAwLjA5LDQxMy4xOCBMMTAxLjcyLDQxMi42MSBMMTAzLjM2LDQxMi4wNCBMMTA1LjAwLDQxMS40NyBMMTA2LjY0LDQxMC45MCBMMTA4LjI3LDQxMC4zNCBMMTA5LjkxLDQwOS43NwoJCUwxMTEuNTUsNDA5LjIxIEwxMTMuMTgsNDA4LjY0IEwxMTQuODIsNDA4LjA4IEwxMTYuNDYsNDA3LjUyIEwxMTguMTAsNDA2Ljk3IEwxMTkuNzMsNDA2LjQxIEwxMjEuMzcsNDA1Ljg1IEwxMjMuMDEsNDA1LjMwCgkJTDEyNC42NSw0MDQuNzUgTDEyNi4yOCw0MDQuMjAgTDEyNy45Miw0MDMuNjUgTDEyOS41Niw0MDMuMTAgTDEzMS4xOSw0MDIuNTYgTDEzMi44Myw0MDIuMDIgTDEzNC40Nyw0MDEuNDcgTDEzNi4xMSw0MDAuOTQKCQlMMTM3Ljc0LDQwMC40MCBMMTM5LjM4LDM5OS44NyBMMTQxLjAyLDM5OS4zMyBMMTQyLjY2LDM5OC44MCBMMTQ0LjI5LDM5OC4yOCBMMTQ1LjkzLDM5Ny43NSBMMTQ3LjU3LDM5Ny4yMyBMMTQ5LjIwLDM5Ni43MQoJCUwxNTAuODQsMzk2LjE5IEwxNTIuNDgsMzk1LjY4IEwxNTQuMTIsMzk1LjE3IEwxNTUuNzUsMzk0LjY2IEwxNTcuMzksMzk0LjE1IEwxNTkuMDMsMzkzLjY1IEwxNjAuNjcsMzkzLjE1IEwxNjIuMzAsMzkyLjY1CgkJTDE2My45NCwzOTIuMTUgTDE2NS41OCwzOTEuNjYgTDE2Ny4yMSwzOTEuMTcgTDE2OC44NSwzOTAuNjkgTDE3MC40OSwzOTAuMjEgTDE3Mi4xMywzODkuNzMgTDE3My43NiwzODkuMjUgTDE3NS40MCwzODguNzgKCQlMMTc3LjA0LDM4OC4zMSBMMTc4LjY4LDM4Ny44NCBMMTgwLjMxLDM4Ny4zOCBMMTgxLjk1LDM4Ni45MiBMMTgzLjU5LDM4Ni40NyBMMTg1LjIyLDM4Ni4wMSBMMTg2Ljg2LDM4NS41NyBMMTg4LjUwLDM4NS4xMgoJCUwxOTAuMTQsMzg0LjY4IEwxOTEuNzcsMzg0LjI0IEwxOTMuNDEsMzgzLjgxIEwxOTUuMDUsMzgzLjM4IEwxOTYuNjksMzgyLjk2IEwxOTguMzIsMzgyLjUzIEwxOTkuOTYsMzgyLjEyIEwyMDEuNjAsMzgxLjcwCgkJTDIwMy4yMywzODEuMjkgTDIwNC44NywzODAuODkgTDIwNi41MSwzODAuNDkgTDIwOC4xNSwzODAuMDkgTDIwOS43OCwzNzkuNzAgTDIxMS40MiwzNzkuMzEgTDIxMy4wNiwzNzguOTMgTDIxNC42OSwzNzguNTUKCQlMMjE2LjMzLDM3OC4xNyBMMjE3Ljk3LDM3Ny44MCBMMjE5LjYxLDM3Ny40MyBMMjIxLjI0LDM3Ny4wNyBMMjIyLjg4LDM3Ni43MSBMMjI0LjUyLDM3Ni4zNiBMMjI2LjE2LDM3Ni4wMSBMMjI3Ljc5LDM3NS42NwoJCUwyMjkuNDMsMzc1LjMzIEwyMzEuMDcsMzc1LjAwIEwyMzIuNzAsMzc0LjY3IEwyMzQuMzQsMzc0LjM0IEwyMzUuOTgsMzc0LjAyIEwyMzcuNjIsMzczLjcxIEwyMzkuMjUsMzczLjQwIEwyNDAuODksMzczLjA5CgkJTDI0Mi41MywzNzIuNzkgTDI0NC4xNywzNzIuNTAgTDI0NS44MCwzNzIuMjEgTDI0Ny40NCwzNzEuOTIgTDI0OS4wOCwzNzEuNjQgTDI1MC43MSwzNzEuMzYgTDI1Mi4zNSwzNzEuMDkgTDI1My45OSwzNzAuODMKCQlMMjU1LjYzLDM3MC41NyBMMjU3LjI2LDM3MC4zMSBMMjU4LjkwLDM3MC4wNiBMMjYwLjU0LDM2OS44MiBMMjYyLjE4LDM2OS41OCBMMjYzLjgxLDM2OS4zNSBMMjY1LjQ1LDM2OS4xMiBMMjY3LjA5LDM2OC45MAoJCUwyNjguNzIsMzY4LjY4IEwyNzAuMzYsMzY4LjQ3IEwyNzIuMDAsMzY4LjI2IEwyNzMuNjQsMzY4LjA2IEwyNzUuMjcsMzY3Ljg2IEwyNzYuOTEsMzY3LjY3IEwyNzguNTUsMzY3LjQ5IEwyODAuMTksMzY3LjMxCgkJTDI4MS44MiwzNjcuMTMgTDI4My40NiwzNjYuOTYgTDI4NS4xMCwzNjYuODAgTDI4Ni43MywzNjYuNjQgTDI4OC4zNywzNjYuNDkgTDI5MC4wMSwzNjYuMzQgTDI5MS42NSwzNjYuMjAgTDI5My4yOCwzNjYuMDcKCQlMMjk0LjkyLDM2NS45NCBMMjk2LjU2LDM2NS44MSBMMjk4LjIwLDM2NS43MCBMMjk5LjgzLDM2NS41OCBMMzAxLjQ3LDM2NS40OCBMMzAzLjExLDM2NS4zOCBMMzA0Ljc0LDM2NS4yOCBMMzA2LjM4LDM2NS4xOQoJCUwzMDguMDIsMzY1LjExIEwzMDkuNjYsMzY1LjAzIEwzMTEuMjksMzY0Ljk2IEwzMTIuOTMsMzY0Ljg5IEwzMTQuNTcsMzY0LjgzIEwzMTYuMjEsMzY0Ljc3IEwzMTcuODQsMzY0LjcyIEwzMTkuNDgsMzY0LjY4CgkJTDMyMS4xMiwzNjQuNjQgTDMyMi43NSwzNjQuNjEgTDMyNC4zOSwzNjQuNTggTDMyNi4wMywzNjQuNTYgTDMyNy42NywzNjQuNTUgTDMyOS4zMCwzNjQuNTQgTDMzMC45NCwzNjQuNTMgTDMzMi41OCwzNjQuNTQKCQlMMzM0LjIyLDM2NC41NCBMMzM1Ljg1LDM2NC41NiBMMzM3LjQ5LDM2NC41OCBMMzM5LjEzLDM2NC42MCBMMzQwLjc2LDM2NC42MyBMMzQyLjQwLDM2NC42NyBMMzQ0LjA0LDM2NC43MSBMMzQ1LjY4LDM2NC43NgoJCUwzNDcuMzEsMzY0LjgyIEwzNDguOTUsMzY0Ljg4IEwzNTAuNTksMzY0Ljk0IEwzNTIuMjMsMzY1LjAyIEwzNTMuODYsMzY1LjA5IEwzNTUuNTAsMzY1LjE4IEwzNTcuMTQsMzY1LjI3IEwzNTguNzcsMzY1LjM2CgkJTDM2MC40MSwzNjUuNDYgTDM2Mi4wNSwzNjUuNTcgTDM2My42OSwzNjUuNjggTDM2NS4zMiwzNjUuODAgTDM2Ni45NiwzNjUuOTIgTDM2OC42MCwzNjYuMDUgTDM3MC4yNCwzNjYuMTggTDM3MS44NywzNjYuMzIKCQlMMzczLjUxLDM2Ni40NyBMMzc1LjE1LDM2Ni42MiBMMzc2Ljc4LDM2Ni43NyBMMzc4LjQyLDM2Ni45NCBMMzgwLjA2LDM2Ny4xMCBMMzgxLjcwLDM2Ny4yOCBMMzgzLjMzLDM2Ny40NiBMMzg0Ljk3LDM2Ny42NAoJCUwzODYuNjEsMzY3LjgzIEwzODguMjUsMzY4LjAzIEwzODkuODgsMzY4LjIzIEwzOTEuNTIsMzY4LjQzIEwzOTMuMTYsMzY4LjY0IEwzOTQuNzksMzY4Ljg2IEwzOTYuNDMsMzY5LjA4IEwzOTguMDcsMzY5LjMxCgkJTDM5OS43MSwzNjkuNTQgTDQwMS4zNCwzNjkuNzggTDQwMi45OCwzNzAuMDMgTDQwNC42MiwzNzAuMjcgTDQwNi4yNiwzNzAuNTMgTDQwNy44OSwzNzAuNzkgTDQwOS41MywzNzEuMDUgTDQxMS4xNywzNzEuMzIKCQlMNDEyLjgwLDM3MS42MCBMNDE0LjQ0LDM3MS44NyBMNDE2LjA4LDM3Mi4xNiBMNDE3LjcyLDM3Mi40NSBMNDE5LjM1LDM3Mi43NCBMNDIwLjk5LDM3My4wNCBMNDIyLjYzLDM3My4zNSBMNDI0LjI3LDM3My42NgoJCUw0MjUuOTAsMzczLjk3IEw0MjcuNTQsMzc0LjI5IEw0MjkuMTgsMzc0LjYxIEw0MzAuODEsMzc0Ljk0IEw0MzIuNDUsMzc1LjI4IEw0MzQuMDksMzc1LjYyIEw0MzUuNzMsMzc1Ljk2IEw0MzcuMzYsMzc2LjMxCgkJTDQzOS4wMCwzNzYuNjYgTDQ0MC42NCwzNzcuMDEgTDQ0Mi4yOCwzNzcuMzggTDQ0My45MSwzNzcuNzQgTDQ0NS41NSwzNzguMTEgTDQ0Ny4xOSwzNzguNDkgTDQ0OC44MiwzNzguODcgTDQ1MC40NiwzNzkuMjUKCQlMNDUyLjEwLDM3OS42NCBMNDUzLjc0LDM4MC4wMyBMNDU1LjM3LDM4MC40MiBMNDU3LjAxLDM4MC44MiBMNDU4LjY1LDM4MS4yMyBMNDYwLjI4LDM4MS42NCBMNDYxLjkyLDM4Mi4wNSBMNDYzLjU2LDM4Mi40NwoJCUw0NjUuMjAsMzgyLjg5IEw0NjYuODMsMzgzLjMxIEw0NjguNDcsMzgzLjc0IEw0NzAuMTEsMzg0LjE3IEw0NzEuNzUsMzg0LjYxIEw0NzMuMzgsMzg1LjA1IEw0NzUuMDIsMzg1LjQ5IEw0NzYuNjYsMzg1Ljk0CgkJTDQ3OC4yOSwzODYuMzkgTDQ3OS45MywzODYuODUgTDQ4MS41NywzODcuMzEgTDQ4My4yMSwzODcuNzcgTDQ4NC44NCwzODguMjMgTDQ4Ni40OCwzODguNzAgTDQ4OC4xMiwzODkuMTcgTDQ4OS43NiwzODkuNjUKCQlMNDkxLjM5LDM5MC4xMyBMNDkzLjAzLDM5MC42MSBMNDk0LjY3LDM5MS4xMCBMNDk2LjMwLDM5MS41OCBMNDk3Ljk0LDM5Mi4wOCBMNDk5LjU4LDM5Mi41NyBMNTAxLjIyLDM5My4wNyBMNTAyLjg1LDM5My41NwoJCUw1MDQuNDksMzk0LjA3IEw1MDYuMTMsMzk0LjU4IEw1MDcuNzcsMzk1LjA5IEw1MDkuNDAsMzk1LjYwIEw1MTEuMDQsMzk2LjExIEw1MTIuNjgsMzk2LjYzIEw1MTQuMzEsMzk3LjE1IEw1MTUuOTUsMzk3LjY3CgkJTDUxNy41OSwzOTguMTkgTDUxOS4yMywzOTguNzIgTDUyMC44NiwzOTkuMjUgTDUyMi41MCwzOTkuNzggTDUyNC4xNCw0MDAuMzEgTDUyNS43OCw0MDAuODUgTDUyNy40MSw0MDEuMzkgTDUyOS4wNSw0MDEuOTMKCQlMNTMwLjY5LDQwMi40NyBMNTMyLjMyLDQwMy4wMiBMNTMzLjk2LDQwMy41NiBMNTM1LjYwLDQwNC4xMSBMNTM3LjI0LDQwNC42NiBMNTM4Ljg3LDQwNS4yMSBMNTQwLjUxLDQwNS43NiBMNTQyLjE1LDQwNi4zMgoJCUw1NDMuNzksNDA2Ljg4IEw1NDUuNDIsNDA3LjQzIEw1NDcuMDYsNDA3Ljk5IEw1NDguNzAsNDA4LjU2IEw1NTAuMzMsNDA5LjEyIEw1NTEuOTcsNDA5LjY4IEw1NTMuNjEsNDEwLjI1IEw1NTUuMjUsNDEwLjgxCgkJTDU1Ni44OCw0MTEuMzggTDU1OC41Miw0MTEuOTUgTDU2MC4xNiw0MTIuNTIgTDU2MS44MCw0MTMuMDkgTDU2My40Myw0MTMuNjYgTDU2NS4wNyw0MTQuMjMgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMiIgPjx0aXRsZT5LID0gMCA6IDLPgHI8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ5Ny4zNCw5My45MSkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID5LID0gMCA6IDLPgHI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0ncmdiKDI1NSwgICAwLCAgIDApJyAgZD0nTTUwNS43Myw5MC4wMSBMNTQ4LjI5LDkwLjAxIE03NS41Myw0MjEuODIgTDc3LjE2LDQyMS4yNCBMNzguODAsNDIwLjY2IEw4MC40NCw0MjAuMDkgTDgyLjA4LDQxOS41MSBMODMuNzEsNDE4LjkzCgkJTDg1LjM1LDQxOC4zNSBMODYuOTksNDE3Ljc3IEw4OC42Myw0MTcuMTkgTDkwLjI2LDQxNi42MSBMOTEuOTAsNDE2LjAzIEw5My41NCw0MTUuNDYgTDk1LjE3LDQxNC44OCBMOTYuODEsNDE0LjMwCgkJTDk4LjQ1LDQxMy43MiBMMTAwLjA5LDQxMy4xNCBMMTAxLjcyLDQxMi41NiBMMTAzLjM2LDQxMS45OCBMMTA1LjAwLDQxMS40MSBMMTA2LjY0LDQxMC44MyBMMTA4LjI3LDQxMC4yNSBMMTA5LjkxLDQwOS42NwoJCUwxMTEuNTUsNDA5LjA5IEwxMTMuMTgsNDA4LjUxIEwxMTQuODIsNDA3LjkzIEwxMTYuNDYsNDA3LjM1IEwxMTguMTAsNDA2Ljc4IEwxMTkuNzMsNDA2LjIwIEwxMjEuMzcsNDA1LjYyIEwxMjMuMDEsNDA1LjA0CgkJTDEyNC42NSw0MDQuNDYgTDEyNi4yOCw0MDMuODggTDEyNy45Miw0MDMuMzAgTDEyOS41Niw0MDIuNzMgTDEzMS4xOSw0MDIuMTUgTDEzMi44Myw0MDEuNTcgTDEzNC40Nyw0MDAuOTkgTDEzNi4xMSw0MDAuNDEKCQlMMTM3Ljc0LDM5OS44MyBMMTM5LjM4LDM5OS4yNSBMMTQxLjAyLDM5OC42NyBMMTQyLjY2LDM5OC4xMCBMMTQ0LjI5LDM5Ny41MiBMMTQ1LjkzLDM5Ni45NCBMMTQ3LjU3LDM5Ni4zNiBMMTQ5LjIwLDM5NS43OAoJCUwxNTAuODQsMzk1LjIwIEwxNTIuNDgsMzk0LjYyIEwxNTQuMTIsMzk0LjA1IEwxNTUuNzUsMzkzLjQ3IEwxNTcuMzksMzkyLjg5IEwxNTkuMDMsMzkyLjMxIEwxNjAuNjcsMzkxLjczIEwxNjIuMzAsMzkxLjE1CgkJTDE2My45NCwzOTAuNTcgTDE2NS41OCwzODkuOTkgTDE2Ny4yMSwzODkuNDIgTDE2OC44NSwzODguODQgTDE3MC40OSwzODguMjYgTDE3Mi4xMywzODcuNjggTDE3My43NiwzODcuMTAgTDE3NS40MCwzODYuNTIKCQlMMTc3LjA0LDM4NS45NCBMMTc4LjY4LDM4NS4zNyBMMTgwLjMxLDM4NC43OSBMMTgxLjk1LDM4NC4yMSBMMTgzLjU5LDM4My42MyBMMTg1LjIyLDM4My4wNSBMMTg2Ljg2LDM4Mi40NyBMMTg4LjUwLDM4MS44OQoJCUwxOTAuMTQsMzgxLjMxIEwxOTEuNzcsMzgwLjc0IEwxOTMuNDEsMzgwLjE2IEwxOTUuMDUsMzc5LjU4IEwxOTYuNjksMzc5LjAwIEwxOTguMzIsMzc4LjQyIEwxOTkuOTYsMzc3Ljg0IEwyMDEuNjAsMzc3LjI2CgkJTDIwMy4yMywzNzYuNjkgTDIwNC44NywzNzYuMTEgTDIwNi41MSwzNzUuNTMgTDIwOC4xNSwzNzQuOTUgTDIwOS43OCwzNzQuMzcgTDIxMS40MiwzNzMuNzkgTDIxMy4wNiwzNzMuMjEgTDIxNC42OSwzNzIuNjMKCQlMMjE2LjMzLDM3Mi4wNiBMMjE3Ljk3LDM3MS40OCBMMjE5LjYxLDM3MC45MCBMMjIxLjI0LDM3MC4zMiBMMjIyLjg4LDM2OS43NCBMMjI0LjUyLDM2OS4xNiBMMjI2LjE2LDM2OC41OCBMMjI3Ljc5LDM2OC4wMQoJCUwyMjkuNDMsMzY3LjQzIEwyMzEuMDcsMzY2Ljg1IEwyMzIuNzAsMzY2LjI3IEwyMzQuMzQsMzY1LjY5IEwyMzUuOTgsMzY1LjExIEwyMzcuNjIsMzY0LjUzIEwyMzkuMjUsMzYzLjk1IEwyNDAuODksMzYzLjM4CgkJTDI0Mi41MywzNjIuODAgTDI0NC4xNywzNjIuMjIgTDI0NS44MCwzNjEuNjQgTDI0Ny40NCwzNjEuMDYgTDI0OS4wOCwzNjAuNDggTDI1MC43MSwzNTkuOTAgTDI1Mi4zNSwzNTkuMzMgTDI1My45OSwzNTguNzUKCQlMMjU1LjYzLDM1OC4xNyBMMjU3LjI2LDM1Ny41OSBMMjU4LjkwLDM1Ny4wMSBMMjYwLjU0LDM1Ni40MyBMMjYyLjE4LDM1NS44NSBMMjYzLjgxLDM1NS4yNyBMMjY1LjQ1LDM1NC43MCBMMjY3LjA5LDM1NC4xMgoJCUwyNjguNzIsMzUzLjU0IEwyNzAuMzYsMzUyLjk2IEwyNzIuMDAsMzUyLjM4IEwyNzMuNjQsMzUxLjgwIEwyNzUuMjcsMzUxLjIyIEwyNzYuOTEsMzUwLjY1IEwyNzguNTUsMzUwLjA3IEwyODAuMTksMzQ5LjQ5CgkJTDI4MS44MiwzNDguOTEgTDI4My40NiwzNDguMzMgTDI4NS4xMCwzNDcuNzUgTDI4Ni43MywzNDcuMTcgTDI4OC4zNywzNDYuNTkgTDI5MC4wMSwzNDYuMDIgTDI5MS42NSwzNDUuNDQgTDI5My4yOCwzNDQuODYKCQlMMjk0LjkyLDM0NC4yOCBMMjk2LjU2LDM0My43MCBMMjk4LjIwLDM0My4xMiBMMjk5LjgzLDM0Mi41NCBMMzAxLjQ3LDM0MS45NyBMMzAzLjExLDM0MS4zOSBMMzA0Ljc0LDM0MC44MSBMMzA2LjM4LDM0MC4yMwoJCUwzMDguMDIsMzM5LjY1IEwzMDkuNjYsMzM5LjA3IEwzMTEuMjksMzM4LjQ5IEwzMTIuOTMsMzM3LjkxIEwzMTQuNTcsMzM3LjM0IEwzMTYuMjEsMzM2Ljc2IEwzMTcuODQsMzM2LjE4IEwzMTkuNDgsMzM1LjYwCgkJTDMyMS4xMiwzMzUuMDIgTDMyMi43NSwzMzQuNDQgTDMyNC4zOSwzMzMuODYgTDMyNi4wMywzMzMuMjkgTDMyNy42NywzMzIuNzEgTDMyOS4zMCwzMzIuMTMgTDMzMC45NCwzMzEuNTUgTDMzMi41OCwzMzAuOTcKCQlMMzM0LjIyLDMzMC4zOSBMMzM1Ljg1LDMyOS44MSBMMzM3LjQ5LDMyOS4yMyBMMzM5LjEzLDMyOC42NiBMMzQwLjc2LDMyOC4wOCBMMzQyLjQwLDMyNy41MCBMMzQ0LjA0LDMyNi45MiBMMzQ1LjY4LDMyNi4zNAoJCUwzNDcuMzEsMzI1Ljc2IEwzNDguOTUsMzI1LjE4IEwzNTAuNTksMzI0LjYxIEwzNTIuMjMsMzI0LjAzIEwzNTMuODYsMzIzLjQ1IEwzNTUuNTAsMzIyLjg3IEwzNTcuMTQsMzIyLjI5IEwzNTguNzcsMzIxLjcxCgkJTDM2MC40MSwzMjEuMTMgTDM2Mi4wNSwzMjAuNTUgTDM2My42OSwzMTkuOTggTDM2NS4zMiwzMTkuNDAgTDM2Ni45NiwzMTguODIgTDM2OC42MCwzMTguMjQgTDM3MC4yNCwzMTcuNjYgTDM3MS44NywzMTcuMDgKCQlMMzczLjUxLDMxNi41MCBMMzc1LjE1LDMxNS45MyBMMzc2Ljc4LDMxNS4zNSBMMzc4LjQyLDMxNC43NyBMMzgwLjA2LDMxNC4xOSBMMzgxLjcwLDMxMy42MSBMMzgzLjMzLDMxMy4wMyBMMzg0Ljk3LDMxMi40NQoJCUwzODYuNjEsMzExLjg3IEwzODguMjUsMzExLjMwIEwzODkuODgsMzEwLjcyIEwzOTEuNTIsMzEwLjE0IEwzOTMuMTYsMzA5LjU2IEwzOTQuNzksMzA4Ljk4IEwzOTYuNDMsMzA4LjQwIEwzOTguMDcsMzA3LjgyCgkJTDM5OS43MSwzMDcuMjUgTDQwMS4zNCwzMDYuNjcgTDQwMi45OCwzMDYuMDkgTDQwNC42MiwzMDUuNTEgTDQwNi4yNiwzMDQuOTMgTDQwNy44OSwzMDQuMzUgTDQwOS41MywzMDMuNzcgTDQxMS4xNywzMDMuMTkKCQlMNDEyLjgwLDMwMi42MiBMNDE0LjQ0LDMwMi4wNCBMNDE2LjA4LDMwMS40NiBMNDE3LjcyLDMwMC44OCBMNDE5LjM1LDMwMC4zMCBMNDIwLjk5LDI5OS43MiBMNDIyLjYzLDI5OS4xNCBMNDI0LjI3LDI5OC41NwoJCUw0MjUuOTAsMjk3Ljk5IEw0MjcuNTQsMjk3LjQxIEw0MjkuMTgsMjk2LjgzIEw0MzAuODEsMjk2LjI1IEw0MzIuNDUsMjk1LjY3IEw0MzQuMDksMjk1LjA5IEw0MzUuNzMsMjk0LjUxIEw0MzcuMzYsMjkzLjk0CgkJTDQzOS4wMCwyOTMuMzYgTDQ0MC42NCwyOTIuNzggTDQ0Mi4yOCwyOTIuMjAgTDQ0My45MSwyOTEuNjIgTDQ0NS41NSwyOTEuMDQgTDQ0Ny4xOSwyOTAuNDYgTDQ0OC44MiwyODkuODkgTDQ1MC40NiwyODkuMzEKCQlMNDUyLjEwLDI4OC43MyBMNDUzLjc0LDI4OC4xNSBMNDU1LjM3LDI4Ny41NyBMNDU3LjAxLDI4Ni45OSBMNDU4LjY1LDI4Ni40MSBMNDYwLjI4LDI4NS44MyBMNDYxLjkyLDI4NS4yNiBMNDYzLjU2LDI4NC42OAoJCUw0NjUuMjAsMjg0LjEwIEw0NjYuODMsMjgzLjUyIEw0NjguNDcsMjgyLjk0IEw0NzAuMTEsMjgyLjM2IEw0NzEuNzUsMjgxLjc4IEw0NzMuMzgsMjgxLjIxIEw0NzUuMDIsMjgwLjYzIEw0NzYuNjYsMjgwLjA1CgkJTDQ3OC4yOSwyNzkuNDcgTDQ3OS45MywyNzguODkgTDQ4MS41NywyNzguMzEgTDQ4My4yMSwyNzcuNzMgTDQ4NC44NCwyNzcuMTUgTDQ4Ni40OCwyNzYuNTggTDQ4OC4xMiwyNzYuMDAgTDQ4OS43NiwyNzUuNDIKCQlMNDkxLjM5LDI3NC44NCBMNDkzLjAzLDI3NC4yNiBMNDk0LjY3LDI3My42OCBMNDk2LjMwLDI3My4xMCBMNDk3Ljk0LDI3Mi41MyBMNDk5LjU4LDI3MS45NSBMNTAxLjIyLDI3MS4zNyBMNTAyLjg1LDI3MC43OQoJCUw1MDQuNDksMjcwLjIxIEw1MDYuMTMsMjY5LjYzIEw1MDcuNzcsMjY5LjA1IEw1MDkuNDAsMjY4LjQ3IEw1MTEuMDQsMjY3LjkwIEw1MTIuNjgsMjY3LjMyIEw1MTQuMzEsMjY2Ljc0IEw1MTUuOTUsMjY2LjE2CgkJTDUxNy41OSwyNjUuNTggTDUxOS4yMywyNjUuMDAgTDUyMC44NiwyNjQuNDIgTDUyMi41MCwyNjMuODUgTDUyNC4xNCwyNjMuMjcgTDUyNS43OCwyNjIuNjkgTDUyNy40MSwyNjIuMTEgTDUyOS4wNSwyNjEuNTMKCQlMNTMwLjY5LDI2MC45NSBMNTMyLjMyLDI2MC4zNyBMNTMzLjk2LDI1OS43OSBMNTM1LjYwLDI1OS4yMiBMNTM3LjI0LDI1OC42NCBMNTM4Ljg3LDI1OC4wNiBMNTQwLjUxLDI1Ny40OCBMNTQyLjE1LDI1Ni45MAoJCUw1NDMuNzksMjU2LjMyIEw1NDUuNDIsMjU1Ljc0IEw1NDcuMDYsMjU1LjE3IEw1NDguNzAsMjU0LjU5IEw1NTAuMzMsMjU0LjAxIEw1NTEuOTcsMjUzLjQzIEw1NTMuNjEsMjUyLjg1IEw1NTUuMjUsMjUyLjI3CgkJTDU1Ni44OCwyNTEuNjkgTDU1OC41MiwyNTEuMTEgTDU2MC4xNiwyNTAuNTQgTDU2MS44MCwyNDkuOTYgTDU2My40MywyNDkuMzggTDU2NS4wNywyNDguODAgICcvPjwvZz4KCTwvZz4KCTxnIGlkPSJnbnVwbG90X3Bsb3RfMyIgPjx0aXRsZT5LID0g4oiSMSA6IDLPgCBzaW5oIHI8L3RpdGxlPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ5Ny4zNCwxMTEuOTEpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+SyA9IOKIkjEgOiAyz4Agc2luaCByPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIzLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J3JnYiggIDAsIDI1NSwgICAwKScgIGQ9J001MDUuNzMsMTA4LjAxIEw1NDguMjksMTA4LjAxIE03NS41Myw0MjEuODIgTDc3LjE2LDQyMS4yNCBMNzguODAsNDIwLjY2IEw4MC40NCw0MjAuMDggTDgyLjA4LDQxOS41MSBMODMuNzEsNDE4LjkzCgkJTDg1LjM1LDQxOC4zNSBMODYuOTksNDE3Ljc3IEw4OC42Myw0MTcuMTggTDkwLjI2LDQxNi42MCBMOTEuOTAsNDE2LjAyIEw5My41NCw0MTUuNDQgTDk1LjE3LDQxNC44NiBMOTYuODEsNDE0LjI3CgkJTDk4LjQ1LDQxMy42OSBMMTAwLjA5LDQxMy4xMCBMMTAxLjcyLDQxMi41MiBMMTAzLjM2LDQxMS45MyBMMTA1LjAwLDQxMS4zNCBMMTA2LjY0LDQxMC43NSBMMTA4LjI3LDQxMC4xNiBMMTA5LjkxLDQwOS41NwoJCUwxMTEuNTUsNDA4Ljk3IEwxMTMuMTgsNDA4LjM4IEwxMTQuODIsNDA3Ljc4IEwxMTYuNDYsNDA3LjE4IEwxMTguMTAsNDA2LjU5IEwxMTkuNzMsNDA1Ljk4IEwxMjEuMzcsNDA1LjM4IEwxMjMuMDEsNDA0Ljc4CgkJTDEyNC42NSw0MDQuMTcgTDEyNi4yOCw0MDMuNTcgTDEyNy45Miw0MDIuOTYgTDEyOS41Niw0MDIuMzQgTDEzMS4xOSw0MDEuNzMgTDEzMi44Myw0MDEuMTIgTDEzNC40Nyw0MDAuNTAgTDEzNi4xMSwzOTkuODgKCQlMMTM3Ljc0LDM5OS4yNiBMMTM5LjM4LDM5OC42MyBMMTQxLjAyLDM5OC4wMCBMMTQyLjY2LDM5Ny4zOCBMMTQ0LjI5LDM5Ni43NCBMMTQ1LjkzLDM5Ni4xMSBMMTQ3LjU3LDM5NS40NyBMMTQ5LjIwLDM5NC44MwoJCUwxNTAuODQsMzk0LjE5IEwxNTIuNDgsMzkzLjU1IEwxNTQuMTIsMzkyLjkwIEwxNTUuNzUsMzkyLjI1IEwxNTcuMzksMzkxLjU5IEwxNTkuMDMsMzkwLjkzIEwxNjAuNjcsMzkwLjI3IEwxNjIuMzAsMzg5LjYxCgkJTDE2My45NCwzODguOTQgTDE2NS41OCwzODguMjcgTDE2Ny4yMSwzODcuNjAgTDE2OC44NSwzODYuOTIgTDE3MC40OSwzODYuMjQgTDE3Mi4xMywzODUuNTYgTDE3My43NiwzODQuODcgTDE3NS40MCwzODQuMTgKCQlMMTc3LjA0LDM4My40OCBMMTc4LjY4LDM4Mi43OCBMMTgwLjMxLDM4Mi4wOCBMMTgxLjk1LDM4MS4zNyBMMTgzLjU5LDM4MC42NiBMMTg1LjIyLDM3OS45NSBMMTg2Ljg2LDM3OS4yMyBMMTg4LjUwLDM3OC41MAoJCUwxOTAuMTQsMzc3Ljc3IEwxOTEuNzcsMzc3LjA0IEwxOTMuNDEsMzc2LjMwIEwxOTUuMDUsMzc1LjU2IEwxOTYuNjksMzc0LjgyIEwxOTguMzIsMzc0LjA2IEwxOTkuOTYsMzczLjMxIEwyMDEuNjAsMzcyLjU1CgkJTDIwMy4yMywzNzEuNzggTDIwNC44NywzNzEuMDEgTDIwNi41MSwzNzAuMjMgTDIwOC4xNSwzNjkuNDUgTDIwOS43OCwzNjguNjYgTDIxMS40MiwzNjcuODcgTDIxMy4wNiwzNjcuMDcgTDIxNC42OSwzNjYuMjcKCQlMMjE2LjMzLDM2NS40NiBMMjE3Ljk3LDM2NC42NSBMMjE5LjYxLDM2My44MyBMMjIxLjI0LDM2My4wMCBMMjIyLjg4LDM2Mi4xNyBMMjI0LjUyLDM2MS4zMyBMMjI2LjE2LDM2MC40OCBMMjI3Ljc5LDM1OS42MwoJCUwyMjkuNDMsMzU4Ljc4IEwyMzEuMDcsMzU3LjkxIEwyMzIuNzAsMzU3LjA0IEwyMzQuMzQsMzU2LjE3IEwyMzUuOTgsMzU1LjI4IEwyMzcuNjIsMzU0LjQwIEwyMzkuMjUsMzUzLjUwIEwyNDAuODksMzUyLjYwCgkJTDI0Mi41MywzNTEuNjkgTDI0NC4xNywzNTAuNzcgTDI0NS44MCwzNDkuODQgTDI0Ny40NCwzNDguOTEgTDI0OS4wOCwzNDcuOTcgTDI1MC43MSwzNDcuMDMgTDI1Mi4zNSwzNDYuMDcgTDI1My45OSwzNDUuMTEKCQlMMjU1LjYzLDM0NC4xNCBMMjU3LjI2LDM0My4xNiBMMjU4LjkwLDM0Mi4xOCBMMjYwLjU0LDM0MS4xOSBMMjYyLjE4LDM0MC4xOCBMMjYzLjgxLDMzOS4xNyBMMjY1LjQ1LDMzOC4xNiBMMjY3LjA5LDMzNy4xMwoJCUwyNjguNzIsMzM2LjEwIEwyNzAuMzYsMzM1LjA1IEwyNzIuMDAsMzM0LjAwIEwyNzMuNjQsMzMyLjk0IEwyNzUuMjcsMzMxLjg3IEwyNzYuOTEsMzMwLjc5IEwyNzguNTUsMzI5LjcwIEwyODAuMTksMzI4LjYxCgkJTDI4MS44MiwzMjcuNTAgTDI4My40NiwzMjYuMzggTDI4NS4xMCwzMjUuMjYgTDI4Ni43MywzMjQuMTIgTDI4OC4zNywzMjIuOTggTDI5MC4wMSwzMjEuODIgTDI5MS42NSwzMjAuNjUgTDI5My4yOCwzMTkuNDgKCQlMMjk0LjkyLDMxOC4yOSBMMjk2LjU2LDMxNy4xMCBMMjk4LjIwLDMxNS44OSBMMjk5LjgzLDMxNC42NyBMMzAxLjQ3LDMxMy40NCBMMzAzLjExLDMxMi4yMCBMMzA0Ljc0LDMxMC45NSBMMzA2LjM4LDMwOS42OQoJCUwzMDguMDIsMzA4LjQyIEwzMDkuNjYsMzA3LjE0IEwzMTEuMjksMzA1Ljg0IEwzMTIuOTMsMzA0LjUzIEwzMTQuNTcsMzAzLjIxIEwzMTYuMjEsMzAxLjg4IEwzMTcuODQsMzAwLjU0IEwzMTkuNDgsMjk5LjE5CgkJTDMyMS4xMiwyOTcuODIgTDMyMi43NSwyOTYuNDQgTDMyNC4zOSwyOTUuMDUgTDMyNi4wMywyOTMuNjQgTDMyNy42NywyOTIuMjIgTDMyOS4zMCwyOTAuNzkgTDMzMC45NCwyODkuMzUgTDMzMi41OCwyODcuODkKCQlMMzM0LjIyLDI4Ni40MiBMMzM1Ljg1LDI4NC45MyBMMzM3LjQ5LDI4My40NCBMMzM5LjEzLDI4MS45MiBMMzQwLjc2LDI4MC40MCBMMzQyLjQwLDI3OC44NiBMMzQ0LjA0LDI3Ny4zMCBMMzQ1LjY4LDI3NS43MwoJCUwzNDcuMzEsMjc0LjE1IEwzNDguOTUsMjcyLjU1IEwzNTAuNTksMjcwLjk0IEwzNTIuMjMsMjY5LjMxIEwzNTMuODYsMjY3LjY2IEwzNTUuNTAsMjY2LjAwIEwzNTcuMTQsMjY0LjMzIEwzNTguNzcsMjYyLjY0CgkJTDM2MC40MSwyNjAuOTMgTDM2Mi4wNSwyNTkuMjAgTDM2My42OSwyNTcuNDcgTDM2NS4zMiwyNTUuNzEgTDM2Ni45NiwyNTMuOTQgTDM2OC42MCwyNTIuMTUgTDM3MC4yNCwyNTAuMzQgTDM3MS44NywyNDguNTIKCQlMMzczLjUxLDI0Ni42NyBMMzc1LjE1LDI0NC44MiBMMzc2Ljc4LDI0Mi45NCBMMzc4LjQyLDI0MS4wNCBMMzgwLjA2LDIzOS4xMyBMMzgxLjcwLDIzNy4yMCBMMzgzLjMzLDIzNS4yNSBMMzg0Ljk3LDIzMy4yOAoJCUwzODYuNjEsMjMxLjMwIEwzODguMjUsMjI5LjI5IEwzODkuODgsMjI3LjI2IEwzOTEuNTIsMjI1LjIyIEwzOTMuMTYsMjIzLjE1IEwzOTQuNzksMjIxLjA3IEwzOTYuNDMsMjE4Ljk2IEwzOTguMDcsMjE2Ljg0CgkJTDM5OS43MSwyMTQuNjkgTDQwMS4zNCwyMTIuNTMgTDQwMi45OCwyMTAuMzQgTDQwNC42MiwyMDguMTMgTDQwNi4yNiwyMDUuOTAgTDQwNy44OSwyMDMuNjUgTDQwOS41MywyMDEuMzcgTDQxMS4xNywxOTkuMDgKCQlMNDEyLjgwLDE5Ni43NiBMNDE0LjQ0LDE5NC40MiBMNDE2LjA4LDE5Mi4wNiBMNDE3LjcyLDE4OS42NyBMNDE5LjM1LDE4Ny4yNiBMNDIwLjk5LDE4NC44MyBMNDIyLjYzLDE4Mi4zNyBMNDI0LjI3LDE3OS44OQoJCUw0MjUuOTAsMTc3LjM4IEw0MjcuNTQsMTc0Ljg1IEw0MjkuMTgsMTcyLjMwIEw0MzAuODEsMTY5LjcyIEw0MzIuNDUsMTY3LjExIEw0MzQuMDksMTY0LjQ4IEw0MzUuNzMsMTYxLjgzIEw0MzcuMzYsMTU5LjE0CgkJTDQzOS4wMCwxNTYuNDQgTDQ0MC42NCwxNTMuNzAgTDQ0Mi4yOCwxNTAuOTQgTDQ0My45MSwxNDguMTUgTDQ0NS41NSwxNDUuMzMgTDQ0Ny4xOSwxNDIuNDkgTDQ0OC44MiwxMzkuNjIgTDQ1MC40NiwxMzYuNzEKCQlMNDUyLjEwLDEzMy43OSBMNDUzLjc0LDEzMC44MyBMNDU1LjM3LDEyNy44NCBMNDU3LjAxLDEyNC44MiBMNDU4LjY1LDEyMS43OCBMNDYwLjI4LDExOC43MCBMNDYxLjkyLDExNS41OSBMNDYzLjU2LDExMi40NgoJCUw0NjUuMjAsMTA5LjI5IEw0NjYuODMsMTA2LjA5IEw0NjguNDcsMTAyLjg2IEw0NzAuMTEsOTkuNTkgTDQ3MS43NSw5Ni4zMCBMNDczLjM4LDkyLjk3IEw0NzUuMDIsODkuNjEgTDQ3Ni42Niw4Ni4yMQoJCUw0NzguMjksODIuNzkgTDQ3OS45Myw3OS4zMiBMNDgxLjU3LDc1LjgzIEw0ODMuMjEsNzIuMzAgTDQ4NC44NCw2OC43MyBMNDg2LjQ4LDY1LjEzIEw0ODguMTIsNjEuNDkgTDQ4OS43Niw1Ny44MgoJCUw0OTEuMzksNTQuMTEgTDQ5MS40Myw1NC4wMSAgJy8+PC9nPgoJPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0id2hpdGUiIHN0cm9rZT0icmdiKCAgMCwgMjU1LCAgIDApIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksNDIyLjQwIEw4Mi44OSw0MjIuNDAgTTU2NS4wNyw0MjIuNDAgTDU1Ni4wNyw0MjIuNDAgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCw0MjYuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksMzc2LjM1IEw4Mi44OSwzNzYuMzUgTTU2NS4wNywzNzYuMzUgTDU1Ni4wNywzNzYuMzUgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCwzODAuMjUpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDU8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksMzMwLjMwIEw4Mi44OSwzMzAuMzAgTTU2NS4wNywzMzAuMzAgTDU1Ni4wNywzMzAuMzAgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCwzMzQuMjApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDEwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDI4NC4yNSBMODIuODksMjg0LjI1IE01NjUuMDcsMjg0LjI1IEw1NTYuMDcsMjg0LjI1ICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsMjg4LjE1KSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAxNTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSwyMzguMjAgTDgyLjg5LDIzOC4yMCBNNTY1LjA3LDIzOC4yMCBMNTU2LjA3LDIzOC4yMCAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1LjUwLDI0Mi4xMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMjA8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksMTkyLjE2IEw4Mi44OSwxOTIuMTYgTTU2NS4wNywxOTIuMTYgTDU1Ni4wNywxOTIuMTYgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NS41MCwxOTYuMDYpIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0iZW5kIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDI1PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTczLjg5LDE0Ni4xMSBMODIuODksMTQ2LjExIE01NjUuMDcsMTQ2LjExIEw1NTYuMDcsMTQ2LjExICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjUuNTAsMTUwLjAxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAzMDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSwxMDAuMDYgTDgyLjg5LDEwMC4wNiBNNTY1LjA3LDEwMC4wNiBMNTU2LjA3LDEwMC4wNiAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1LjUwLDEwMy45NikiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJlbmQiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMzU8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNzMuODksNTQuMDEgTDgyLjg5LDU0LjAxIE01NjUuMDcsNTQuMDEgTDU1Ni4wNyw1NC4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1LjUwLDU3LjkxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9ImVuZCI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiA0MDwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSw0MjIuNDAgTDczLjg5LDQxMy40MCBNNzMuODksNTQuMDEgTDczLjg5LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzMuODksNDQ0LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAwPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTE1NS43NSw0MjIuNDAgTDE1NS43NSw0MTMuNDAgTTE1NS43NSw1NC4wMSBMMTU1Ljc1LDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTU1Ljc1LDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMC41PC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+Cgk8cGF0aCBzdHJva2U9J2JsYWNrJyAgZD0nTTIzNy42Miw0MjIuNDAgTDIzNy42Miw0MTMuNDAgTTIzNy42Miw1NC4wMSBMMjM3LjYyLDYzLjAxICAnLz4JPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3LjYyLDQ0NC4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID4gMTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J00zMTkuNDgsNDIyLjQwIEwzMTkuNDgsNDEzLjQwIE0zMTkuNDgsNTQuMDEgTDMxOS40OCw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxOS40OCw0NDQuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDEuNTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J000MDEuMzQsNDIyLjQwIEw0MDEuMzQsNDEzLjQwIE00MDEuMzQsNTQuMDEgTDQwMS4zNCw2My4wMSAgJy8+CTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQwMS4zNCw0NDQuMzApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+IDI8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNDgzLjIxLDQyMi40MCBMNDgzLjIxLDQxMy40MCBNNDgzLjIxLDU0LjAxIEw0ODMuMjEsNjMuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0ODMuMjEsNDQ0LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAyLjU8L3RzcGFuPjwvdGV4dD4KCTwvZz4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snICBkPSdNNTY1LjA3LDQyMi40MCBMNTY1LjA3LDQxMy40MCBNNTY1LjA3LDU0LjAxIEw1NjUuMDcsNjMuMDEgICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NjUuMDcsNDQ0LjMwKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPiAzPC90c3Bhbj48L3RleHQ+Cgk8L2c+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImJsYWNrIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+CjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImdyYXkiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snIHN0cm9rZS1kYXNoYXJyYXk9JzIsNCcgIGQ9J003My44OSw0MjIuNDAgTDU2NS4wNyw0MjIuNDAgICcvPjwvZz4KPGcgZmlsbD0ibm9uZSIgY29sb3I9ImdyYXkiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KCTxwYXRoIHN0cm9rZT0nYmxhY2snIHN0cm9rZS1kYXNoYXJyYXk9JzIsNCcgIGQ9J003My44OSw0MjIuNDAgTDczLjg5LDU0LjAxICAnLz48L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJncmF5IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIuMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj4KPC9nPgo8ZyBmaWxsPSJub25lIiBjb2xvcj0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPHBhdGggc3Ryb2tlPSdibGFjaycgIGQ9J003My44OSw1NC4wMSBMNzMuODksNDIyLjQwIEw1NjUuMDcsNDIyLjQwIEw1NjUuMDcsNTQuMDEgTDczLjg5LDU0LjAxIFogICcvPgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOC45MywyMzguMjEpIHJvdGF0ZSgyNzAuMDApIiBzdHJva2U9Im5vbmUiIGZpbGw9ImJsYWNrIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIuMDAiICB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4KCQk8dGV4dD48dHNwYW4gZm9udC1mYW1pbHk9IkFyaWFsIiA+Y2lyY3VtZmVyZW5jZTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE5LjQ4LDQ3MS4zMCkiIHN0cm9rZT0ibm9uZSIgZmlsbD0iYmxhY2siIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMi4wMCIgIHRleHQtYW5jaG9yPSJtaWRkbGUiPgoJCTx0ZXh0Pjx0c3BhbiBmb250LWZhbWlseT0iQXJpYWwiID5nZW9kZXNpYyByYWRpdXMgcjwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgoJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE5LjQ4LDMwLjkxKSIgc3Ryb2tlPSJub25lIiBmaWxsPSJibGFjayIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyLjAwIiAgdGV4dC1hbmNob3I9Im1pZGRsZSI+CgkJPHRleHQ+PHRzcGFuIGZvbnQtZmFtaWx5PSJBcmlhbCIgPmN1cnZhdHVyZSBpcyB3aGF0IGNpcmNsZXMgbWVhc3VyZTwvdHNwYW4+PC90ZXh0PgoJPC9nPgo8L2c+CjxnIGZpbGw9Im5vbmUiIGNvbG9yPSJibGFjayIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4wMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiPgo8L2c+CjwvZz4KPC9zdmc+Cgo="/>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=db03b7a0">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5cca011f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><table>
-<thead>
-<tr>
-<th>Group</th>
-<th>Order</th>
-<th>Realised by</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$C_n$</td>
-<td>$n$</td>
-<td>a pinwheel; rotations about one axis</td>
-</tr>
-<tr>
-<td>$D_n$</td>
-<td>$2n$</td>
-<td>a rosette; $n$-gon with mirrors</td>
-</tr>
-<tr>
-<td>$T \cong A_4$</td>
-<td>$12$</td>
-<td>tetrahedron</td>
-</tr>
-<tr>
-<td>$O \cong S_4$</td>
-<td>$24$</td>
-<td>cube, octahedron</td>
-</tr>
-<tr>
-<td>$I \cong A_5$</td>
-<td>$60$</td>
-<td>dodecahedron, icosahedron</td>
-</tr>
-</tbody>
-</table>
-<p>Everything came from one equation,</p>
-<p>$$2 - \frac{2}{N} = \sum_{i=1}^k\left(1 - \frac{1}{n_i}\right),$$</p>
-<p>obtained by counting the fixed points of a finite group acting on a sphere. Two orbits give the cyclic groups; three give the dihedral family plus exactly three exceptions. Those three exceptions are the Platonic solids, and there is no sixth solid because there is no fourth solution.</p>
-<p>Adding translations changes the answer completely: the crystallographic restriction $2\cos(2\pi/n) \in \mathbb Z$ leaves only $n \in \{1,2,3,4,6\}$, from which the 7 frieze and 17 wallpaper groups follow.</p>
-<h2 id="The-pattern-to-notice">The pattern to notice<a class="anchor-link" href="#The-pattern-to-notice">¶</a></h2><p>We computed with a group but the answer was about a <strong>sphere</strong>. The orbit-counting equation is a disguised Euler characteristic: writing the pole orbits as vertices, edges and faces of a tessellation of $S^2$ recovers $V - E + F = 2$, and the quantity $\sum(1/n_i) - 1 = 2/N$ is positive precisely because the sphere has positive curvature.</p>
-<p>Change the sign and the same equation classifies something else entirely:</p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>$$ds^2 = g_{ij}\,dx^i dx^j, \qquad L(\gamma) = \int\!\sqrt{g_{ij}\dot x^i\dot x^j}\,dt, \qquad dV = \sqrt{\det g}\;dx^1\cdots dx^n$$</p>
 <table>
 <thead>
 <tr>
-<th>$\sum 1/n_i$</th>
-<th>Geometry</th>
-<th>Groups</th>
+<th>Space</th>
+<th>$g$</th>
+<th>$K$</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$&gt; 1$</td>
-<td>spherical</td>
-<td>the finite groups above</td>
+<td>Euclidean plane</td>
+<td>$\mathrm{diag}(1,1)$</td>
+<td>$0$</td>
 </tr>
 <tr>
-<td>$= 1$</td>
-<td>Euclidean</td>
-<td>the Euclidean triangle groups $(2,3,6), (2,4,4), (3,3,3)$</td>
+<td>round sphere $R$</td>
+<td>$\mathrm{diag}(R^2, R^2\sin^2 u)$</td>
+<td>$1/R^2$</td>
 </tr>
 <tr>
-<td>$&lt; 1$</td>
-<td>hyperbolic</td>
-<td>infinitely many triangle groups</td>
+<td>hyperbolic half-plane</td>
+<td>$\mathrm{diag}(1/y^2, 1/y^2)$</td>
+<td>$-1$</td>
+</tr>
+<tr>
+<td>Poincaré disc</td>
+<td>$\dfrac{4}{(1-x^2-y^2)^2}\mathrm{diag}(1,1)$</td>
+<td>$-1$</td>
+</tr>
+<tr>
+<td>flat torus $\mathbb R^2/\mathbb Z^2$</td>
+<td>$\mathrm{diag}(1,1)$</td>
+<td>$0$</td>
 </tr>
 </tbody>
 </table>
-<p>That is the same trichotomy that will organise Stage 2, where the three geometries appear in their own right, and it returns for the last time as the sign of the curvature in Gauss–Bonnet (3.08). One equation, read three ways.</p>
-<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>1.05 — Affine Geometry and Barycentric Coordinates</strong> takes the first step of the Erlangen ladder: drop the requirement that lengths be preserved, keep only that lines go to lines and parallels stay parallel. Distances and angles become meaningless; ratios along a line survive, and with them the centroid, Ceva's theorem and Menelaus' theorem.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=93e8ced2">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Recovered from the metric alone, with no ambient space anywhere: $d(i,4i) = \ln 4$ and the ideal triangle's area $\pi$ (both matching 2.06); the sphere's meridian $\pi R$, equator $2\pi R$, area $4\pi R^2$; and $-\log\varepsilon$ divergence confirming the hyperbolic boundary is infinitely far.</p>
+<p>Three connections worth keeping:</p>
+<p><strong>The first fundamental form was a pullback metric.</strong> $F^*\delta$ for the sphere embedding reproduced $\mathrm{diag}(R^2, R^2\sin^2u)$ exactly. Stage 3 was doing Riemannian geometry throughout; it simply always obtained its metric by restriction rather than by decree.</p>
+<p><strong>The Poincaré disc gave $K = -1$ on the nose.</strong> 2.06 reached that model through the Cayley transform and an invariance argument; here it is just another metric, and the curvature computation confirms the two routes agree.</p>
+<p><strong>Constant curvature is one ODE.</strong> In geodesic polar form $ds^2 = dr^2 + f(r)^2d\theta^2$, the intrinsic formula reduces to $K = -f''/f$ — literally the surface-of-revolution equation of 3.05. Its three solutions $\sin r$, $r$, $\sinh r$ give $K = +1, 0, -1$, and the circumferences $2\pi\sin r$, $2\pi r$, $2\pi\sinh r$. At $r = 3$ those are $0.89$, $18.85$, and $62.94$: <strong>curvature is what circles measure</strong>, and 4.06's comparison theorems are the general form of that observation.</p>
+<h2 id="The-flat-torus,-and-what-abstraction-is-for">The flat torus, and what abstraction is for<a class="anchor-link" href="#The-flat-torus,-and-what-abstraction-is-for">¶</a></h2><p>$\mathbb R^2/\mathbb Z^2$ is compact, has $K \equiv 0$ pointwise, and cannot be a $C^2$ surface in $\mathbb R^3$ — because a compact surface has a farthest point where $K \ge 1/R^2 &gt; 0$. The embedded torus of 3.04 obeys that bound ($K_{\max} = 1/4$) by making $K$ change sign, so that $\iint K\,dA = 0$ holds by cancellation rather than pointwise.</p>
+<p>Same topology, same total curvature, entirely different geometry — and only one of them fits in space. That is the concrete payoff of dropping the ambient requirement.</p>
+<h2 id="Next">Next<a class="anchor-link" href="#Next">¶</a></h2><p><strong>4.02 — Connections and Covariant Differentiation</strong> asks how to differentiate a vector field on a manifold. The naive $\partial_i V^j$ is not a tensor, and repairing it produces the Christoffel symbols — which 3.06 already computed from the metric, and which will now be characterised abstractly by the Levi-Civita conditions of metric-compatibility and torsion-freeness.</p>
 <h2 id="References">References<a class="anchor-link" href="#References">¶</a></h2><ul>
-<li>Armstrong, M.A. (1988) <em>Groups and Symmetry</em>. New York: Springer. Chapters 15–19 give the pole-counting classification of the finite subgroups of $SO(3)$ in the form used here.</li>
-<li>Conway, J.H., Burgiel, H. and Goodman-Strauss, C. (2008) <em>The Symmetries of Things</em>. Wellesley, MA: A K Peters. The modern orbifold account, which makes the "one equation, read three ways" trichotomy at the end of this notebook into a systematic method.</li>
-<li>Coxeter, H.S.M. (1973) <em>Regular Polytopes</em>. 3rd edn. New York: Dover. The classical source for the Platonic solids and their groups.</li>
-<li>Euclid, <em>Elements</em>, Book XIII. The final propositions construct the five regular solids and prove that there are no others.</li>
+<li>★ Lee, J.M. (2018) <em>Introduction to Riemannian Manifolds</em>. Cham: Springer. doi:10.1007/978-3-319-91755-9. Chapter 2 defines Riemannian metrics and works these examples; Chapter 3 covers the constant-curvature model spaces in exactly the geodesic-polar form used here.</li>
+<li>★ Callahan, J.J. (2000) <em>The Geometry of Spacetime</em>. New York: Springer. doi:10.1007/978-1-4757-6736-0. Chapter 6 for metrics on manifolds without an ambient space, en route to relativity.</li>
+<li>do Carmo, M.P. (1992) <em>Riemannian Geometry</em>. Boston: Birkhäuser. Chapter 1, the classic concise treatment.</li>
+<li>★ Naber, G.L. (1997) <em>Topology, Geometry, and Gauge Fields</em>. New York: Springer. doi:10.1007/978-1-4757-2742-5.</li>
 </ul>
-<p>On the crystallographic restriction and quasicrystals: Shechtman, D. <em>et al.</em> (1984) 'Metallic phase with long-range orientational order and no translational symmetry', <em>Physical Review Letters</em>, 53(20), pp. 1951–1953.</p>
-<ul>
-<li>★ Martin, G.E. (1982) <em>Transformation Geometry: An Introduction to Symmetry</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/978-1-4612-5680-9. Chapters 11–14 for the frieze and wallpaper classifications.</li>
-<li>★ Hartshorne, R. (2000) <em>Geometry: Euclid and Beyond</em>. Undergraduate Texts in Mathematics. New York: Springer. doi:10.1007/978-0-387-22676-7. Chapter 8 covers the Platonic solids from the axiomatic side, and §47 treats their symmetry groups directly — the synthetic counterpart to the pole-counting proof given here.</li>
-</ul>
+<p>On the flat torus and $C^1$ embeddings: Nash, J. (1954) '$C^1$ isometric imbeddings', <em>Annals of Mathematics</em>, 60(3), pp. 383–396; Kuiper, N. (1955) 'On $C^1$-isometric imbeddings', <em>Indagationes Mathematicae</em>, 17, pp. 545–556. The 2012 visualisation is due to the Hévéa project (Borrelli, Jabrane, Lazarus and Thibert).</p>
 <hr/>
 <p><em>Marked ★ = in the local indexed library (<code>maths</code> collection); the rest are standard references given from knowledge, not consulted here. Every code cell in this notebook was executed and its output is the real result; the prose is written from knowledge and checked against these sources where they cover the material.</em></p>
 </div>
