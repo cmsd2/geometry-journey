@@ -111,8 +111,8 @@ Where the machinery gets used. These are largely independent — read what you w
 |---|----------|------|
 | 01 | [lorentzian-geometry](notebooks/06-geometry-in-the-wild/01-lorentzian-geometry.macnb) | Signature $(-,+,+,+)$; causal structure, light cones, proper time; Minkowski space and the Lorentz group |
 | 02 | [schwarzschild-and-the-tests-of-gr](notebooks/06-geometry-in-the-wild/02-schwarzschild-and-the-tests-of-gr.macnb) | The Einstein equations; solving for the Schwarzschild metric with `ctensor`; light bending, perihelion precession, the event horizon as a coordinate artefact |
-| 03 | symplectic-geometry-and-mechanics | Symplectic forms; Darboux's theorem (no local invariants); Hamiltonian flows, Poisson brackets, moment maps — the geometric backbone of [control-systems-journey](https://github.com/cmsd2/control-systems-journey) |
-| 04 | complex-and-kahler-geometry | Complex manifolds and Riemann surfaces; Hermitian and Kähler metrics; the Fubini–Study metric on $\mathbb{CP}^n$ |
+| 03 | [symplectic-geometry-and-mechanics](notebooks/06-geometry-in-the-wild/03-symplectic-geometry-and-mechanics.macnb) | Symplectic forms; Darboux's theorem (no local invariants); Hamiltonian flows, Poisson brackets, moment maps — the geometric backbone of [control-systems-journey](https://github.com/cmsd2/control-systems-journey) |
+| 04 | [complex-and-kahler-geometry](notebooks/06-geometry-in-the-wild/04-complex-and-kahler-geometry.macnb) | Complex manifolds and Riemann surfaces; Hermitian and Kähler metrics; the Fubini–Study metric on $\mathbb{CP}^n$ |
 | 05 | information-geometry | The Fisher information metric; statistical models as Riemannian manifolds; dual connections; the exponential family as a flat geometry |
 | 06 | discrete-differential-geometry | Curvature on triangle meshes; angle defect as discrete $K$; the cotangent Laplacian; discrete Gauss–Bonnet holding exactly |
 | 07 | where-next | Honest signposts: index theory, Ricci flow and the Poincaré conjecture, geometric analysis, metric geometry in the sense of Gromov |
